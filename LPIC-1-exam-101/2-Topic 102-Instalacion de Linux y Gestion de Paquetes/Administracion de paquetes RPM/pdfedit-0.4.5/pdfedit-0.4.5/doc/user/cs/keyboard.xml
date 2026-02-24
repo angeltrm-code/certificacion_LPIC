@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<book>
+ <bookinfo>
+  <title>Klávesové zkratky</title>
+ </bookinfo>
+
+ <chapter id="Keyboard_shortcuts">
+  <title>Klávesové zkratky PDF Editoru</title>
+  <para>
+   <informaltable frame="none">
+    <tgroup cols="2"><tbody>
+     <row><entry>Ctrl+F</entry><entry>Hledat text</entry></row><row><entry>Ctrl+N</entry><entry>Nové okno</entry></row><row><entry>Ctrl++</entry><entry>Přiblížit měřítko</entry></row><row><entry>Ctrl+-</entry><entry>Oddálit měřítko</entry></row><row><entry>Ctrl+Alt+P</entry><entry>Zobrazit/skrýt editor položek</entry></row><row><entry>Ctrl+Alt+S</entry><entry>Zobrazit/skrýt stavový řádek</entry></row><row><entry>Ctrl+Alt+T</entry><entry>Zobrazit/skrýt strom objektů</entry></row><row><entry>Ctrl+End</entry><entry>Poslední strana</entry></row><row><entry>Ctrl+Home</entry><entry>První strana</entry></row><row><entry>Ctrl+PgDown</entry><entry>Další strana</entry></row><row><entry>Ctrl+PgUp</entry><entry>Předchozí strana</entry></row><row><entry>Ctrl+[</entry><entry>Otočit stránku o 270 stupňů</entry></row><row><entry>Ctrl+]</entry><entry>Otočit stránku o 90 stupňů</entry></row><row><entry>Del</entry><entry>Smazat objekt</entry></row><row><entry>F1</entry><entry>Nápověda</entry></row><row><entry>F2</entry><entry>Uložit</entry></row><row><entry>F3</entry><entry>Otevřít...</entry></row><row><entry>F5</entry><entry>Obnovit stránku (ukázat změny)</entry></row><row><entry>F8</entry><entry>Zobrazit/skrýt příkazový řádek</entry></row><row><entry>F9</entry><entry>Nastavení</entry></row><row><entry>Ins</entry><entry>Přidat objekt</entry></row>
+    </tbody></tgroup>
+   </informaltable>
+  </para>
+ </chapter>
+</book>

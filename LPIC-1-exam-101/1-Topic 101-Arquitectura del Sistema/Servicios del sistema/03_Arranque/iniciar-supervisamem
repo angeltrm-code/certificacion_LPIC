@@ -1,0 +1,51 @@
+#!/bin/bash
+# Esta es la línea "shebang", que indica al sistema que debe ejecutar este script con Bash.
+
+# chkconfig: - 99 10
+# Esta línea es un comentario especial que era usado por sistemas SysVinit (como en CentOS/RHEL antiguos)
+# para configurar el script como un servicio de arranque.
+# - 'chkconfig: -': Indica que no es un servicio de red.
+# - '99': Es la prioridad de inicio (más alto significa que se inicia más tarde).
+# - '10': Es la prioridad de parada (más bajo significa que se detiene antes).
+# En sistemas modernos con systemd, esta línea ya no tiene efecto directo,
+# pero a veces se mantiene por tradición o para scripts que aún deben ser compatibles con SysVinit.
+
+# 'case $1 in' inicia una estructura de control 'case'.
+# '$1' es el primer argumento que se pasa al script (ej. 'start' o 'stop').
+# La estructura 'case' compara '$1' con los patrones definidos ('start', 'stop', '*').
+case $1 in
+
+start) # Si el primer argumento es 'start'
+  /opt/scripts/supervisamem &
+  # Ejecuta tu script de monitoreo 'supervisamem'.
+  # La 'ruta completa' es importante aquí: '/opt/scripts/supervisamem'.
+  # El '&' al final envía el proceso 'supervisamem' a EJECUTARSE EN SEGUNDO PLANO (background).
+  # Esto es crucial para que el script de control (este script) termine,
+  # mientras 'supervisamem' sigue ejecutándose de forma independiente.
+  ;; # Doble punto y coma ';;' marca el final de este bloque 'case'.
+
+stop) # Si el primer argumento es 'stop'
+  killall supervisamem
+  # Utiliza el comando 'killall' para detener todas las instancias del proceso 'supervisamem'.
+  # 'killall' envía una señal de terminación a los procesos basándose en su nombre.
+  # Es una forma conveniente de detener servicios que se ejecutan como daemons.
+  # Podría ser necesario usar 'killall -9 supervisamem' para una terminación forzada si no responde a la señal por defecto.
+  ;; # Fin del bloque 'case' para 'stop'.
+
+*) # Este es el patrón por defecto (catch-all). Si '$1' no coincide con 'start' ni 'stop'.
+echo "No es una opcion para pasarle a script solo start y stop"
+# Imprime un mensaje de error o de uso, informando al usuario sobre las opciones válidas.
+;; # Fin del bloque 'case' por defecto.
+
+esac # 'esac' marca el final de la estructura 'case'.
+
+
+
+
+
+
+
+
+chkconfig --level 3 iniciar-supervisamen on
+/etc/rc3.d/S99iniciar-supervisamem --> /etc/init.d/iniciar-supervisamen
+/etc/rc5.d/S99iniciar-supervisamem --> /etc/init.d/iniciar-supervisamen

@@ -1,0 +1,31 @@
+##Para un dico sdb1
+
+vi /etc/systemd/system/mnt-backups.mount
+[Unit]
+Description=Mount System Backups Directory
+[Mount]
+What=/dev/sdb1
+Where=/mnt/backups
+Type=ext4
+Options=defaults
+[Install]
+WantedBy=multi-user.target
+
+-----------------------------------------------------
+##Para un disco sdc1
+vi /etc/systemd/system/test.mount
+[Unit]
+Description=Mount System Backups Directory
+[Mount]
+What=/dev/sdc1
+Where=/test
+Type=ext4
+Options=defaults
+[Install]
+WantedBy=multi-user.target
+
+
+# systemctl daemon-reload
+# systemctl start test.mount
+# systemctl stop test.mount
+# systemctl enable test.mount

@@ -1,0 +1,76 @@
+##Formatear el archivo cada tabulador x 10
+
+cat  cancer_progresion.txt |expand -t 10
+
+Soluciones:
+
+1.	¿Cuántos pacientes había en el estudio?
+$ grep -v nombre cancer_progresion.txt | wc -l
+11
+
+2.	¿De cuántos pacientes no tenemos datos de progresión?
+$ grep  desconocido cancer_progresion.txt  | wc -l
+1
+
+3.	Convertir la separación de comas de la tabla de doble ciego a tabuladores. (El tabulador se escribe como \t)
+$ sed -e 's/,/\t/' cancer_ciego.txt > cancer_ciego_tab.txt
+
+4.	Unir la tabla de los resultados de la terapia con la del doble ciego.
+$ join cancer_progresion.txt cancer_ciego_tab.txt > cancer.txt
+join, por defecto, crea la nueva tabla usando como separador los espacios. Para poder hacerlo correctamente con tabuladores habría que usar “join -t $’\t’”. Otro modo correcto y más sencillo de hacerlo sería pasar antes todos los tabuladores a comas y hacerlo con comas. Estas herramientas tienen este tipo de limitaciones, más adelante con Python podremos superarlas fácilmente.
+
+5.	Transformar el fichero resultante los espacios a tabuladores.
+$ sed -e 's/ /\t/g' cancer.txt
+
+6.	¿Cómo les ha ido a los pacientes según el tipo de tratamiento? (Placebo está escrito con mayúsculas y minúsculas)
+$ grep -i placebo cancer.txt
+1 Pepe Granada buena placebo
+4 Mónica Madrid mala placebo
+7 Óscar Barcelona mala Placebo
+10 Jordi Barcelona mala Placebo
+
+$ grep -i 1mg cancer.txt
+2 Juan Lugo muy buena 1mg
+3 Alicia Valencia muy buena 1mg
+8 Trini Valencia muy buena 1mg
+
+$ grep -i 2mg cancer.txt
+5 Alberto Madrid regular 2mg
+6 Toni Toledo mala 2mg
+9 Pepe Valencia buena 2mg
+11 Manolo Sevilla desconocido 2mg
+
+7.	Crea un fichero con los primeros 100 resultados del microarray de adenoma que incluya sólo las primeras 10 columnas.
+$ grep -v '^"' microarray_adenoma_hk69.csv | head -n 100 | cut -f 1-10 > micro.txt
+
+8.	Ordena el fichero micro.txt generado en la cuestión 7 por el nombre del gen (campo 3) y por el id de la fila, pero en orden numérico reverso.
+$ sort -k 3 micro.txt
+$ sort -nr micro.txt
+
+9.	Disponemos de dos ficheros con secuencias de ADN (seqs_1.fasta y seqs_2.fasta). ¿Cuántas secuencias hay en cada fichero? ¿Hay alguna secuencia presente en ambos ficheros? (En los archivos de secuencia tipo fasta el nombre de las secuencias se encuentra en las líneas que comienzan por el símbolo >)
+Veamos cuantas secuencias hay en cada archivo y después contemos las secuencias no repetidas que hay en un archivo que las incluya a todas.
+$ cat seqs_1.fasta | grep '>' | wc -l
+11
+$ cat seqs_2.fasta | grep '>' | wc -l
+11
+$ cat seqs_1.fasta seqs_2.fasta | grep '>' | sort | uniq | wc -l
+20
+Sí hay secuencias repetidas puesto que cuando las contamos todas juntas hay dos menos que cuando las contamos por separado. Podemos ver qué secuencias hay repetidas utilizando el parámetro -d del uniq:
+$ cat seqs_1.fasta seqs_2.fasta | grep '>' | sort | uniq -d
+>gi|311207420|gb|GT728904.1|GT728904
+>gi|311210057|gb|GT715712.1|GT715712
+Efectivamente ambas secuencias se encuentran repetidas en los dos ficheros:
+$ grep '>gi|311207420|gb|GT728904.1|GT728904' seqs_1.fasta
+>gi|311207420|gb|GT728904.1|GT728904
+$ grep '>gi|311207420|gb|GT728904.1|GT728904' seqs_2.fasta
+>gi|311207420|gb|GT728904.1|GT728904
+
+10.	para poder extraer los nombres conviene primero echar un vistazo al fichero para ver que contiene.
+$ grep ">" seqs_3.fasta|cut -c 2- | cut -f 1 -d " "
+
+11.	
+$ grep -v "^@" tomate.sam|wc
+$ grep -v "^@" tomate.sam| cut -f 2|grep 16|wc
+$ grep -v "^@" tomate.sam| cut -f 3| sort -u
+$ grep -v "^@" tomate.sam| sort -k 3,4|cut -f 1
+

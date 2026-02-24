@@ -1,0 +1,37 @@
+Soluciones:
+1.	Buscar las líneas en las que aparece la palabra bash en el archivo /etc/passwd.
+$ grep 'bash' /etc/passwd
+
+2.	Buscar en el archivo /etc/group todas las líneas que empiezan por m.
+$ grep '^m' /etc/group
+mail:x:8:
+man:x:12:
+
+3.	En el fichero anterior imprimir todas las líneas que no empiezan por m.
+$ grep -v '^m' /etc/group
+
+4.	¿Cuántos ficheros README hay en los subdirectorios de /usr/share/doc?
+$ ls -R /usr/share/doc | grep '^README$' | wc -l
+392
+
+5.	¿Qué ficheros o directorios en /etc continen un número en el nombre?
+$ ls /etc/ | grep '[0-9]'
+
+.- Seleccionar los pacientes enviados por el hospital de Castellón.
+$ grep --color -E '^[cC]astellón' origenes.txt
+$ grep --color -iE '^castellón' origenes.txt
+
+7.	Seleccionar los que vienen del Biobanco de Barcelona.
+$ grep --color -iE '.Barcelona' origenes.txt
+
+8.- Buscar los pacientes que no tienen Usher3.
+$ grep --color -iE 'usher[^3]' origenes.txt
+
+9.	En el fichero de pacientes de Usher hay algunas líneas separadas por espacios y otras por tabuladores, cambiar todos los separadores a comas.
+$ sed -re 's/[[:blank:]]+/,/g' origenes.txt
+
+10.	Disponemos de un fichero con una caracterización morfológica de unas plantas y queremos construir un nuevo fichero que incluya solo las filas sin datos faltantes.
+$ grep -iE 'plant[0-9]* [0-9]+\.?[0-9]* [0-9]+\.?[0-9]* [0-9]+\.?[0-9]*' numbers.txt
+O con una versión más sencilla:
+$ grep --color -iE '^plant[0-9]*( [0-9]\.[0-9]){3}' numbers.txt
+

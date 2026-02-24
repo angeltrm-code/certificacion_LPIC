@@ -1,0 +1,58 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Part I. Command line</title><meta name="generator" content="DocBook XSL Stylesheets V1.75.2"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="part" title="Part I. Command line"><div class="titlepage"><div><div><h1 class="title"><a name="cmdline_part"></a>Part I. Command line</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="chapter"><a href="#cmdline_description">1. PDF Editor Commandline parameters</a></span></dt><dd><dl><dt><span class="sect1"><a href="#opt__help">Option <code class="option">--help</code></a></span></dt><dt><span class="sect1"><a href="#opt__version">Option <code class="option">--version</code></a></span></dt><dt><span class="sect1"><a href="#opt_d">Option <code class="option">-d (n)</code></a></span></dt><dt><span class="sect1"><a href="#opt_console">Option <code class="option">-console</code></a></span></dt><dt><span class="sect1"><a href="#opt_script">Option <code class="option">-script (filename)</code></a></span></dt><dt><span class="sect1"><a href="#opt_run">Option <code class="option">-run (filename)</code></a></span></dt><dt><span class="sect1"><a href="#opt_eval">Option <code class="option">-eval (code)</code></a></span></dt><dt><span class="sect1"><a href="#opt_s">Option <code class="option">-s (filename)</code></a></span></dt><dt><span class="sect1"><a href="#opt__">Option <code class="option">--</code></a></span></dt></dl></dd><dt><span class="chapter"><a href="#cmdline_localization">2. Localization</a></span></dt></dl></div><p>
+  </p><div class="chapter" title="Chapter 1. PDF Editor Commandline parameters"><div class="titlepage"><div><div><h2 class="title"><a name="cmdline_description"></a>Chapter 1. PDF Editor Commandline parameters</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="sect1"><a href="#opt__help">Option <code class="option">--help</code></a></span></dt><dt><span class="sect1"><a href="#opt__version">Option <code class="option">--version</code></a></span></dt><dt><span class="sect1"><a href="#opt_d">Option <code class="option">-d (n)</code></a></span></dt><dt><span class="sect1"><a href="#opt_console">Option <code class="option">-console</code></a></span></dt><dt><span class="sect1"><a href="#opt_script">Option <code class="option">-script (filename)</code></a></span></dt><dt><span class="sect1"><a href="#opt_run">Option <code class="option">-run (filename)</code></a></span></dt><dt><span class="sect1"><a href="#opt_eval">Option <code class="option">-eval (code)</code></a></span></dt><dt><span class="sect1"><a href="#opt_s">Option <code class="option">-s (filename)</code></a></span></dt><dt><span class="sect1"><a href="#opt__">Option <code class="option">--</code></a></span></dt></dl></div><p>
+   You can specify any number of filenames as parameters on commandline.
+   One window will be opened for each file specified.
+   If no file is specified on commandline, editor will be loaded initially empty.
+  </p><p>
+   Name of files can be mixed with options (parameter that begin with a dash).
+   Invalid option on commandline will cause editor to abort with error message.
+   Names of options are case sensitive.
+  </p><p>
+   Options which require a parameter can be specified in "short form", like <em class="parameter"><code>-d1</code></em>
+   or "long form", like <em class="parameter"><code>-d 1</code></em>, both of these mean option <code class="option">-d</code> with
+   parameter <em class="parameter"><code>1</code></em>.
+  </p><p>
+   Use <code class="option">-script</code>, <code class="option">-eval</code> and <code class="option">-run</code>
+   options to run any script besides the init script.
+   These parameters are run/evaluated in the order they are specified on commandline
+   and may be specified multiple times.
+   If these parameters are specified in GUI mode,
+   they are used in each window opened on program start, in commandline mode (console mode)
+   they are used after commandline init script.
+   After these scripts finish execution, the editor terminates.
+  </p><div class="sect1" title="Option --help"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="opt__help"></a>Option <code class="option">--help</code></h2></div></div></div><p>
+    Print brief help about commandline options to STDOUT and exit
+   </p></div><div class="sect1" title="Option --version"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="opt__version"></a>Option <code class="option">--version</code></h2></div></div></div><p>
+    Print version of editor to STDOUT and exit
+   </p></div><div class="sect1" title="Option -d (n)"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="opt_d"></a>Option <code class="option">-d (n)</code></h2></div></div></div><p>
+    Set verbosity of debugging messages reported by editor.
+    Only messages below or equal level specified in parameter will be shown, default is debugging level 1.
+    Also, any of symbolic constants defined below (case insensitive), or starting part of them may be given instead of
+    corresponding number.
+   </p><div class="table"><a name="table_debug_levels"></a><p class="title"><b>Table 1.1. Explanation of debugging levels</b></p><div class="table-contents"><table summary="Explanation of debugging levels" border="0"><colgroup><col><col><col></colgroup><tbody><tr><td>0</td><td>PANIC</td><td>Critical errors</td></tr><tr><td>1</td><td>CRITICAL</td><td>Critical errors, but at least the program can exit somewhat gracefully</td></tr><tr><td>2</td><td>ERROR</td><td>Usual errors</td></tr><tr><td>3</td><td>WARNING</td><td>Comments about some unusual behavior</td></tr><tr><td>4</td><td>INFO</td><td>Information about some internal behavior</td></tr><tr><td>5</td><td>DEBUG</td><td>Debugging messages</td></tr></tbody></table></div></div><p><br class="table-break">
+    Setting this to -1 mean no debug messages will be shown at all, not even the most critical ones.
+    Debugging messages are sent to STDERR.
+   </p></div><div class="sect1" title="Option -console"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="opt_console"></a>Option <code class="option">-console</code></h2></div></div></div><p>
+    Run in commandline mode.
+    No editor windows are opened and commandline init script is executed.
+   </p></div><div class="sect1" title="Option -script (filename)"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="opt_script"></a>Option <code class="option">-script (filename)</code></h2></div></div></div><p>
+    Run script with given filename.
+    Look for the script in script path.
+    If not found, look for the script in current directory.
+   </p></div><div class="sect1" title="Option -run (filename)"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="opt_run"></a>Option <code class="option">-run (filename)</code></h2></div></div></div><p>
+    Run script with given filename, but unlike <code class="option">-script</code> option, script path is not searched.
+   </p></div><div class="sect1" title="Option -eval (code)"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="opt_eval"></a>Option <code class="option">-eval (code)</code></h2></div></div></div><p>
+    Evaluate given script code
+   </p></div><div class="sect1" title="Option -s (filename)"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="opt_s"></a>Option <code class="option">-s (filename)</code></h2></div></div></div><p>
+    This is just shortcut for <code class="option">-console -script (filename)</code>
+   </p></div><div class="sect1" title="Option --"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="opt__"></a>Option <code class="option">--</code></h2></div></div></div><p>
+    Stop processing options. Any further parameters after this one are treated as filenames.
+    This can be useful if you want to open file, that have name beginning with a dash.
+   </p></div></div><div class="chapter" title="Chapter 2. Localization"><div class="titlepage"><div><div><h2 class="title"><a name="cmdline_localization"></a>Chapter 2. Localization</h2></div></div></div><p>
+   PDF Editor is run in english language by default, but by setting environment variable <code class="envar">LANG</code> before launching
+   the program, you can tell PDF Editor to look for specific language file. If the localization you requested is
+   not available, english will be used instead.
+  </p><p>
+   Aside default english, these localizations are available:
+   </p><div class="informaltable"><table border="0"><colgroup><col><col></colgroup><tbody><tr><td>cs</td><td> - Czech</td></tr><tr><td>de</td><td> - German</td></tr><tr><td>es</td><td> - Spanish</td></tr><tr><td>ru</td><td> - Russian</td></tr><tr><td>fr</td><td> - French</td></tr><tr><td>zh_TW</td><td> - Chinese (traditional)</td></tr></tbody></table></div><p>
+  </p></div></div></body></html>

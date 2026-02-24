@@ -1,0 +1,151 @@
+##En la mv de linux:
+cd /lpic1
+
+Averiguar con grep  las veces que me ha visitado gateway.ps.net del archivo acces_log:
+# grep -c gateway.ps.net access_log
+grep -w gateway.ps.net access_log |wc -l
+
+
+Averiguar con grep las veces que me ha visitado pwch3s01 y 204.251.93.247  access_log:
+# grep    -e pwch3s01 -e 204.251.93.247  access_log  |more
+grep    -e pwch3s01 -e 204.251.93.247  access_log  |wc -l
+
+Buscar las ip que nos han visitado en nuestro /var/log/httpd/access_log, excluyendo la ip 192.168.1.14:
+# grep   -v 192.168.1.14   /var/log/httpd/access_log
+ tail -f /var/log/httpd/access_log |grep -wv 192.168.33.1
+watch grep  -wv 192.168.33.1 /var/log/httpd/access_log
+
+
+Buscar www.thyssen.com en access_log que lo muestra y 5 lineas a continuación del criterio de busqueda:
+# grep -w www.thyssen.com -A 5 access_log
+
+Buscar en access_log, www.thyssen.com y que muestre la 1 línea anterior al criterio.
+# grep www.thyssen.com -B 1 access_log
+
+Para visualizar el número de línea 58  completo del archivo /etc/passwd con sed:
+#sed -n 58p /etc/passwd
+
+Buscamos la palabra root y queremos que nos muestre en que fichero esta esta palabra en la ruta /var/log/:
+# grep -r -H root /var/log/*
+
+Buscamos la palabra root y no queremos que nos muestre en que fichero esta esta palabra var/log/:
+# grep -r -h root /var/log/*
+
+Buscar todo lo que comiece root en /etc/passwd y que nos diga el numero de linea:
+grep -n  ^root  /etc/passwd
+
+Buscar todo lo que comiece root en todos los archivos de /var/log y que nos diga el numero de linea:
+grep  -nr '^root' /var/log/*
+
+Para visualizar el número de línea1  completo del archivo /etc/passwd con sed:
+# sed -n 1p /etc/passwd
+
+
+
+
+##Expresiones Regulares##
+
+Para ver todo lo que comienza por www. en el archivo access_log:.
+# grep ^www\. access_log
+# grep ^www[.] access_log
+
+Para mostrar todo lo que sea www. Y finalice con .com.mx en el arhivo access_log
+# cut -d " " -f1 access_log |grep ^www[.] | grep .com.mx$
+
+Para mostrar que el 2 carácter sea u 8 en el archivo access_log:
+# grep -i  ^.8$*  access_log
+
+Mostrara los nombres que contengan 3 caracteres del archivo nombres.txt:
+grep -i  '^...$' nombres.txt
+
+Para ver todo lo que comience por w y n del archivo access_log:
+# grep -i ^[wn] access_log
+
+Todo lo que comience por el rango ente 1 y 2 en el archivo access_log
+# grep -i ^[1-2] access_log
+
+Para negar líneas que no comiencen ni con w ni con a en el archivo access_log:
+# grep -i ^[^wa] access_log
+
+Para buscar todas las líneas que contienen un solo carácter con grep:
+grep -n '^.$'
+
+Para buscar todas las líneas que solamente tengan un punto con grep:
+grep '^\.$'
+
+Con grep seleccionar las lineas que tengan al menos una letra (mayúscula o minúscula)
+grep '[a-zA-Z]'
+
+Expresiones regulares extendidas con grep lo tenemos que habilitar con el comando: 
+grep -E
+
+Dado el fichero números.txt vemos que tenemos números de 1 a 4 dígitos,
+si queremos mostrar los números menores de 100, que tengan uno o dos dígitos:
+# grep -E "^[0-9][0-9]?$"  numeros.txt
+
+Filtrar solo las ips del archivo access_log:
+# grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' access_log
+
+Buscamos que comience por b conatenga an y obligatorio que la ulima palabra sea una a en el archivo test1:
+egrep "b(an)+a$" text1
+
+Buscar números pero que tengan tres digitos, es decir le estamos diciendo una expresión que se tiene que repetir 3 veces en numeros.txt:
+# grep -E "^[0-9]{3}$” números.txt
+
+Para que se repita entre un rango para que busque números que se repitan entre dos dígitos y 3 dígitos, y esto es un rango, es decir buscara dos y tres dígitos, no dos o tres dígitos.
+# grep -E "^[0-9]{2,3}$” números.txt
+
+Buscar números que tengan tres dígitos o mas en el archivo numeros.txt
+# grep -E "^[0-9]{3,}$” números.txt
+
+Que hace esta expresion:
+# grep -E "^[0-9] ([0-9] [0-9])?$”  números.txt
+Con esta expresión estamos buscando que muestre los números de 1 digito 
+y los números de tres dígitos, con esto le decimos que obligatoriamente 
+tiene que haber un digito y opcionalmente dos dígitos con lo que los metemos entre paréntesis y con ? le decimos que serán opcionales
+
+Que hace este comando:
+# grep -E "^([0-9]|[0-9] {3})$”  números.txt
+Otra forma de buscar números de un digito y de tres dígitos es con | que es la alternancia
+En la expresión de la izquierda antes del | esta buscando un numero  y en la de la derecha
+un numero que tiene que aparecer tres veces.
+
+Que hace este comando:
+# egrep  "^([0-9]|[0-9] {3})$”  números.txt
+Si no queremos recordar que tenemos que poner el parámetro -E al grep 
+podemos y utiliza
+
+Para cambiar el año de 2014 a 2018 con sed,en el archivo empresa.txt, en todas las ubicaciones:
+# sed 's/2014/2018/g' empresa.txt
+
+Para visualizar en el fichero las líneas sin espacios, lineas vacias :
+# grep -v ^$ empresa.txt
+
+El comando anterior con el  conmando sed: 
+# sed '/^$/d' empresa.txt
+
+Que realiza el siguiente comando:
+# sed -i  's/2014/2018/g' empresa.txt
+
+Con sed realizar una copia de seguridad (empresa.txt.original) sobre el archivo en el que vayamos a realizar modificaciones empresas.txt del comando anterior:
+# sed -i.original  's/2014/2018/g' empresa.txt
+
+Ordenar el ficheros ips.txt, contar las veces que se repite el acceso de una ip, volver a ordenarlo de forma numérica y  guardarlo en un fichero y muestre el resultado por pantalla.
+# sort ips.txt |uniq -c|sort -n| tee ips-accesos-ordenados.txt
+
+Con el comando anterior el comando tee que añade el contenido al fichero nuevamente, es decir no lo sobrescribe.
+# sort ips.txt |uniq -c|sort -n| tee -a ips-accesos-ordenados.txt
+
+
+
+
+
+
+
+
+
+
+
+
+
+

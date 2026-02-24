@@ -1,0 +1,5 @@
+/etc/passwd
+/etc/fstab
+/etc/group
+/etc/motd
+/root/access_log

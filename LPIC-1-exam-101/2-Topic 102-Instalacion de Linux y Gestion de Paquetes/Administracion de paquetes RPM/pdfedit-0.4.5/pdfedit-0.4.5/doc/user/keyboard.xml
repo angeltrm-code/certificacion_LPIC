@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<book>
+ <bookinfo>
+  <title>Keyboard shortcuts</title>
+ </bookinfo>
+
+ <chapter id="Keyboard_shortcuts">
+  <title>PDF Editor keyboard shortcuts</title>
+  <para>
+   <informaltable frame="none">
+    <tgroup cols="2"><tbody>
+     <row><entry>Ctrl+F</entry><entry>Find text</entry></row><row><entry>Ctrl+N</entry><entry>New Window</entry></row><row><entry>Ctrl++</entry><entry>Zoom in</entry></row><row><entry>Ctrl+-</entry><entry>Zoom out</entry></row><row><entry>Ctrl+Alt+P</entry><entry>Show/Hide property editor</entry></row><row><entry>Ctrl+Alt+S</entry><entry>Show/Hide status bar</entry></row><row><entry>Ctrl+Alt+T</entry><entry>Show/Hide object tree</entry></row><row><entry>Ctrl+End</entry><entry>Last Page</entry></row><row><entry>Ctrl+Home</entry><entry>First Page</entry></row><row><entry>Ctrl+PgDown</entry><entry>Next Page</entry></row><row><entry>Ctrl+PgUp</entry><entry>Prev Page</entry></row><row><entry>Ctrl+[</entry><entry>Rotate page 270 degrees</entry></row><row><entry>Ctrl+]</entry><entry>Rotate page 90 degrees</entry></row><row><entry>Del</entry><entry>Delete object</entry></row><row><entry>F1</entry><entry>Help</entry></row><row><entry>F2</entry><entry>Save</entry></row><row><entry>F3</entry><entry>Open...</entry></row><row><entry>F5</entry><entry>Reload Page (show changes)</entry></row><row><entry>F8</entry><entry>Show/Hide commandline</entry></row><row><entry>F9</entry><entry>Options</entry></row><row><entry>Ins</entry><entry>Add object</entry></row>
+    </tbody></tgroup>
+   </informaltable>
+  </para>
+ </chapter>
+</book>

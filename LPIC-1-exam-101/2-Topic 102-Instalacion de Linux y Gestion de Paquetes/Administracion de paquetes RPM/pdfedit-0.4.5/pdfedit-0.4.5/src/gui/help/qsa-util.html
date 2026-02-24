@@ -1,0 +1,435 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 1. QSA Utility Framework</title><meta name="generator" content="DocBook XSL Stylesheets V1.75.2"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" title="Chapter 1. QSA Utility Framework"><div class="titlepage"><div><div><h2 class="title"><a name="p_QSA_Utility_Framework"></a>Chapter 1. QSA Utility Framework</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="sect1"><a href="#p_File_Class_Reference">File Class Reference</a></span></dt><dd><dl><dt><span class="sect2"><a href="#p_Enums">Enums</a></span></dt><dt><span class="sect2"><a href="#p_Static_Functions">Static Functions</a></span></dt><dt><span class="sect2"><a href="#p_Constructor">Constructor</a></span></dt><dt><span class="sect2"><a href="#p_Properties">Properties</a></span></dt><dt><span class="sect2"><a href="#p_Member_Functions">Member Functions</a></span></dt></dl></dd><dt><span class="sect1"><a href="#p_Dir_Class_Reference">Dir Class Reference</a></span></dt><dd><dl><dt><span class="sect2"><a href="#p_Enums_0">Enums</a></span></dt><dt><span class="sect2"><a href="#p_Static_Properties">Static Properties</a></span></dt><dt><span class="sect2"><a href="#p_Static_Functions_0">Static Functions</a></span></dt><dt><span class="sect2"><a href="#p_Constructor_0">Constructor</a></span></dt><dt><span class="sect2"><a href="#p_Properties_0">Properties</a></span></dt><dt><span class="sect2"><a href="#p_Member_Functions_0">Member Functions</a></span></dt></dl></dd><dt><span class="sect1"><a href="#p_Process_Class_Reference">Process Class Reference</a></span></dt><dd><dl><dt><span class="sect2"><a href="#p_Static_Properties_0">Static Properties</a></span></dt><dt><span class="sect2"><a href="#p_Static_Functions_1">Static Functions</a></span></dt><dt><span class="sect2"><a href="#p_Constructor_1">Constructor</a></span></dt><dt><span class="sect2"><a href="#p_Properties_1">Properties</a></span></dt><dt><span class="sect2"><a href="#p_Member_Functions_1">Member Functions</a></span></dt></dl></dd></dl></div>
+
+The QSA Utility Framework is a set of classes that extends QSA to
+enable the user to read and write files, access directory structures
+and start processes synchronously and asynchronously.
+
+
+<div class="sect1" title="File Class Reference"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="p_File_Class_Reference"></a>File Class Reference</h2></div></div></div>
+
+The <code class="code">File</code> class provides functionallity for reading and writing
+binary and text files. A <code class="code">File</code> can be instantiated as an object,
+giving the scripter complete flexibility when reading and writing files.
+In addition, the <code class="code">File</code> class provides a set of static convenence
+functions for reading and writing files in one go.
+
+Typical use of a <code class="code">File</code> is:
+
+<pre class="programlisting">// Reads an entire file in one go
+var log = File.read('file.log');
+// Writes an entire file in one go
+File.write('copy_of_file.log', log);
+
+// Read and write a file line by line
+var infile = new File('file.log');
+infile.open(File.ReadOnly);
+
+var outfile = new File('copy_of_file.log');
+outfile.open(File.WriteOnly);
+
+while (!infile.eof) {
+    var line = infile.readLine();
+    outfile.write( line );
+}
+
+infile.close();
+outfile.close();
+</pre><div class="sect2" title="Enums"><div class="titlepage"><div><div><h3 class="title"><a name="p_Enums"></a>Enums</h3></div></div></div><div class="sect3" title="AccessMode"><div class="titlepage"><div><div><h4 class="title"><a name="p_AccessMode"></a>AccessMode</h4></div></div></div>
+
+The enum <code class="code">AccessMode</code> is used in conjunction with <code class="code">File.open</code> to
+specify the mode in which the file is opened.
+
+<div class="itemizedlist"><ul class="itemizedlist" type="disc" compact><li class="listitem"><p>ReadOnly; Opens the file in read-only mode. 
+
+</p></li><li class="listitem"><p>WriteOnly; Opens the file in write-only mode. If this flag is
+used with <code class="code">Append,</code> the file is not truncated; but if used on its own
+(or with <code class="code">Truncate),</code> the file is truncated.
+
+</p></li><li class="listitem"><p>ReadWrite; Opens the file in read/write mode. The file is <span class="emphasis"><em>not</em></span>
+truncated.
+
+</p></li><li class="listitem"><p>Append; Opens the file in append mode. (You must actually use
+<code class="code">(WriteOnly | Append)</code> to make the file writable and to go into
+append mode.) This mode is very useful when you want to write
+something to a log file. The file index is set to the end of the file.
+Note that the result is undefined if you position the file index
+manually using at() in append mode.
+
+</p></li><li class="listitem"><p>Truncate; Truncates the file. 
+
+</p></li><li class="listitem"><p>Translate; Enables carriage returns and linefeed translation
+for text files under Windows.
+
+</p></li></ul></div></div></div><div class="sect2" title="Static Functions"><div class="titlepage"><div><div><h3 class="title"><a name="p_Static_Functions"></a>Static Functions</h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc" compact><li class="listitem"><p>exists( fileName : String ) : Boolean; Returns true if <code class="code">fileName</code>
+exists; otherwise returns false.
+
+</p></li><li class="listitem"><p>remove( fileName : String ); Deletes the file <code class="code">fileName</code> if
+possible; otherwise throws an exception.
+
+</p></li><li class="listitem"><p>write( fileName : String, content : String ); Writes the string 
+content to the file <code class="code">fileName</code> if possible (completely replacing the
+original contents if the file already exists); otherwise throws an
+exception.
+
+</p></li><li class="listitem"><p>read( fileName : String ) : String; Reads and returns the contents of
+the file <code class="code">fileName</code> if possible; otherwise throws an exception.
+
+</p></li><li class="listitem"><p>isFile( fileName : String ) : Boolean; Returns true if <code class="code">fileName</code>
+is a file; otherwise returns false.
+
+</p></li><li class="listitem"><p>isDir( fileName : String ) : Boolean; Returns true if <code class="code">fileName</code>
+is a directory; otherwise returns false.
+
+</p></li></ul></div></div><div class="sect2" title="Constructor"><div class="titlepage"><div><div><h3 class="title"><a name="p_Constructor"></a>Constructor</h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc" compact><li class="listitem"><p>File( fileName : String ); Creates a file object with the with 
+fileName. If <code class="code">fileName</code> is missing or is not a String, an exception
+is thrown.
+
+</p></li></ul></div></div><div class="sect2" title="Properties"><div class="titlepage"><div><div><h3 class="title"><a name="p_Properties"></a>Properties</h3></div></div></div>
+
+The File object's properties are read-only.
+
+<div class="itemizedlist"><ul class="itemizedlist" type="disc" compact><li class="listitem"><p>name : String; The name of the file including the extension.
+
+</p></li><li class="listitem"><p>path : String; The path of the file.
+
+</p></li><li class="listitem"><p>fullName : String; The fullName of the file, including path, name, and
+extension.
+
+</p></li><li class="listitem"><p>baseName : String; The name of the file, excluding its path and
+extension.
+
+</p></li><li class="listitem"><p>extension : String; The file name's extension.
+
+</p></li><li class="listitem"><p>symLink : String; The expansion of the symlink if the file is a
+symlink; otherwise empty;
+
+</p></li><li class="listitem"><p>exists : Boolean; True if the file exists; otherwise false.
+
+</p></li><li class="listitem"><p>readable : Boolean; True if the file is readable; otherwise false.
+
+</p></li><li class="listitem"><p>writable : Boolean; True if the file is writable; otherwise false.
+
+</p></li><li class="listitem"><p>executable : Boolean; True if the file is executable; otherwise
+false.
+
+</p></li><li class="listitem"><p>hidden : Boolean; True if the file is hidden; otherwise false.
+
+</p></li><li class="listitem"><p>eof : Boolean; True if reading has reached the end of the file;
+otherwise false.
+
+</p></li><li class="listitem"><p>created : Date; The creation time of the file.
+
+</p></li><li class="listitem"><p>lastModified : Date; The last modification time of the file.
+
+</p></li><li class="listitem"><p>lastRead : Date; The last time the file was read.
+
+</p></li><li class="listitem"><p>size : Number; The size of the file, in bytes.
+
+</p></li></ul></div></div><div class="sect2" title="Member Functions"><div class="titlepage"><div><div><h3 class="title"><a name="p_Member_Functions"></a>Member Functions</h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc" compact><li class="listitem"><p>open( accessMode : Number ); Opens the file in the mode 
+accessMode if possible; otherwise throws an exception.
+
+</p></li><li class="listitem"><p>close(); Closes the file.
+
+</p></li><li class="listitem"><p>remove((); Deletes the file if possible; otherwise throws an
+exception.
+
+</p></li><li class="listitem"><p>readByte() : Number; Reads one byte from the file if possible;
+otherwise throws an exception.
+
+</p></li><li class="listitem"><p>read() : String; Returns the entire content of the file as a string
+if it can be read; otherwise throws an exception.
+
+</p></li><li class="listitem"><p>readLine() : String; Reads one line from file if possible;
+otherwise throws an exception. Retains any trailing whitespace.
+
+</p></li><li class="listitem"><p>readLines() : String[]; Returns the contents of the file as an
+array of Strings, one for each line. Linebreaks are strippped from the
+strings. If the file could not be read, an exception is thrown.
+
+</p></li><li class="listitem"><p>writeByte( byte : Number ); Writes a byte to the file is possible;
+otherwise throws an exception.
+
+</p></li><li class="listitem"><p>write( data : String, length : Number ); Writes <code class="code">length</code> number of
+characters from <code class="code">data</code> to the file if possible; otherwise throws an
+exception.
+
+</p></li><li class="listitem"><p>writeLine( data : String ); Writes the line <code class="code">data</code> to the file and
+adds a linebreak. If the file could not be written <code class="code">error</code> is
+returned.
+
+</p></li></ul></div></div></div><div class="sect1" title="Dir Class Reference"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="p_Dir_Class_Reference"></a>Dir Class Reference</h2></div></div></div>
+
+The <code class="code">Dir</code> class provides access to directory structures and their
+contents in a platform-independent way. It provides a means of listing
+directory content, creating filenames with proper path separators,
+etc.
+
+An example use of the Dir class is:
+
+<pre class="programlisting">var dir = new Dir;
+var codeFiles = dir.entryList('*.cpp');
+for (var i = 0; i &lt; codeFiles.length; ++i) 
+    print(codeFiles[i]);
+</pre><div class="sect2" title="Enums"><div class="titlepage"><div><div><h3 class="title"><a name="p_Enums_0"></a>Enums</h3></div></div></div><div class="sect3" title="FilterSpec"><div class="titlepage"><div><div><h4 class="title"><a name="p_FilterSpec"></a>FilterSpec</h4></div></div></div>
+
+This enum describes the filtering options available to Dir for
+entryList(). The filter value is specified by OR-ing together values
+from the following list.
+
+<div class="itemizedlist"><ul class="itemizedlist" type="disc" compact><li class="listitem"><p>Dirs; List directories only.
+
+</p></li><li class="listitem"><p>Files; List files only.
+
+</p></li><li class="listitem"><p>Drives; List disk drives only.
+
+</p></li><li class="listitem"><p>NoSymLinks; Do not list symbolic links (ignored by operating
+systems that don't support symbolic links).
+
+</p></li><li class="listitem"><p>All; List directories, files, drives and symlinks (this does not
+list broken symlinks unless you specify System).
+
+</p></li><li class="listitem"><p>TypeMask; A mask for the the Dirs, Files, Drives and NoSymLinks
+flags.
+
+</p></li><li class="listitem"><p>Readable; List files for which the application has read access. 
+
+</p></li><li class="listitem"><p>Writable; List files for which the application has write access. 
+
+</p></li><li class="listitem"><p>Executable; List files for which the application has execute
+access. Executables must be combined with Dirs or Files.
+
+</p></li><li class="listitem"><p>RWEMask; A mask for the Readable, Writable and Executable flags.
+
+</p></li><li class="listitem"><p>Modified; Only list files that have been modified (ignored under
+Unix).
+
+</p></li><li class="listitem"><p>Hidden; List hidden files (on Unix, files starting with a .). 
+
+</p></li><li class="listitem"><p>System; List system files (on Unix, FIFOs, sockets, and device
+files)
+
+</p></li><li class="listitem"><p>AccessMask; A mask for the Readable, Writable, Executable Modified,
+Hidden and System flags
+
+</p></li></ul></div></div><div class="sect3" title="SortSpec"><div class="titlepage"><div><div><h4 class="title"><a name="p_SortSpec"></a>SortSpec</h4></div></div></div>
+
+This enum describes the sort options available to Dir for
+entryList(). The sort value is specified by OR-ing together values
+from the following list:
+
+<div class="itemizedlist"><ul class="itemizedlist" type="disc" compact><li class="listitem"><p>Name; Sort by name.
+</p></li><li class="listitem"><p>Time; Sort by time (modification time).
+</p></li><li class="listitem"><p>Size; Sort by file size.
+</p></li><li class="listitem"><p>Unsorted; Do not sort.
+</p></li><li class="listitem"><p>SortByMask; A Mask for Name, Time and Size.
+</p></li><li class="listitem"><p>DirsFirst; Put the directories first, then the files.
+</p></li><li class="listitem"><p>Reversed; Reverse the sort order.
+</p></li><li class="listitem"><p>IgnoreCase; Sort case-insensitively.
+</p></li></ul></div></div></div><div class="sect2" title="Static Properties"><div class="titlepage"><div><div><h3 class="title"><a name="p_Static_Properties"></a>Static Properties</h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc" compact><li class="listitem"><p>current : String; The current directory.
+</p></li><li class="listitem"><p>home : String; The home directory.
+</p></li><li class="listitem"><p>root : String; The root directory.
+</p></li><li class="listitem"><p>drives : String[]; An array of strings containing the drive names
+(c:, d:, etc); empty on Unix.
+</p></li></ul></div></div><div class="sect2" title="Static Functions"><div class="titlepage"><div><div><h3 class="title"><a name="p_Static_Functions_0"></a>Static Functions</h3></div></div></div>
+
+Qt uses "/" as a directory separator throughout (although it
+understands the conventions of the platform it is used on). If you
+are working with paths, use "/" within your code, and use
+convertSeparators() when you want to display a path to the user.
+
+<div class="itemizedlist"><ul class="itemizedlist" type="disc" compact><li class="listitem"><p>cleanDirPath( filePath : String ) : String; Removes all multiple
+directory separators "/" and resolves any "."s or ".."s found in the
+path, <code class="code">filePath.</code>
+
+</p></li><li class="listitem"><p>convertSeparators( pathName : String ) : String; Returns 
+pathName with the "/" separators converted to separators that are
+appropriate for the underlying operating system.
+
+</p></li></ul></div></div><div class="sect2" title="Constructor"><div class="titlepage"><div><div><h3 class="title"><a name="p_Constructor_0"></a>Constructor</h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc" compact><li class="listitem"><p>Dir( path : String ); Creates a directory object for path 
+path. If <code class="code">path</code> is empty, the current directory is used.
+
+</p></li></ul></div></div><div class="sect2" title="Properties"><div class="titlepage"><div><div><h3 class="title"><a name="p_Properties_0"></a>Properties</h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc" compact><li class="listitem"><p>name : String; Contains the name of the directory; this is not the
+same as the path, e.g. a directory with the name "mail", might have
+the path "/var/spool/mail"
+
+</p></li><li class="listitem"><p>path : String; Contains the path, this may contain symbolic links,
+but never contains redundant ".", "..", or multiple separators.
+
+</p></li><li class="listitem"><p>absPath : String; Contains the absolute path (a path that starts
+with "/" or with a drive specification), which may contain symbolic
+links, but never contains redundant ".", "..", or multiple separators.
+
+</p></li><li class="listitem"><p>canonicalPath : String; Contains the canonical path, i.e. a path
+without symbolic links or redundant "." or ".." elements.
+
+</p></li><li class="listitem"><p>readable : Boolean; True if the directory is readable; otherwise
+false.
+
+</p></li><li class="listitem"><p>exists : Boolean; True if the directory exists; otherwise false.
+
+</p></li></ul></div></div><div class="sect2" title="Member Functions"><div class="titlepage"><div><div><h3 class="title"><a name="p_Member_Functions_0"></a>Member Functions</h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc" compact><li class="listitem"><p>filePath( fileName : String ) : String; Returns the path name of
+the file <code class="code">fileName</code> in the directory.
+
+</p></li><li class="listitem"><p>absFilePath( fileName : String ) : String; Returns the absolute
+path name of the file <code class="code">fileName</code> in the directory.
+
+</p></li><li class="listitem"><p>cd( dirName : String ); Changes the Dir's directory to <code class="code">dirName</code>
+if possible; otherwise throws an exception.
+ 
+</p></li><li class="listitem"><p>cdUp(); Changes directory by moving one directory up from the
+Dir's current directory if possible; otherwise throws an exception.
+
+</p></li><li class="listitem"><p>entryList( filter : String, filterSpec : Number, sortSpec : Number
+) : String[]; Returns a list of the names of all the files and
+directories in the directory, ordered in accordance with <code class="code">sortSpec</code>
+and filtered in accordance with <code class="code">filterSpec.</code>
+
+</p></li><li class="listitem"><p>mkdir( dirName : String ); Creates the directory <code class="code">dirName</code> if
+possible; otherwise throws an exception.
+
+</p></li><li class="listitem"><p>mkdir(); Creates this directory if possible possible; otherwise
+throws an exception.
+
+</p></li><li class="listitem"><p>mkdirs( dirName : String ); Creates the directory tree <code class="code">dirName</code>
+if possible; otherwise throws an exception.
+
+</p></li><li class="listitem"><p>mkdirs(); Creates this directory tree if possible; otherwise throws
+an exception.
+
+</p></li><li class="listitem"><p>rmdir( dirName : String ); Deletes the directory <code class="code">dirName</code> if
+possible; otherwise throws an exception.
+
+</p></li><li class="listitem"><p>rmdir(); Deletes this directory if possible; otherwise throws an
+exception.
+
+</p></li><li class="listitem"><p>rmdirs( dirName : String ); Deletes the directory structure 
+dirName if possible; otherwise throws an exception.
+
+</p></li><li class="listitem"><p>rmdirs(); Deletes this directory structure if possible; otherwise
+throws an exception.
+
+</p></li><li class="listitem"><p>fileExists( fileName : String ) : Boolean; Returns true if the file
+<code class="code">fileName</code> exists; otherwise returns false.
+
+</p></li><li class="listitem"><p>setCurrent(); Sets the application's current working directory to
+this directory if possible; otherwise throws an exception.
+
+</p></li></ul></div></div></div><div class="sect1" title="Process Class Reference"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="p_Process_Class_Reference"></a>Process Class Reference</h2></div></div></div>
+
+The Process class is used to start external programs and to
+communicate with them. The Process class can start programs
+synchronously using <code class="code">Process.execute(),</code> and asynchronously using
+<code class="code">{new</code> Process(...).start()}.
+
+<div class="sect2" title="Static Properties"><div class="titlepage"><div><div><h3 class="title"><a name="p_Static_Properties_0"></a>Static Properties</h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc" compact><li class="listitem"><p>stdout : String; Contains the data sent to <code class="code">stdout</code> during the
+last call to <code class="code">Process.execute().</code> This property is read-only.
+
+</p></li><li class="listitem"><p>stderr : String; Contains the data sent to <code class="code">stderr</code> during the
+last call to <code class="code">Process.execute().</code> This property is read-only.
+
+</p></li></ul></div></div><div class="sect2" title="Static Functions"><div class="titlepage"><div><div><h3 class="title"><a name="p_Static_Functions_1"></a>Static Functions</h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc" compact><li class="listitem"><p>execute( command : String, stdin : String ); Executes <code class="code">command</code>
+synchronously and passes <code class="code">stdin</code> to its standard input if specified.
+When the program ends its output is accessible through Process.stdout and <code class="code">Process.stderr.</code> <code class="code">command</code> can contain both the
+program and command line arguments, e.g. <code class="code"> "ls -la" </code>. The function
+returns the executed commands return code on exit.
+
+</p></li><li class="listitem"><p>execute( command : String[], stdin : String ); Same as above,
+except that <code class="code">command</code> is an array of strings, where the first item is
+the name of the program and the following items are command line
+arguments. This version is useful if you have arguments that contain
+spaces or other characters that would need to be quoted if you just
+passed a single string command line, since it takes care of the
+quoting for you. Note that if the user passes an array of only one
+element this function behaves like the overload taking a string, thus
+splitting it into "command" and "arguments".
+
+\ executeNoSplit( command : String[], stdin : String ); Same as
+above, except that <code class="code">command</code> is an array of strings, where the first
+item is the name of the program and the following items are command
+line arguments. This version is useful if you have arguments that
+contain spaces or other characters that would need to be quoted if you
+just passed a single string command line, since it takes care of the
+quoting for you. This function never splits the first argument,
+regardless of the number of strings in the command array.
+
+</p></li></ul></div></div><div class="sect2" title="Constructor"><div class="titlepage"><div><div><h3 class="title"><a name="p_Constructor_1"></a>Constructor</h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc" compact><li class="listitem"><p>Process(); Creates a Process object without specifying the program
+or any arguments. This does <span class="emphasis"><em>not</em></span> start a process.
+
+</p></li><li class="listitem"><p>Process( command : String ); Creates a Process object that will
+execute <code class="code">command.</code> This does <span class="emphasis"><em>not</em></span> start the process.
+
+</p></li><li class="listitem"><p>Process( command : String[] ); Same as above, except that 
+command is an array of strings, where the first item is the name of
+the program and the following items are command line arguments. This
+version is useful if you have arguments that contain spaces or other
+characters that would need to be quoted if you just passed a single
+string command line, since it takes care of the quoting for you.
+
+</p></li></ul></div></div><div class="sect2" title="Properties"><div class="titlepage"><div><div><h3 class="title"><a name="p_Properties_1"></a>Properties</h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc" compact><li class="listitem"><p>arguments : String[]; Contains an array of strings where the first
+item is the program to execute and the following items are the
+command line arguments.
+
+</p></li><li class="listitem"><p>workingDirectory : String; Contains the working directory for the process.
+
+</p></li><li class="listitem"><p>running : Boolean; True if the process is currently running;
+otherwise false. This property is read-only.
+
+</p></li><li class="listitem"><p>exitStatus : Number; Contains the exitStatus of the program when it
+has finished. This property is read-only.
+
+</p></li></ul></div></div><div class="sect2" title="Member Functions"><div class="titlepage"><div><div><h3 class="title"><a name="p_Member_Functions_1"></a>Member Functions</h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc" compact><li class="listitem"><p>start( env : String[] ); Tries to run a process for the command and
+arguments that were specified with the <code class="code">argument</code> property or that
+were specified in the constructor. The command is searched for in the
+path for executable programs; you can also use an absolute path in the
+command itself. If <code class="code">env</code> is not specified, the process is
+started with the same environment as the starting process. If <code class="code">env</code> is
+specified, then the values in the <code class="code">env</code> stringlist are interpreted as
+environment setttings of the form <code class="code">VARIABLE=VALUE</code> and the process is
+started with these environment settings. If the program could not be
+started, an exception is thrown.
+
+</p></li><li class="listitem"><p>launch( stdin : String, env : String[] ); Runs the process and
+writes the data <code class="code">stdin</code> to the process's standard input. If all the
+data is written to standard input, standard input is closed. The
+command is searched for in the path for executable programs; you can
+also use an absolute path in the command itself. If <code class="code">env</code> is
+unspecified, the process is started with the same environment as
+the starting process. If <code class="code">env</code> is specified, then the values in the
+string list are interpreted as environment setttings of the form VARIABLE=VALUE and the process is started with these environment
+settings. If the program could not be started, an exception is thrown.
+
+</p></li><li class="listitem"><p>readStdout() : String; Reads what is currently available on the
+process's standard output.
+
+</p></li><li class="listitem"><p>readSterr() : String; Reads what is currently available on the
+process's standard error.
+
+</p></li><li class="listitem"><p>canReadLineStdout() : Boolean; Returns true if a line can be read
+from the process's standard output.
+
+</p></li><li class="listitem"><p>canReadLineStderr() : Boolean; Returns true if a line can be read
+from the process's standard error.
+
+</p></li><li class="listitem"><p>readLineStdout() : String; Reads one line of text from the
+process's standard output if available; otherwise returns an empty
+string.
+
+</p></li><li class="listitem"><p>readLineStderr() : String; Reads one line of text from the
+process's standard error if available; otherwise returns an empty
+string.
+
+</p></li><li class="listitem"><p>tryTerminate(); Asks the process to terminate. Processes can ignore
+this if they wish. If you want to be certain that the process really
+terminates, you can use <code class="code">kill()</code> instead.
+
+</p></li><li class="listitem"><p>kill(); Terminates the process. This is not a safe way to end a
+process since the process will not be able to do any
+cleanup. <code class="code">tryTerminate()</code> is safer, but processes can ignore
+<code class="code">tryTerminate().</code>
+
+</p></li><li class="listitem"><p>writeToStdin( buffer : String ); Writes the data <code class="code">buffer</code> to the
+process's standard input. The process may or may not read this data.
+
+</p></li><li class="listitem"><p>closeStdin(); Closes the process's standard input.
+
+</p></li></ul></div></div></div></div></body></html>

@@ -1,0 +1,14 @@
+#!/bin/bash
+echo "Introducir ruta del fichero?"
+read files
+#FILES="/root/access_log"
+echo
+
+if [ -e "$files" ]
+then
+
+    echo "Salida ordenada de ips del fichero access_log"
+        grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' $files |sort -n |uniq -c
+
+fi
+exit 0

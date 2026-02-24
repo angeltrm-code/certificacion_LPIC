@@ -1,0 +1,132 @@
+
+set pager=1
+
+if [ -s $prefix/grubenv ]; then
+  load_env
+fi
+if [ "${next_entry}" ] ; then
+   set default="${next_entry}"
+   set next_entry=
+   save_env next_entry
+   set boot_once=true
+else
+   set default="${saved_entry}"
+fi
+
+if [ x"${feature_menuentry_id}" = xy ]; then
+  menuentry_id_option="--id"
+else
+  menuentry_id_option=""
+fi
+
+export menuentry_id_option
+
+if [ "${prev_saved_entry}" ]; then
+  set saved_entry="${prev_saved_entry}"
+  save_env saved_entry
+  set prev_saved_entry=
+  save_env prev_saved_entry
+  set boot_once=true
+fi
+
+function savedefault {
+  if [ -z "${boot_once}" ]; then
+    saved_entry="${chosen}"
+    save_env saved_entry
+  fi
+}
+
+function load_video {
+  if [ x$feature_all_video_module = xy ]; then
+    insmod all_video
+  else
+    insmod efi_gop
+    insmod efi_uga
+    insmod ieee1275_fb
+    insmod vbe
+    insmod vga
+    insmod video_bochs
+    insmod video_cirrus
+  fi
+}
+
+terminal_output console
+if [ x$feature_timeout_style = xy ] ; then
+  set timeout_style=menu
+  set timeout=5
+else
+  set timeout=5
+fi
+
+set tuned_params=""
+
+menuentry 'CentOS Linux 7 (Core), with Linux 3.10.0-229.el7.x86_64' --class rhel fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-3.10.0-229.el7.x86_64-advanced-8059588c-f326-49f3-bec8-1a8771599fe2' {
+	load_video
+	set gfxpayload=keep
+	insmod gzio
+	insmod part_msdos
+	insmod xfs
+	set root='hd0,msdos1'
+	if [ x$feature_platform_search_hint = xy ]; then
+	  search --no-floppy --fs-uuid --set=root --hint-bios=hd0,msdos1 --hint-efi=hd0,msdos1 --hint-baremetal=ahci0,msdos1 --hint='hd0,msdos1'  14396714-7a80-43a4-a999-a526dea91090
+	else
+	  search --no-floppy --fs-uuid --set=root 14396714-7a80-43a4-a999-a526dea91090
+	fi
+	linux16 /vmlinuz-3.10.0-229.el7.x86_64 root=/dev/mapper/centos_sercentos7-root ro crashkernel=auto rd.lvm.lv=centos_sercentos7/root rd.lvm.lv=centos_sercentos7/swap net.ifnames=0 rhgb quiet 
+	initrd16 /initramfs-3.10.0-229.el7.x86_64.img
+}
+menuentry 'CentOS Linux 7 (Core), with Linux 0-rescue-f19eec5ee0f84ff7870c0397004aa13c' --class rhel fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-0-rescue-f19eec5ee0f84ff7870c0397004aa13c-advanced-8059588c-f326-49f3-bec8-1a8771599fe2' {
+	load_video
+	insmod gzio
+	insmod part_msdos
+	insmod xfs
+	set root='hd0,msdos1'
+	if [ x$feature_platform_search_hint = xy ]; then
+	  search --no-floppy --fs-uuid --set=root --hint-bios=hd0,msdos1 --hint-efi=hd0,msdos1 --hint-baremetal=ahci0,msdos1 --hint='hd0,msdos1'  14396714-7a80-43a4-a999-a526dea91090
+	else
+	  search --no-floppy --fs-uuid --set=root 14396714-7a80-43a4-a999-a526dea91090
+	fi
+	linux16 /vmlinuz-0-rescue-f19eec5ee0f84ff7870c0397004aa13c root=/dev/mapper/centos_sercentos7-root ro crashkernel=auto rd.lvm.lv=centos_sercentos7/root rd.lvm.lv=centos_sercentos7/swap net.ifnames=0 rhgb quiet 
+	initrd16 /initramfs-0-rescue-f19eec5ee0f84ff7870c0397004aa13c.img
+}
+
+menuentry 'CentOS Linux 7 (Core), with Linux 3.10.0-229.el7.x86_64' --class rhel fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-3.10.0-229.el7.x86_64-advanced-8059588c-f326-49f3-bec8-1a8771599fe2' {
+	load_video
+	set gfxpayload=keep
+	insmod gzio
+	insmod part_msdos
+	insmod xfs
+	set root='hd0,msdos1'
+	if [ x$feature_platform_search_hint = xy ]; then
+	  search --no-floppy --fs-uuid --set=root --hint-bios=hd0,msdos1 --hint-efi=hd0,msdos1 --hint-baremetal=ahci0,msdos1 --hint='hd0,msdos1'  14396714-7a80-43a4-a999-a526dea91090
+	else
+	  search --no-floppy --fs-uuid --set=root 14396714-7a80-43a4-a999-a526dea91090
+	fi
+	linux16 /vmlinuz-3.10.0-229.el7.x86_64 root=/dev/mapper/centos_sercentos7-root ro crashkernel=auto rd.lvm.lv=centos_sercentos7/root rd.lvm.lv=centos_sercentos7/swap net.ifnames=0 rhgb quiet 
+	initrd16 /initramfs-3.10.0-229.el7.x86_64.img
+}
+menuentry 'CentOS Linux 7 (Core), with Linux 0-rescue-f19eec5ee0f84ff7870c0397004aa13c' --class rhel fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-0-rescue-f19eec5ee0f84ff7870c0397004aa13c-advanced-8059588c-f326-49f3-bec8-1a8771599fe2' {
+	load_video
+	insmod gzio
+	insmod part_msdos
+	insmod xfs
+	set root='hd0,msdos1'
+	if [ x$feature_platform_search_hint = xy ]; then
+	  search --no-floppy --fs-uuid --set=root --hint-bios=hd0,msdos1 --hint-efi=hd0,msdos1 --hint-baremetal=ahci0,msdos1 --hint='hd0,msdos1'  14396714-7a80-43a4-a999-a526dea91090
+	else
+	  search --no-floppy --fs-uuid --set=root 14396714-7a80-43a4-a999-a526dea91090
+	fi
+	linux16 /vmlinuz-0-rescue-f19eec5ee0f84ff7870c0397004aa13c root=/dev/mapper/centos_sercentos7-root ro crashkernel=auto rd.lvm.lv=centos_sercentos7/root rd.lvm.lv=centos_sercentos7/swap net.ifnames=0 rhgb quiet 
+	initrd16 /initramfs-0-rescue-f19eec5ee0f84ff7870c0397004aa13c.img
+}
+
+
+
+
+
+
+if [ -f  ${config_directory}/custom.cfg ]; then
+  source ${config_directory}/custom.cfg
+elif [ -z "${config_directory}" -a -f  $prefix/custom.cfg ]; then
+  source $prefix/custom.cfg;
+fi

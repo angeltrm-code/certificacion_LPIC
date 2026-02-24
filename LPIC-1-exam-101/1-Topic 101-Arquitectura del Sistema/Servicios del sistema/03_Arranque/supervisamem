@@ -1,0 +1,43 @@
+#!/bin/bash
+# Esta línea se conoce como "shebang". Indica al sistema operativo que este script debe ser ejecutado con Bash.
+
+# Comentario descriptivo: "Dirty" se refiere a la cantidad de memoria RAM que contiene
+# datos que han sido modificados pero aún no han sido escritos de vuelta al disco.
+# Un valor alto y creciente de "Dirty" puede indicar un cuello de botella de I/O (entrada/salida)
+# o un sistema de almacenamiento lento, ya que el kernel retiene los cambios en RAM
+# antes de "limpiarlos" (escribirlos al disco).
+
+while true
+do
+  # 'while true' crea un bucle infinito. Esto significa que el script se ejecutará
+  # indefinidamente hasta que sea terminado manualmente (ej. con Ctrl+C o un comando 'kill').
+  # Esto es típico para servicios de monitoreo o daemons.
+
+  ahora=$(date "+%H:%M:%S - ")
+  # Captura la hora actual con formato HH:MM:SS y le añade un guion al final.
+  # El comando 'date' se ejecuta, y su salida se asigna a la variable 'ahora'.
+  # El formato "+%H:%M:%S - " personaliza la salida de la fecha y hora.
+
+  echo -n $ahora >> /var/log/supervisamem.log
+  # Escribe el contenido de la variable 'ahora' al archivo de log.
+  #   - 'echo -n': Imprime el contenido sin añadir una nueva línea al final.
+  #                 Esto es importante para que la siguiente información (Dirty)
+  #                 aparezca en la misma línea del log.
+  #   - '>>': Es un operador de redirección que APENDE (añade al final) la salida
+  #           al archivo especificado. Si el archivo no existe, lo crea.
+  #           Usar un solo '>' sobreescribiría el archivo en cada iteración.
+
+  grep Dirty /proc/meminfo >> /var/log/supervisamem.log
+  # Busca la línea que contiene "Dirty" dentro del archivo '/proc/meminfo'.
+  # '/proc/meminfo' es un archivo virtual del sistema Linux que proporciona
+  # información en tiempo real sobre el uso de la memoria.
+  # La salida de 'grep' (que será una línea como "Dirty:           1234 kB")
+  # se apendea al mismo archivo de log, continuando la línea iniciada por 'echo -n'.
+
+  sleep 30
+  # Pausa la ejecución del script por 30 segundos.
+  # Esto controla la frecuencia con la que se recopilan y registran los datos de memoria "Dirty".
+  # Después de 30 segundos, el bucle 'while true' se repite y el proceso comienza de nuevo.
+done
+
+

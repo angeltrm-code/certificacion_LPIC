@@ -1,0 +1,39 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+##Ususario:vagrant
+##Pass: vagrant
+
+##user:root
+##pass:vagrant
+Vagrant.configure("2") do |config|
+  config.vm.define "rockylinux8" do |rockylinux8|
+  #Salvar error de descarga con certificado ssl
+   #config.vm.box_download_insecure = true
+  config.vm.boot_timeout = 1200
+  #config.ssh.insert_key = false
+    rockylinux8.vm.box = "bento/rockylinux-8.9"
+    #rockylinux8.vm.network "forwarded_port", guest: 3000, host: 3002, auto_correct: true
+    rockylinux8.vm.network "private_network", ip: "192.168.33.10"
+	rockylinux8.vm.provision "shell", path: "provision/install_centos8.sh"
+    rockylinux8.vm.hostname = "rockylinux8"
+    
+  end
+
+  config.vm.define "debian" do |debian|
+    debian.vm.box = "bento/debian-12.6"
+	#Salvar error de descarga con certificado ssl
+   #config.vm.box_download_insecure = true
+	#config.ssh.insert_key = false
+	config.vm.boot_timeout = 1200
+	#Salvar error de descarga con certificado ssl
+   #config.vm.box_download_insecure = true
+    #debian.vm.network "forwarded_port", guest: 3000, host: 3001, auto_correct: true
+    debian.vm.network "private_network", ip: "192.168.33.11"
+	debian.vm.provision "shell", path: "provision/install_debian.sh"
+    debian.vm.hostname = "debian"
+	#debian.vm.provision "shell", inline: <<-SHELL
+    # SHELL
+  
+  end
+end

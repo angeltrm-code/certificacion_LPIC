@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<chapter id="p_QSA_Input_Dialog_Framework"><title>QSA Input Dialog Framework</title>
+
+
+The QSA Input Dialog Framework is a set of classes to
+enable the user to create dialogs using Qt Script.
+
+The QSA Input Dialog Framework provides two types of classes. The
+first types are the ones that can be used to build up complex input
+dialogs. These classes include, Dialog, CheckBox, GroupBox, LineEdit,
+TextEdit, etc. These classes each have a set of properties for
+describing how they appear and some of them also provide functions. 
+
+The following is a simple example on how to use the Input Dialog
+Framework to create a dialog that will query the user for their first
+and last name, and echo the values they entered:
+
+<programlisting>var dialog = new Dialog;
+dialog.caption = "Name reading dialog";
+dialog.okButtonText = "Done"
+dialog.cancelButtonText = "Abort";
+
+var first = new LineEdit;
+first.label = "First name: ";
+dialog.add( first );
+
+var last = new LineEdit;
+last.label = "Last name: ";
+dialog.add( last );
+
+if( dialog.exec() ) {
+    var fullName = last.text + ", " + first.text;
+    print( "Full name is: " + fullName );
+}
+</programlisting>
+Below is a list of the classes available from the Input Dialog
+Framework. Each class has a short description and a list of its
+properties and functions.
+
+For String properties the default is an empty string, and for Number
+properties the default is 0, unless stated otherwise.
+
+<sect1 id="p_CheckBox"><title>CheckBox</title>
+
+<mediaobject><imageobject><imagedata fileref="images/qchkbox-w.png" /></imageobject></mediaobject>
+
+The CheckBox widget provides a checkbox with a text label. CheckBox
+is an option button; it can be switched on (checked) or off
+(unchecked).
+
+<sect2 id="p_Properties"><title>Properties</title>
+
+<itemizedlist spacing="compact"><listitem><para>checked : Boolean;
+   This property holds whether the checkbox is checked.
+   The default is unchecked, i.e. false.
+</para></listitem><listitem><para>text : String;
+   This property holds the text shown on the button.
+</para></listitem><listitem><para>tooltip : String;
+   This property holds the tool tip (balloon help) for the widget.
+</para></listitem><listitem><para>whatsThis : String;
+   This property holds a simple description of the widget.
+</para></listitem></itemizedlist>
+</sect2></sect1><sect1 id="p_ComboBox"><title>ComboBox</title>
+
+<mediaobject><imageobject><imagedata fileref="images/qcombo1-w.png" /></imageobject></mediaobject>
+
+The ComboBox widget is a combined button and drop-down list. A
+combobox is a selection widget which displays the current item and can
+drop down a list of items. A combobox may be editable in which case
+the user can enter arbitrary strings.
+
+<sect2 id="p_Properties_0"><title>Properties</title>
+
+<itemizedlist spacing="compact"><listitem><para>currentItem : String;    
+   This property is used in two ways: To specify the default selected
+   item in the combobox; and to get the value the user selected in the
+   combobox when the dialog is closed. The default is the first item
+   in the list.
+</para></listitem><listitem><para>editable : Boolean;
+   This property holds whether the combobox is editable. The default
+   is false.
+</para></listitem><listitem><para>itemList : Array;
+   The list of items in the combobox. 
+</para></listitem><listitem><para>label : String;
+   The label for the combobox.
+</para></listitem><listitem><para>tooltip : String;
+   This property holds the tool tip (balloon help) for the widget.
+</para></listitem><listitem><para>whatsThis : String;
+   This property holds a simple description of the widget.
+</para></listitem></itemizedlist>
+</sect2></sect1><sect1 id="p_DateEdit"><title>DateEdit</title>
+
+<mediaobject><imageobject><imagedata fileref="images/qsdateed.png" /></imageobject></mediaobject>
+
+The DateEdit class provides a date editor. DateEdit allows the user to
+edit dates by using the keyboard or the arrow keys to
+increase/decrease date values. The arrow keys can be used to move from
+section to section within the DateEdit box. Dates appear in accordance
+with the local date/time settings or in year, month, day order if the
+system doesn't provide a local date order.
+
+<sect2 id="p_Properties_1"><title>Properties</title>
+
+<itemizedlist spacing="compact"><listitem><para>date : Date;
+   This property holds the editor's date value. The default is today.
+</para></listitem><listitem><para>label : String;
+   The label for the date.
+</para></listitem><listitem><para>maximum : Date;
+   This property holds the editor's maximum value. The default
+   maximum date is 8000-12-31.
+</para></listitem><listitem><para>minimum : Date;
+   This property holds the editor's minimum value. The default
+   minimum date is 1752-09-14.
+</para></listitem><listitem><para>order : Order;
+   This property holds the order in which the year, month and day
+   appear. The default order is locale dependent.
+</para></listitem><listitem><para>tooltip : String;
+   This property holds the tool tip (balloon help) for the widget.
+</para></listitem><listitem><para>whatsThis : String;
+   This property holds a simple description of the widget.
+</para></listitem></itemizedlist>
+</sect2></sect1><sect1 id="p_Dialog"><title>Dialog</title>
+
+The Dialog class is the base class of dialog windows. A dialog window
+is a top-level window mostly used for short-term tasks and brief
+communications with the user. Dialogs may be modal or modeless.
+
+<sect2 id="p_Properties_2"><title>Properties</title>
+
+<itemizedlist spacing="compact"><listitem><para>caption : String;
+   This property holds the window caption (title). The default is
+   the application's name. 
+</para></listitem><listitem><para>cancelButtonText : String;
+   This property holds the text shown on the cancel button. The default
+   is "Cancel".
+</para></listitem><listitem><para>okButtonText: String; 
+   This property holds the text shown on the ok button. The default
+   is "Ok".
+</para></listitem><listitem><para>width : Number;
+   This property holds the width of the widget excluding any
+   window frame. The default is set by the layout. 
+</para></listitem><listitem><para>tooltip : String;
+   This property holds the tool tip (balloon help) for the widget.
+</para></listitem><listitem><para>whatsThis : String;
+   This property holds a simple description of the widget.
+</para></listitem></itemizedlist>
+</sect2><sect2 id="p_Functions"><title>Functions</title>
+
+<itemizedlist spacing="compact"><listitem><para>add( widget : QSWidget ); 
+   Adds a widget to the dialog. Widgets are placed vertically, from
+   top to bottom.
+</para></listitem><listitem><para>addSpace( space : Number ); 
+   Adds vertical space, measured in pixels between, the previous
+   and next added widget.
+</para></listitem><listitem><para>exec() : Boolean;
+   Executes the dialog. This opens the dialog as a modal dialog,
+   blocking the application until the user presses the OK button or
+   the Cancel button to close the dialog. The function returns <code>true</code>
+   of the user pressed OK; otherwise it returns <code>false</code>.
+</para></listitem><listitem><para>newColumn();
+   Creates a new column in the dialog. All widgets subsequently
+   added to the dialog will be placed (vertically, from top to
+   bottom), in the new column. 
+</para></listitem><listitem><para>newTab( label : String ); 
+   Creates a new tab in the dialog with the given label. All
+   widgets subsequently added to the dialog will be placed in
+   the newly created tab, (vertically, from top to bottom). 
+</para></listitem></itemizedlist>
+</sect2></sect1><sect1 id="p_GroupBox"><title>GroupBox</title>
+
+<mediaobject><imageobject><imagedata fileref="images/qgrpbox-w.png" /></imageobject></mediaobject>
+
+The GroupBox widget provides a group box frame with a title and can
+displays other widgets inside itself.
+
+<sect2 id="p_Properties_3"><title>Properties</title>
+
+<itemizedlist spacing="compact"><listitem><para>title : String; 
+   This property holds the group box's title text.
+</para></listitem><listitem><para>tooltip : String;
+   This property holds the tool tip (balloon help) for the widget.
+</para></listitem><listitem><para>whatsThis : String;
+   This property holds a simple description of the widget.
+</para></listitem></itemizedlist>
+</sect2><sect2 id="p_Functions_0"><title>Functions</title>
+
+<itemizedlist spacing="compact"><listitem><para>add( widget : QSWidget ); 
+   Adds a widget to this groupbox.
+</para></listitem><listitem><para>addSpace( space : Number ); 
+   Adds vertical space, measured in pixels, between the previous
+   and the next widget that is added.
+</para></listitem><listitem><para>newColumn(); 
+   Creates a new column within this groupbox. All widgets
+   that are added subsequently will be placed in the new column.
+</para></listitem><listitem><para>addSpace()
+</para></listitem></itemizedlist>
+</sect2></sect1><sect1 id="p_LineEdit_"><title>LineEdit </title>
+
+<mediaobject><imageobject><imagedata fileref="images/qlined-w.png" /></imageobject></mediaobject>
+
+The QLineEdit widget is a single-line text editor.
+
+<sect2 id="p_Properties_4"><title>Properties</title>
+
+<itemizedlist spacing="compact"><listitem><para>label : String; 
+   The label text for this line edit.
+</para></listitem><listitem><para>text : String;
+   This property holds the line edit's text.
+</para></listitem><listitem><para>tooltip : String; 
+   This property holds the tool tip (balloon help) for the widget.
+</para></listitem><listitem><para>whatsThis : String;
+   This property holds a simple description of the widget.
+</para></listitem></itemizedlist>
+</sect2></sect1><sect1 id="p_NumberEdit"><title>NumberEdit</title>
+
+The NumberEdit class provides range checking of floating-point
+numbers. NumberEdit provides an upper bound, a lower bound and a limit
+on the number of digits after the decimal point.
+
+<sect2 id="p_Properties_5"><title>Properties</title>
+
+<itemizedlist spacing="compact"><listitem><para>decimals : Number;
+   This property holds the number edits's maximum number of
+   digits after the decimal point.
+</para></listitem><listitem><para>label : String;
+   The label text for this number edit.
+</para></listitem><listitem><para>maximum : Number;
+   This property holds the number edit's maximum acceptable value.
+   The default is 2,147,483,647.
+</para></listitem><listitem><para>minimum : Number;
+   This property holds the number edit's minimum acceptable value.
+   The default is -2,147,483,647.
+</para></listitem><listitem><para>value : Number;
+   This property holds the number edit's input value. The default is 0.
+</para></listitem><listitem><para>tooltip : String;
+   This property holds the tool tip (balloon help) for the widget.
+</para></listitem><listitem><para>whatsThis : String; 
+   This property holds a simple description of the widget.
+</para></listitem></itemizedlist>
+</sect2></sect1><sect1 id="p_RadioButton"><title>RadioButton</title>
+
+<mediaobject><imageobject><imagedata fileref="images/qradiobt-w.png" /></imageobject></mediaobject>
+
+The RadioButton widget provides a radio button with a text label.
+RadioButton is an option button; it can be switched on (checked) or
+off (unchecked). Sets of Radio buttons grouped together (for example
+in a GroupBox), are mutually exclusive.
+
+<sect2 id="p_Properties_6"><title>Properties</title>
+
+<itemizedlist spacing="compact"><listitem><para>checked : Boolean;
+   This property holds whether the radio button is checked. The
+   default is unchecked (false).
+</para></listitem><listitem><para>text : String;
+  This property holds the text shown on the button.
+</para></listitem><listitem><para>tooltip : String;
+   This property holds the tool tip (balloon help) for the widget.
+</para></listitem><listitem><para>whatsThis : String;
+   This property holds a simple description of the widget.
+</para></listitem></itemizedlist>
+</sect2></sect1><sect1 id="p_SpinBox"><title>SpinBox</title>
+
+<mediaobject><imageobject><imagedata fileref="images/qspinbox-w.png" /></imageobject></mediaobject>
+
+The SpinBox class provides a spin box widget (spin button). SpinBox
+allows the user to choose an integer value either by clicking the
+up/down buttons to increase/decrease the value currently displayed or
+by typing the value directly into the spin box. If the value is
+entered directly into the spin box, Enter (or Return) must be pressed
+to apply the new value.
+
+<sect2 id="p_Properties_7"><title>Properties</title>
+
+<itemizedlist spacing="compact"><listitem><para>label : String;
+   This property holds the spinbox's label text.
+</para></listitem><listitem><para>maximum : Number;
+   This property holds the maximum value of the spin box. The
+   default maximum value is 2,147,483,647.
+</para></listitem><listitem><para>minimum : Number;
+   This property holds the minimum value of the spin box. The
+   default minimum value is -2,147,483,648.
+</para></listitem><listitem><para>value : Number;
+   This property holds the value of the spin box.
+</para></listitem><listitem><para>tooltip : String;
+   This property holds the tool tip (balloon help) for the widget.
+</para></listitem><listitem><para>whatsThis : String;
+   This property holds a simple description of the widget.
+</para></listitem></itemizedlist>
+</sect2></sect1><sect1 id="p_TextEdit"><title>TextEdit</title>
+
+The QTextEdit widget provides a multi-line text editor.
+
+<sect2 id="p_Properties_8"><title>Properties</title>
+
+<itemizedlist spacing="compact"><listitem><para>text : String; 
+   This property holds the text of the TextEdit.
+</para></listitem><listitem><para>tooltip : String;
+   This property holds the tool tip (balloon help) for the widget.
+</para></listitem><listitem><para>whatsThis : String;
+   This property holds a simple description of the widget.
+</para></listitem></itemizedlist>
+</sect2></sect1><sect1 id="p_TimeEdit"><title>TimeEdit</title>
+
+<mediaobject><imageobject><imagedata fileref="images/qstimeed.png" /></imageobject></mediaobject>
+
+The TimeEdit class provides a time editor. TimeEdit allows the user to
+edit times by using the keyboard or the arrow keys to
+increase/decrease time values. The arrow keys can be used to move from
+section to section within the TimeEdit box.
+
+<sect2 id="p_Properties_9"><title>Properties</title>
+
+<itemizedlist spacing="compact"><listitem><para>label : String;
+   This property holds the time edit's label text.
+</para></listitem><listitem><para>maximum : Time;
+   This property holds the maximum time value.
+</para></listitem><listitem><para>minimum : Time;
+   This property holds the minimum time value.
+</para></listitem><listitem><para>showAMPM : Boolean;
+    If this property is false (the default), the time edit uses the 24
+    hour clock; otherwise the time edit uses the 12 hour clock and
+    displays AM or PM as appropriate.
+</para></listitem><listitem><para>showSeconds : Boolean;
+    If this property is true (the default), the time edit displays
+    seconds; otherwise it does not display seconds.
+</para></listitem><listitem><para>time : Time; 
+   This property holds the editor's time value.
+</para></listitem><listitem><para>tooltip : String;
+   This property holds the tool tip (balloon help) for the widget.
+</para></listitem><listitem><para>whatsThis : String;
+   This property holds a simple description of the widget.
+</para></listitem></itemizedlist>
+</sect2></sect1><sect1 id="p_Convenience_Classes"><title>Convenience Classes</title>
+
+The convenience classes provide static functions to obtain a value
+from the user without using any complex widget hierarchies. Because
+the functions are static they can be called directly without the need
+to create an instance of the class. For example, to get a filename all
+that is necessary is to call <code>FileDialog.getOpenFileName().</code>
+
+</sect1><sect1 id="p_The_MessageBox_class"><title>The MessageBox class</title>
+
+<mediaobject><imageobject><imagedata fileref="images/messageb1.png" /></imageobject></mediaobject>
+
+This class provides a simple way of popping up a message box window
+for the user. The following lines of code present a pop up messagebox
+with a warning and query the user to click Yes or No.
+
+<programlisting>var ans = MessageBox.warning( "Do you wish to save the data?", MessageBox.Yes, MessageBox.No );
+if (ans == MessageBox.Yes) {
+    save();
+}
+</programlisting>
+<sect2 id="p_Button_types"><title>Button types</title>
+
+The button types are used to describe what the text of the buttons
+should be. The following are available.
+
+<itemizedlist spacing="compact"><listitem><para>NoButton; No button is displayed.
+</para></listitem><listitem><para>Ok; Displays an 'OK' button.
+</para></listitem><listitem><para>Cancel; Displays a 'Cancel' button.
+</para></listitem><listitem><para>Yes; Displays a 'Yes' button.
+</para></listitem><listitem><para>No; Displays a 'No' button.
+</para></listitem><listitem><para>Abort; Displays an 'Abort' button.
+</para></listitem><listitem><para>Retry; Displays a 'Retry' button. 
+</para></listitem><listitem><para>Ignore; Displays an 'Ignore' button.
+</para></listitem></itemizedlist>
+</sect2><sect2 id="p_Functions_1"><title>Functions</title>
+
+The following is a list of message box functions. The button1, button2
+and button3 parameters can be any of the Button types described above
+and specify which button types will be shown in the message
+box. Each function returns the button type that the user pressed.
+
+<itemizedlist spacing="compact"><listitem><para>information( label : String, 
+		button1 : ButtonType, 
+		button2 : ButtonType, 
+		button3 : ButtonType, 
+		title : String );
+   Displays an information message box with the content specified in <code>label.</code>
+</para></listitem><listitem><para>warning( label : String,
+	    button1 : ButtonType,
+	    button2 : ButtonType,
+	    button3 : ButtonType,
+	    title : String );
+   Displays a warning message box with the content specified in <code>label.</code>
+</para></listitem><listitem><para>critical( label : String,
+             button1 : ButtonType, 
+	     button2 : ButtonType, 
+   	     button3 : ButtonType,
+             title : String )
+   Displays a critical error message box with the content specified in <code>label.</code>
+</para></listitem></itemizedlist>
+</sect2></sect1><sect1 id="p_The_FileDialog_class"><title>The FileDialog class</title>
+
+<mediaobject><imageobject><imagedata fileref="images/filedialog.png" /></imageobject></mediaobject>
+
+This class provides dialogs that allow users to select files or
+directories. The following function call will open a file dialog
+with that will display files with the extension <code>.txt.</code>
+
+<programlisting>var filename = FileDialog.getOpenFileName( "*.txt" );
+if (filename) {
+    processfile(filename);
+}
+</programlisting>
+<sect2 id="p_Functions_2"><title>Functions</title>
+
+<itemizedlist spacing="compact">
+<listitem><para>getOpenFileName( filter : String, title : String ); 
+   Opens an "Open" dialog. If <code>filter</code> is specified (e.g.
+   "textfiles (*.txt)"), only those files which match the filter are
+   shown. The function returns a string with the selected filename, or
+   <code>undefined</code> if the user canceled.
+
+</para></listitem><listitem><para>getSaveFileName( filter : String, title : String ); 
+   Opens an "Save As" dialog. If <code>filter</code> is specified (e.g.
+   "textfiles (*.txt)"), only those files which match the filter are
+   shown. The function returns a string with the filename selected or
+   entered, or <code>undefined</code> if the user canceled.
+
+</para></listitem><listitem><para>getExistingDirectory( dir : String, title : String ); 
+   Opens a "Find Directory" dialog for the user to select an existing
+   directory. The parameter <code>dir</code> can be used to specify the initial
+   directory. Returns the name of the selected directory or    undefined if the user canceled.
+
+</para></listitem><listitem><para>getOpenFileNames( dir : String, filter : String, title : String );   
+   Opens an "Open" dialog for the user to select and open one or more
+   existing files. If <code>dir</code> is specified it specifies the initial
+   directory. If <code>filter</code> is specified (e.g. "textfiles (*.txt)"),
+   only those files which match the filter are shown. The function
+   returns a list of string string with the selected filenames, or    undefined if the user canceled.
+
+</para></listitem></itemizedlist>
+
+</sect2></sect1><sect1 id="p_The_Input_class"><title>The Input class</title>
+
+<mediaobject><imageobject><imagedata fileref="images/inputtext.png" /></imageobject></mediaobject>
+
+<mediaobject><imageobject><imagedata fileref="images/inputitem.png" /></imageobject></mediaobject>
+
+This class provides convenience functions for getting simple input from
+the user. The following code can be used to open a dialog that queries
+the user for a text:
+
+<programlisting>var name = Input.getText( "What is your surname? " );
+if (name) {
+    processname(name);
+}
+</programlisting>
+<sect2 id="p_Functions_3"><title>Functions</title>
+
+<itemizedlist spacing="compact"><listitem><para>getText( label : String, 
+	    text : String,
+	    title : String );
+   Asks the user for a text. <code>label</code> specifies the descriptive
+   label and <code>text</code> specifies the default text. The function
+   returns the text entred by the user or <code>undefined</code> if the user
+   canceled.
+
+</para></listitem><listitem><para>getNumber( label : String, 
+              value : Number, 
+              decimals : Number,
+              minValue : Number, 
+              maxValue : Number,
+	      title : String );
+   Asks the user for a number. <code>label</code> specifies the descriptive
+   label, <code>value</code> specifies the default value, <code>decimals</code> specifies
+   the number of decimals allowed, <code>minValue</code> specifies the minimum
+   value and <code>maxValue</code> specifies the maximum value. The function
+   returns the value entered by the user or <code>undefined</code> if the user
+   canceled.
+
+</para></listitem><listitem><para>getItem( label : String, 
+            itemList : Array, 
+            current : String, 
+            editable : Boolean,
+	    title : String );
+   Asks the user to select an item from a predefined list of values
+   specified by <code>itemList.</code>
+   The descriptive label is specified with <code>label.</code> <code>current</code>
+   specifies the value that is selected when the dialog starts. If    editable is true, the user is allowed to enter a value that is not
+   in the <code>itemList.</code> The function returns the value selected or
+   entered by the user or <code>undefined</code> if the user canceled.
+</para></listitem></itemizedlist></sect2></sect1></chapter>

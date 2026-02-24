@@ -1,0 +1,107 @@
+.TH pdfedit 1 "" "PDFedit 0.4.5" "PDFedit"
+.SH "NAME"
+pdfedit \- Editor for PDF files
+.SH "SYNOPSIS"
+pdfedit [file(s)] [--help] [--version] [-d (n)] [-console] [-script (filename)] [-run (filename)] [-eval (code)] [-s (filename)] [--]
+.SH "OPTIONS"
+.TP
+.I "\--help"
+Print brief help about commandline options to STDOUT and exit
+.TP
+.I "\--version"
+Print version of editor to STDOUT and exit
+.TP
+.I "\-d (n)"
+Set verbosity of debugging messages reported by editor. Only messages below or equal level specified in parameter will be shown, default is debugging level 1. Also, any of symbolic constants defined below (case insensitive), or starting part of them may be given instead of corresponding number.
+
+.B Explanation of debugging levels
+ 
+.B 0
+.B PANIC
+.B Critical errors
+ 
+.B 1
+.B CRITICAL
+.B Critical errors, but at least the program can exit somewhat gracefully
+ 
+.B 2
+.B ERROR
+.B Usual errors
+ 
+.B 3
+.B WARNING
+.B Comments about some unusual behavior
+ 
+.B 4
+.B INFO
+.B Information about some internal behavior
+ 
+.B 5
+.B DEBUG
+.B Debugging messages
+ 
+Setting this to -1 mean no debug messages will be shown at all, not even the most critical ones. Debugging messages are sent to STDERR.
+.TP
+.I "\-console"
+Run in commandline mode. No editor windows are opened and commandline init script is executed.
+.TP
+.I "\-script (filename)"
+Run script with given filename. Look for the script in script path. If not found, look for the script in current directory.
+.TP
+.I "\-run (filename)"
+Run script with given filename, but unlike
+.B -script
+option, script path is not searched.
+.TP
+.I "\-eval (code)"
+Evaluate given script code
+.TP
+.I "\-s (filename)"
+This is just shortcut for
+.B -console -script (filename)
+.TP
+.I "\--"
+Stop processing options. Any further parameters after this one are treated as filenames. This can be useful if you want to open file, that have name beginning with a dash.
+.SH DESCRIPTION
+ You can specify any number of filenames as parameters on commandline. One window will be opened for each file specified. If no file is specified on commandline, editor will be loaded initially empty. 
+ Name of files can be mixed with options (parameter that begin with a dash). Invalid option on commandline will cause editor to abort with error message. Names of options are case sensitive. 
+ Options which require a parameter can be specified in "short form", like
+.B -d1
+or "long form", like
+.B -d 1
+, both of these mean option
+.B -d
+with parameter
+.B 1
+ Use
+.B -script
+,
+.B -eval
+and
+.B -run
+options to run any script besides the init script. These parameters are run/evaluated in the order they are specified on commandline and may be specified multiple times. If these parameters are specified in GUI mode, they are used in each window opened on program start, in commandline mode (console mode) they are used after commandline init script. After these scripts finish execution, the editor terminates. 
+.SH LOCALIZATION
+ PDF Editor is run in english language by default, but by setting environment variable
+.B LANG
+before launching the program, you can tell PDF Editor to look for specific language file. If the localization you requested is not available, english will be used instead. 
+ Aside default english, these localizations are available:
+ 
+.B cs
+.B  - Czech
+ 
+.B de
+.B  - German
+ 
+.B es
+.B  - Spanish
+ 
+.B ru
+.B  - Russian
+ 
+.B fr
+.B  - French
+ 
+.B zh_TW
+.B  - Chinese (traditional)
+ 
+

@@ -1,0 +1,1311 @@
+<part id="scripts_part">
+ <title>Scripting documentation for PDF Editor</title>
+ &scripts_intro;
+ &scripts_startup;
+ <chapter id="static_common">
+ <title>Static functions common for GUI and command line</title>
+ <sect1 id="createAnnotation">
+ <title><funcsynopsis>Annotation createAnnotation(double[4] rect,string type);
+</funcsynopsis></title>
+ Creates and initializes new annotation of given type. Parameter rect specifies annotation rectangle in default user space units.
+ </sect1>
+ <sect1 id="createArray">
+ <title><funcsynopsis>IProperty createArray()</funcsynopsis></title>
+ Creates and returns new IProperty of type Array - empty array
+ </sect1>
+ <sect1 id="createBool">
+ <title><funcsynopsis>IProperty createBool(bool value)</funcsynopsis></title>
+ Creates and returns new IProperty of type Bool
+ </sect1>
+ <sect1 id="createCompositeOperator">
+ <title><funcsynopsis>PdfOperator createCompositeOperator(string beginText,string endText)</funcsynopsis></title>
+ Creates new composite PDF Operator with specified starting and ending operator text
+ </sect1>
+ <sect1 id="createDict">
+ <title><funcsynopsis>IProperty createDict()</funcsynopsis></title>
+ Creates and returns new IProperty of type Dict - empty dictionary
+ </sect1>
+ <sect1 id="createEmptyOperator">
+ <title><funcsynopsis>PdfOperator createEmptyOperator()</funcsynopsis></title>
+ Creates new empty (NULL) PDF Operator
+ </sect1>
+ <sect1 id="createInt">
+ <title><funcsynopsis>IProperty createInt(int value)</funcsynopsis></title>
+ Creates and returns new IProperty of type Int
+ </sect1>
+ <sect1 id="createIPropertyArray">
+ <title><funcsynopsis>IPropertyArray createIPropertyArray()</funcsynopsis></title>
+ Creates new array of IProperty items. This array can be used for example as operator parameters
+ </sect1>
+ <sect1 id="createName">
+ <title><funcsynopsis>IProperty createName(string value)</funcsynopsis></title>
+ Creates and returns new IProperty of type String
+ </sect1>
+ <sect1 id="createOperator">
+ <title><funcsynopsis>PdfOperator createOperator(string text,IPropertyArray parameters)</funcsynopsis></title>
+ Creates new PDF Operator with specified operator text and parameters
+ </sect1>
+ <sect1 id="createPdfOperatorStack">
+ <title><funcsynopsis>PdfOperatorStack createPdfOperatorStack()</funcsynopsis></title>
+ Create new empty PDF Operator stack
+ </sect1>
+ <sect1 id="createReal">
+ <title><funcsynopsis>IProperty createReal(double value)</funcsynopsis></title>
+ Creates and returns new IProperty of type Real
+ </sect1>
+ <sect1 id="createRef">
+ <title><funcsynopsis>IProperty createRef(int valueNum,int valueGen)</funcsynopsis></title>
+ Creates and returns new IProperty of type Ref. Does not check validity of the values (if the reference target exists, etc ...)
+ </sect1>
+ <sect1 id="createString">
+ <title><funcsynopsis>IProperty createString(string value)</funcsynopsis></title>
+ Creates and returns new IProperty of type String
+ </sect1>
+ <sect1 id="delinearize">
+ <title><funcsynopsis>bool delinearize(string inFile,string outFile)</funcsynopsis></title>
+ Tries to delinearize the PDF, reading from input file and writing delinearized result to output file. Does not check for overwriting output. Returns true if delinearization was successful, false in case of failure. In case of failure the error mesage is available via error() function.
+ </sect1>
+ <sect1 id="error">
+ <title><funcsynopsis>string error()</funcsynopsis></title>
+ Returns last error message (localized) from some operations (openFile, save, saveRevision, saveCopy, delinearize)
+ </sect1>
+ <sect1 id="exists">
+ <title><funcsynopsis>bool exists(string chkFileName)</funcsynopsis></title>
+ Returns true if given file exists on disk, false otherwise
+ </sect1>
+ <sect1 id="flatten">
+ <title><funcsynopsis>bool flatten(string inFile,string outFile)</funcsynopsis></title>
+ Tries to flatten the PDF, reading from input file and writing flattened result to output file. Does not check for overwriting output. Returns true if flattening was successful, false in case of failure. In case of failure the error mesage is available via error() function.
+ </sect1>
+ <sect1 id="functions">
+ <title><funcsynopsis>string[] functions(bool includeSignatures)</funcsynopsis></title>
+ Debugging function usable by script developers. Returns list of all functions that are present in current script interpreter. Functions are sorted alphabetically. If includeSignatures is set, function signatures are returned, otherwise only names
+ </sect1>
+ <sect1 id="loadFile">
+ <title><funcsynopsis>string loadFile(string name)</funcsynopsis></title>
+ Load content of file into string. File is expected to be in utf-8 encoding.
+ </sect1>
+ <sect1 id="loadPdf">
+ <title><funcsynopsis>Pdf loadPdf(string name,bool advancedMode, bool askPassword=true)</funcsynopsis></title>
+ Loads a PDF file without replacing currently opened file in GUI. Scripts can manipulate the PDF file as necessary, but should close it with unloadPdf() method after it don't need to use it anymore. If advancedMode is set to true, document is opened in "advanced mode" (more advanced, but also more dangerous changes to it are possible) If askPassword is set to false, password to document (if the document is encrypted) will not be solicited from user and setPassword method of PDF object have to be called in script with correct password to allow manipulating the encrypted document.
+ </sect1>
+ <sect1 id="objects">
+ <title><funcsynopsis>string[] objects()</funcsynopsis></title>
+ Debugging function usable by script developers. Returns list of all objects that are in current script interpreter
+ </sect1>
+ <sect1 id="pdftoxml">
+ <title><funcsynopsis>string pdftoxml (string inFile, Variant pagenums, string outFile)</funcsynopsis></title>
+ Converts pdf to xml. inFile is name of PDF file to convert, pagenums is array with page numbers to convert, outFile is name of XML file to be created
+ </sect1>
+ <sect1 id="print">
+ <title><funcsynopsis>void print(string str)</funcsynopsis></title>
+ Outputs given string to command window, followed by newline. Useful to output various debugging or status messages
+ </sect1>
+ <sect1 id="rand">
+ <title><funcsynopsis>double rand()</funcsynopsis></title>
+ return floating point pseudorandom value between 0 and 1 inclusive
+ </sect1>
+ <sect1 id="run">
+ <title><funcsynopsis>void run(string scriptName,bool skipScriptPath)</funcsynopsis></title>
+ Loads and runs script from given filename. File is looked for in the script path, unless absolute filename is given or parameter skipScriptPath is specified. If the file is not found in script path, it is searched in current directory.
+ </sect1>
+ <sect1 id="saveFile">
+ <title><funcsynopsis>bool saveFile(string name, string content)</funcsynopsis></title>
+ Save string into file. File will be saved in utf-8 encoding.
+ </sect1>
+ <sect1 id="saveRawFile">
+ <title><funcsynopsis>bool saveRawFile(string name, ByteArray content)</funcsynopsis></title>
+ Save bytes into file. File will be saved verbatim.
+ </sect1>
+ <sect1 id="setDebugLevel">
+ <title><funcsynopsis>void setDebugLevel(string param)</funcsynopsis></title>
+ Sets new debugging verbosity level. Accepts same parameter as -d option on commandline (either number or symbolic constant).
+ </sect1>
+ <sect1 id="time">
+ <title><funcsynopsis>string time(string format)</funcsynopsis></title>
+ Return current date/time using given format string If format string is "ISO", return time in ISO format. If format string is not specified or empty, return in default localized format. Format string may contain following: <informaltable frame="none"> <tgroup cols="2"><tbody> <row><entry>d </entry><entry>day without leading zero</entry></row> <row><entry>dd </entry><entry>day with leading zero</entry></row> <row><entry>ddd </entry><entry>short localized day name</entry></row> <row><entry>dddd </entry><entry>long localized day name</entry></row> <row><entry>M </entry><entry>month without leading zero</entry></row> <row><entry>MM </entry><entry>month with leading zero</entry></row> <row><entry>MMM </entry><entry>short localized month name</entry></row> <row><entry>MMMM </entry><entry>long localized month name</entry></row> <row><entry>yy </entry><entry>two digit year</entry></row> <row><entry>yyyy </entry><entry>four digit year</entry></row> <row><entry>h </entry><entry>hour without leading zero</entry></row> <row><entry>hh </entry><entry>hour with leading zero</entry></row> <row><entry>m </entry><entry>minute without leading zero</entry></row> <row><entry>mm </entry><entry>minute with leading zero</entry></row> <row><entry>s </entry><entry>second without leading zero</entry></row> <row><entry>ss </entry><entry>second with leading zero</entry></row> <row><entry>z </entry><entry>milliseconds without leading zeroes</entry></row> <row><entry>zzz </entry><entry>milliseconds with leading zeroes</entry></row> <row><entry>AP </entry><entry>use AM/PM display. AP will be replaced by either "AM" or "PM".</entry></row> <row><entry>ap </entry><entry>use am/pm display. ap will be replaced by either "am" or "pm".</entry></row> </tbody></tgroup> </informaltable> Anything else is left as is.
+ </sect1>
+ <sect1 id="tick">
+ <title><funcsynopsis>int tick()</funcsynopsis></title>
+ Return "tick counter" in milliseconds, usable to measure time differences
+ </sect1>
+ <sect1 id="transformationMatrixDiv">
+ <title><funcsynopsis>Variant transformationMatrixDiv(Variant oldCTM,Variant newCTM)</funcsynopsis></title>
+ Solve equation oldCTM * requiredCTM = newCTM (find matrix for inverse transformation). Return requiredCTM. NULL is returned if no such matrix exists All transformation matrixes are represented as array of 6 doubles.
+ </sect1>
+ <sect1 id="transformationMatrixMul">
+ <title><funcsynopsis>Variant transformationMatrixMul(Variant ma,Variant mb)</funcsynopsis></title>
+ Multiply vector by transformation matrix (resulting in transformad vector) or transformation matrix by another transformation matrix (joining transformations int single matrix) First parameter (ma) is vector or matrix to multiply. Second parameter (mb) is transformation matrix Transformation matrix is represented by array of 6 float numbers Vector is array of 2 float numbers
+ </sect1>
+ <sect1 id="transformationMatrixMul__2">
+ <title><funcsynopsis>Variant transformationMatrixMul(double a0,double a1,Variant mb)</funcsynopsis></title>
+ Variant of transformationMatrixMul. Multiply vector [a0,a1] by transformation matrix mb and return resulting transformed vector
+ </sect1>
+ <sect1 id="tr">
+ <title><funcsynopsis>string tr(string text,string context)</funcsynopsis></title>
+ Translates given text to current locale. Optional parameter context can specify context of localized text. Returns translated text.
+ </sect1>
+ <sect1 id="treeNeedReload">
+ <title><funcsynopsis>void treeNeedReload()</funcsynopsis></title>
+ You can call this to explicitly request the tree to reload after the script finishes execution.
+ </sect1>
+ <sect1 id="utf8">
+ <title><funcsynopsis>string utf8(string original)</funcsynopsis></title>
+ Return string converted from utf8 encoding to unicode encoding
+ </sect1>
+ <sect1 id="variables">
+ <title><funcsynopsis>string[] variables()</funcsynopsis></title>
+ Debugging function usable by script developers. Returns sorted list of all variables that are in current script interpreter.
+ </sect1>
+ <sect1 id="version">
+ <title><funcsynopsis>string version()</funcsynopsis></title>
+ Returns version of editor. String is in format 'major.minor.release' for ordinary releases or 'major.minor.relase-suffix' for "special" versions, like cvs checkouts (suffix CVS appended) or versions from branches, which would have branch tag added)
+ </sect1>
+ </chapter>
+ <chapter id="static_gui">
+ <title>Static functions in GUI</title>
+ <sect1 id="processEvents">
+ <title><funcsynopsis>void processEvents()</funcsynopsis></title>
+ Allow application to process its events, so the gui can redraw itself. Useful, it it is called periodically while doing some lenthy operation
+ </sect1>
+ <sect1 id="askPassword">
+ <title><funcsynopsis>string askPassword(string title)</funcsynopsis></title>
+ Shows dialog that will ask user for password. Parameter title specifies title of the dialog. If not specified, some default like "Enter password" is used. Return entered password or null if dialog is cancelled
+ </sect1>
+ <sect1 id="setItemText">
+ <title><funcsynopsis>void setItemText(string name,string newText)</funcsynopsis></title>
+ Set text of all menu and toolbar items with given name to specified string. The string will be transtated according to the translation file, so it is suggested to supply english text and add corresponding localized translation into the localization file.
+ </sect1>
+ <sect1 id="getItemText">
+ <title><funcsynopsis>string getItemText(string name)</funcsynopsis></title>
+ Get text of menu or toolbar item with given name. Returns untranslated (english) string, even when the application is run using another language translation. When setting back the same string, it will be re-translated according to translation file, if different GUI language is selected
+ </sect1>
+ <sect1 id="about">
+ <title><funcsynopsis>void about()</funcsynopsis></title>
+ Invokes "About" dialog, showing information about this program and its authors
+ </sect1>
+ <sect1 id="addAnnotation">
+ <title><funcsynopsis>void addAnnotation(Page page,double x1,double y1,double w,double h)</funcsynopsis></title>
+ Creates dialog for annotations creation. Parameter page is page in which the annotation will be added (x1,y1) are coordinated of lower left point of annotation rectangle. W is the rectangle widht and h is its height Returns after annotation have been inserted into page, or dialog have been cancelled
+ </sect1>
+ <sect1 id="addObjectDialog">
+ <title><funcsynopsis>void addObjectDialog(IProperty container)</funcsynopsis></title>
+ Invokes dialog for adding additional objects to specified container (which must be <link linkend="type_Dict">Dictionary</link> or <link linkend="type_Array">Array</link>). After invoking dialog, this function returns immediately and the dialog is left for the user to use. If given object is not specified, curently selected object in property editor is used. If the object is not <link linkend="type_Dict">Dictionary</link> or <link linkend="type_Array">Array</link>, no dialog is shown.
+ </sect1>
+ <sect1 id="checkItem">
+ <title><funcsynopsis>void checkItem(string name,bool check)</funcsynopsis></title>
+ Check (second parameter is true) or uncheck (false) item in toolbar and/or menu, given its name If you prefix name with slash ("/"), you will affect "class" of items - every item that belong to the specified class <note> Toolbuttons will automatically convert to Togglable toolbuttons this way and will start togling itself automatically on each succesive click </note>
+ </sect1>
+ <sect1 id="clearConsole">
+ <title><funcsynopsis>void clearConsole()</funcsynopsis></title>
+ Clear the console output window
+ </sect1>
+ <sect1 id="closeAll">
+ <title><funcsynopsis>void closeAll()</funcsynopsis></title>
+ Closes all windows (and thus ends application)
+ </sect1>
+ <sect1 id="closeFile">
+ <title><funcsynopsis>bool closeFile(bool askSave,bool onlyAsk)</funcsynopsis></title>
+ Closes file opened in this editor window. if askSave is true, user is asked to save the file if it is modified. if onlyAsk is true, file is not actually closed, only user is asked if he want to save work (if not specified, defaults to false). returns true in case of success, or false if user decide not to close current document and keep it open.
+ </sect1>
+ <sect1 id="createMenuItem">
+ <title><funcsynopsis>void createMenuItem(string parentName,string name,string caption,string action,string accel,string icon,string[] classes=QStringList())</funcsynopsis></title>
+ Load one menu or toolbar item and insert it into parent menu or toolbar. If the name is "" or "-", separator is inserted on place of the item and rest of parameters are ignored. If inserting item into toolbar and the name will match one of the special items, the special item will be inserted in toolbar and rest of the parameters are ignored. Items that are loaded from settings have theyir name equal to the key in setting they are stored under. <informaltable frame="none"> <tgroup cols="2"><tbody> <row><entry>parentName</entry><entry>Name of parent menu/toolbar. If NULL/empty, main menubar is the parent</entry></row> <row><entry>name	</entry><entry> Name of the item. Must be unique.</entry></row> <row><entry>caption	</entry><entry> Caption of item</entry></row> <row><entry>action	</entry><entry> Script to execute when the item is selected</entry></row> <row><entry>accel	</entry><entry> Keyboard accelerator</entry></row> <row><entry>icon	</entry><entry> Name of icon to use</entry></row> <row><entry>classes	</entry><entry> List of item classes</entry></row> </tbody></tgroup> </informaltable>
+ </sect1>
+ <sect1 id="createNewWindow">
+ <title><funcsynopsis>void createNewWindow()</funcsynopsis></title>
+ Creates new editor window with empty document in it.
+ </sect1>
+ <sect1 id="enableItem">
+ <title><funcsynopsis>void enableItem(string name,bool enable)</funcsynopsis></title>
+ Enable (second parameter is true) or disable (false) item in toolbar and/or menu, given its name If you prefix name with slash ("/"), you will enable or disable "class" of items - every item that belong to the specified class
+ </sect1>
+ <sect1 id="filename">
+ <title><funcsynopsis>string filename()</funcsynopsis></title>
+ Return name of file loaded in editor window. If the file does not exist on disk (not loaded any file, or file was never saved, having no name), empty string is returned.
+ </sect1>
+ <sect1 id="fileOpenDialog">
+ <title><funcsynopsis>string fileOpenDialog()</funcsynopsis></title>
+ Invokes "open file" dialog and return selected filename, or NULL if dialog was cancelled
+ </sect1>
+ <sect1 id="fileSaveDialog">
+ <title><funcsynopsis>string fileSaveDialog(string oldName)</funcsynopsis></title>
+ Invokes "save file" dialog and return selected filename, or NULL if dialog was cancelled. If file selected in dialog already exists, user is asked to confirm overwriting before returing its name.
+ </sect1>
+ <sect1 id="fileSaveDialogDiffer">
+ <title><funcsynopsis>string fileSaveDialogDiffer(string origName)</funcsynopsis></title>
+ Show "save file" dialog and return file selected, or NULL if dialog was cancelled. If file selected in dialog already exists, user is asked to confirm overwriting before returing its name. Name must be different than origName.
+ </sect1>
+ <sect1 id="fileSaveDialogXml">
+ <title><funcsynopsis>string fileSaveDialogXml(string oldName)</funcsynopsis></title>
+ Invokes "save file" dialog for XML file and return selected filename, or NULL if dialog was cancelled. If file selected in dialog already exists, user is asked to confirm overwriting before returing its name.
+ </sect1>
+ <sect1 id="getColor">
+ <title><funcsynopsis>Color getColor(string colorName);
+</funcsynopsis></title>
+ Get color from color picker with given name. Returns false if the color picker does not exist.
+ </sect1>
+ <sect1 id="getEditText">
+ <title><funcsynopsis>string getEditText(string textName)</funcsynopsis></title>
+ Get text from editbox or text selection box in toolbar with given name. Returns false if the box does not exist.
+ </sect1>
+ <sect1 id="getNumber">
+ <title><funcsynopsis>double getNumber(string name)</funcsynopsis></title>
+ Get number from number editbox in toolbar with given name. Returns 0 if the number editbox does not exist.
+ </sect1>
+ <sect1 id="help">
+ <title><funcsynopsis>void help(string topic)</funcsynopsis></title>
+ Invokes program help. Optional parameter is topic - if invalid or not defined, help title page will be invoked
+ </sect1>
+ <sect1 id="isVisible">
+ <title><funcsynopsis>bool isVisible(string widgetName)</funcsynopsis></title>
+ Check if part of the window is visible (returns true) or hidden (returns false) widgetName specifies which part: <informaltable frame="none"> <tgroup cols="2"><tbody> <row><entry>commandline	</entry><entry>Command line</entry></row> <row><entry>rightside	</entry><entry>Right side tools (Tree Window and property editor)</entry></row> <row><entry>propertyeditor	</entry><entry>Property editor</entry></row> <row><entry>tree		</entry><entry>Tree window</entry></row> <row><entry>statusbar	</entry><entry>Statusbar</entry></row> </tbody></tgroup> </informaltable>
+ </sect1>
+ <sect1 id="message">
+ <title><funcsynopsis>void message(string msg)</funcsynopsis></title>
+ Show simple messagebox with specified message and wait until user dismiss it
+ </sect1>
+ <sect1 id="mergeDialog">
+ <title><funcsynopsis>Variant mergeDialog()</funcsynopsis></title>
+ Bring up "merge pages from another PDF in this document" dialog. Returns result of merge or NULL if dialog was cancelled Result is array of three elements: <itemizedlist> <listitem><para>First element is array with page numbers</para></listitem> <listitem><para>Second element is array with page positions</para></listitem> <listitem><para>Third is filename of the document to be merged in</para></listitem> </itemizedlist>
+ </sect1>
+ <sect1 id="selectPagesDialog">
+ <title><funcsynopsis>Variant selectPagesDialog (string filename) const</funcsynopsis></title>
+ Bring up "select pages" dialog. Returns result of selection or NULL if dialog was cancelled. Result is array of three elements: <itemizedlist> <listitem><para>First element is array with page numbers</para></listitem> <listitem><para>Third is filename of the document to be merged in</para></listitem> </itemizedlist>
+ </sect1>
+ <sect1 id="modified">
+ <title><funcsynopsis>bool modified()</funcsynopsis></title>
+ Return true if the document was modified since it was opened or last saved, false otherwise.
+ </sect1>
+ <sect1 id="openFile">
+ <title><funcsynopsis>bool openFile(string name, bool askPassword=true)</funcsynopsis></title>
+ Opens file with given name in this editor window. Opens without any questions, does not ask user to save changes to current file, etc ... If askPassword is true (default), user is asked for password to the document and loading fails if user does not enter correct password. If askPassword is false, script have to handle entering the correct password and possible closing of the document on failure by itself. Return true on success, false on failure to load file.
+ </sect1>
+ <sect1 id="openFileNew">
+ <title><funcsynopsis>void openFileNew(string name)</funcsynopsis></title>
+ Opens file with given name in new editor window
+ </sect1>
+ <sect1 id="options">
+ <title><funcsynopsis>void options()</funcsynopsis></title>
+ Invokes options dialog. Does not wait for dialog to be closed by user and return immediately.
+ </sect1>
+ <sect1 id="page">
+ <title><funcsynopsis>Page page()</funcsynopsis></title>
+ Return currently shown page
+ </sect1>
+ <sect1 id="pageNumber">
+ <title><funcsynopsis>int pageNumber()</funcsynopsis></title>
+ Return page number of currently shown page
+ </sect1>
+ <sect1 id="pickColor">
+ <title><funcsynopsis>Color pickColor();
+</funcsynopsis></title>
+ Invoke dialog to select color and return the color that user have picked, or false if user cancelled the dialog.
+ </sect1>
+ <sect1 id="popupMenu">
+ <title><funcsynopsis>Menu popupMenu(string menuName)</funcsynopsis></title>
+ Create and return a <link linkend="type_Menu">Menu</link> object. The menuName parameter specifies name of item or list from configuration, that will be used to initially fill the menu with items. If this parameter is not specified or invalid, the menu will be initially empty. See documentation for <link linkend="type_Menu">Menu</link> object type for more info about using popup menus.
+ </sect1>
+ <sect1 id="question">
+ <title><funcsynopsis>bool question(string msg)</funcsynopsis></title>
+ Show Yes/No question and wait for answer. Return true if user selected "yes", or false if user selected "no"
+ </sect1>
+ <sect1 id="question_ync">
+ <title><funcsynopsis>int question_ync(string msg)</funcsynopsis></title>
+ Show Yes/No/Cancel question and wait for answer. Return 1 if user selected "yes", 0 if user selected "no", -1 if user cancelled dialog (selecting Cancel)
+ </sect1>
+ <sect1 id="restoreWindowState">
+ <title><funcsynopsis>void restoreWindowState()</funcsynopsis></title>
+ Restore state of current editor window (size and position of window and elements inside it) State is restored from state saved in editor's configuration file.
+ </sect1>
+ <sect1 id="save">
+ <title><funcsynopsis>bool save()</funcsynopsis></title>
+ Save currently edited document. If current document have no name, user will be asked for name. If it is not possible to ask user or user presses cancel in file chooser, document is not saved. Return true if document was saved, false if it was not saved for any reason (file write error, user refused to give filename on new file ...)
+ </sect1>
+ <sect1 id="saveCopy">
+ <title><funcsynopsis>bool saveCopy(string name)</funcsynopsis></title>
+ Save currently edited document (with currently active revision) under different name. Return true if document was saved, false if it failed to save for any reason
+ </sect1>
+ <sect1 id="saveRevision">
+ <title><funcsynopsis>bool saveRevision()</funcsynopsis></title>
+ Save currently edited document, while creating new revision in the process. Return true if document was saved, false if it was not saved for any reason.
+ </sect1>
+ <sect1 id="saveWindowState">
+ <title><funcsynopsis>void saveWindowState()</funcsynopsis></title>
+ Save state of current editor window (size and position of window and elements inside it) State is saved to editor's configuration file.
+ </sect1>
+ <sect1 id="setColor">
+ <title><funcsynopsis>void setColor(string colorName,Variant newColor)</funcsynopsis></title>
+ Set color of color picker with given name
+ </sect1>
+ <sect1 id="setEditText">
+ <title><funcsynopsis>void setEditText(string textName,string newText)</funcsynopsis></title>
+ Set text in toolbar editbox with given name or set selection in text selection box. If you specify string that is not one of the items in the selection box, the current item will remain selected.
+ </sect1>
+ <sect1 id="setNumber">
+ <title><funcsynopsis>void setNumber(string name,double number)</funcsynopsis></title>
+ Set number in toolbar number editbox with given name
+ </sect1>
+ <sect1 id="setPredefs">
+ <title><funcsynopsis>void setPredefs(string name,string predefs)</funcsynopsis></title>
+ Set list of predefined values for number edit box or select text box with given name. The values in the list must be separated by commas. For number edit box, the user is still able to type in any value not in the list.
+ </sect1>
+ <sect1 id="setTooltip">
+ <title><funcsynopsis>void setTooltip(string name,string tip)</funcsynopsis></title>
+ Set tooltip text for specified number edit box or select text box with given name. Tooltip text will be shown when hovering with mouse over the tool.
+ </sect1>
+ <sect1 id="setPredefs__2">
+ <title><funcsynopsis>void setPredefs(string name,string[] predefs)</funcsynopsis></title>
+ Set list of predefined values for number edit box or select text box with given name. For number edit box, the user is still able to type in any value not in the list.
+ </sect1>
+ <sect1 id="setRevision">
+ <title><funcsynopsis>void setRevision(int revision)</funcsynopsis></title>
+ Change active revision in current PDF document
+ </sect1>
+ <sect1 id="setVisible">
+ <title><funcsynopsis>void setVisible(string widgetName, bool visible)</funcsynopsis></title>
+ Set part of the window to be either visible or invisible, widgetName specifies which part, see isVisible for list of possible names.
+ </sect1>
+ <sect1 id="showItem">
+ <title><funcsynopsis>void showItem(string name,bool show)</funcsynopsis></title>
+ Show (second parameter is true) or hide (false) item in toolbar, given its name If you prefix name with slash ("/"), you will affect "class" of items - every item that belong to the specified class
+ </sect1>
+ <sect1 id="treeRoot">
+ <title><funcsynopsis>TreeItem treeRoot()</funcsynopsis></title>
+ Return root item of currently selected tree
+ </sect1>
+ <sect1 id="treeRootMain">
+ <title><funcsynopsis>TreeItem treeRootMain()</funcsynopsis></title>
+ Return root item of main tree
+ </sect1>
+ <sect1 id="warn">
+ <title><funcsynopsis>void warn(string str)</funcsynopsis></title>
+ Outputs given warning string to command window, followed by newline, and show this string in a messagebox to alert user.
+ </sect1>
+ <sect1 id="firstSelectedItem">
+ <title><funcsynopsis>TreeItem firstSelectedItem(string name)</funcsynopsis></title>
+ Return first selected tree item. Set internal selected item pointer to first selected item For getting other selected tree items (in case more than one is selected, repeat calling nextSelectedItem() until NULL is returned (no more items) <example id="getting_through_list_of_selected_tree_items"> <title>Getting through list of selected tree items</title> <programlisting> treeItem=firstSelectedItem();
+ while (treeItem) {
+ &nbsp;doSomething(treeItem);
+ &nbsp;treeItem=nextSelectedItem();
+ } </programlisting> </example> You can optionally specify different tree as parameter (by default, selected items from currently shown tree are taken) Specify "main" for main tree, "select" for selected operators or use number to specify number for Nth tree (indexed from zero). Omitting the parameter or specifying "current" will use currently shown tree If specified tree does not exist or its name is invalid, NULL is returned
+ </sect1>
+ <sect1 id="nextSelectedItem">
+ <title><funcsynopsis>TreeItem nextSelectedItem()</funcsynopsis></title>
+ Return next selected tree item. Move internal selected item pointer to next selected item (or invalidate it if no more selected items is found)
+ </sect1>
+ <sect1 id="firstSelected">
+ <title><funcsynopsis>CObject firstSelected(string name)</funcsynopsis></title>
+ Return object held in first selected tree item. Set internal selected item pointer to first selected item For getting other selected tree items (in case more than one is selected, repeat calling nextSelected() until NULL is returned (no more items) <example id="getting_through_list_of_selected_items"> <title>Getting through list of selected items</title> <programlisting> treeObject=firstSelected();
+ while (treeObject) {
+ &nbsp;doSomething(treeObject);
+ &nbsp;treeObject=nextSelected();
+ } </programlisting> </example> You can optionally specify different tree as parameter (by default, selected items from currently shown tree are taken) Specify "main" for main tree, "select" for selected operators or use number to specify number for Nth tree (indexed from zero). Omitting the parameter or specifying "current" will use currently shown tree If specified tree does not exist or its name is invalid, NULL is returned
+ </sect1>
+ <sect1 id="nextSelected">
+ <title><funcsynopsis>CObject nextSelected()</funcsynopsis></title>
+ Return object held in next selected tree item. Move internal selected item pointer to next selected item (or invalidate it if no more selected items is found)
+ </sect1>
+ <sect1 id="Returns progress bar which can be used to provide visualization of progress. Uses common progress bar from PdfEditWindow class. User should keep in mind, that also someone alse can use this progress bar in same time and he should set total steps before each setProgress method.">
+ <title><funcsynopsis>QProgressBar * progressBar()</funcsynopsis></title>
+ Returns progress bar which can be used to provide visualization of progress. Uses common progress bar from PdfEditWindow class. User should keep in mind, that also someone alse can use this progress bar in same time and he should set total steps before each setProgress method.
+ </sect1>
+ </chapter>
+ <chapter id="static_cmdline">
+ <title>Static functions in command line</title>
+ <sect1 id="exit">
+ <title><funcsynopsis>void exit(int returnCode=0)</funcsynopsis></title>
+ Terminate the application. You can specify return code of application in parameter
+ </sect1>
+ <sect1 id="parameters">
+ <title><funcsynopsis>string[] parameters()</funcsynopsis></title>
+ Return list of commandline parameters (excluding any possible switches processed by pdfeditor itself)
+ </sect1>
+ <sect1 id="takeParameter">
+ <title><funcsynopsis>string takeParameter()</funcsynopsis></title>
+ Return first parameter from list of parameters and remove it from the list. Other parameters are shifted to take the empty space. If there is no parameter to take, NULL is returned
+ </sect1>
+ </chapter>
+ &scripts_callbacks;
+ &scripts_objects;
+ <chapter id="object_types_common">
+ <title>Object types (common and PDF objects)</title>
+ <sect1 id="type_Annotation">
+ <title>Annotation</title>
+ <para>
+ Ancestor type: <link linkend="type_CObject">CObject</link>
+ </para>
+ <para>
+ This type represent one annotation in page
+ </para>
+ <sect2 id="Annotation.getDictionary">
+ <title><funcsynopsis>Dict getDictionary()</funcsynopsis></title>
+ Returns anotation dictionary
+ </sect2>
+ <sect2 id="Annotation.getPage">
+ <title><funcsynopsis>Page getPage()</funcsynopsis></title>
+ Returns page in which this annotation is, or NULL, if it is not in any page
+ </sect2>
+ <sect2 id="Annotation.remove">
+ <title><funcsynopsis>bool remove()</funcsynopsis></title>
+ Remove this annotation from its page, if it is in a page. Returns true if it was removed.
+ </sect2>
+ <sect2 id="Annotation.getType">
+ <title><funcsynopsis>string getType()</funcsynopsis></title>
+ Return type identifier of annotation
+ </sect2>
+ <sect2 id="Annotation.getTypeName">
+ <title><funcsynopsis>string getTypeName()</funcsynopsis></title>
+ Return human-readable, localized type identifier of annotation
+ </sect2>
+ </sect1>
+ <sect1 id="type_Array">
+ <title>Array</title>
+ <para>
+ Ancestor type: <link linkend="type_IProperty">IProperty</link>
+ </para>
+ <para>
+ This type represents an array in PDF document. It hold zero or more values indexed by positive integer, starting from zero. Values can be of any type, either simple types (int, bool, float, string) or complex types (Dict, Array)
+ </para>
+ <sect2 id="Array.add">
+ <title><funcsynopsis>void add(int index,IProperty ip)</funcsynopsis></title>
+ Insert element at given index in array
+ </sect2>
+ <sect2 id="Array.add__2">
+ <title><funcsynopsis>void add(int index,string ip)</funcsynopsis></title>
+ Insert String element at given index in array
+ </sect2>
+ <sect2 id="Array.add__3">
+ <title><funcsynopsis>void add(int index,int ip)</funcsynopsis></title>
+ Insert Int element at given index in array
+ </sect2>
+ <sect2 id="Array.add__4">
+ <title><funcsynopsis>void add(IProperty ip)</funcsynopsis></title>
+ Append element at end of array
+ </sect2>
+ <sect2 id="Array.add__5">
+ <title><funcsynopsis>void add(string ip)</funcsynopsis></title>
+ Append String element at end of array
+ </sect2>
+ <sect2 id="Array.add__6">
+ <title><funcsynopsis>void add(int ip)</funcsynopsis></title>
+ Append Int element at end of array
+ </sect2>
+ <sect2 id="Array.child">
+ <title><funcsynopsis>CObject child(string name)</funcsynopsis></title>
+ Get Dict/Array property recursively Will take the name as slash-separated list of childs to traverse to get to target property, going through Dicts and Arrays. Any references on the way are automatically dereferenced
+ </sect2>
+ <sect2 id="Array.count">
+ <title><funcsynopsis>int count()</funcsynopsis></title>
+ Return size of this array (number of elements)
+ </sect2>
+ <sect2 id="Array.delProperty">
+ <title><funcsynopsis>void delProperty(int index)</funcsynopsis></title>
+ Delete element with given index from this array. Elements with higher index (if any) are shifted to occupy the space
+ </sect2>
+ <sect2 id="Array.getText">
+ <title><funcsynopsis>string getText()</funcsynopsis></title>
+ Return string representation of this array
+ </sect2>
+ <sect2 id="Array.property">
+ <title><funcsynopsis>CObject property(int index)</funcsynopsis></title>
+ Get element with given index from this array
+ </sect2>
+ </sect1>
+ <sect1 id="type_CObject">
+ <title>CObject</title>
+ <para>
+ Base class for all PDF objects used in scripts
+ </para>
+ <sect2 id="CObject.type">
+ <title><funcsynopsis>string type()</funcsynopsis></title>
+ return name of this object's type
+ </sect2>
+ </sect1>
+ <sect1 id="type_ContentStream">
+ <title>ContentStream</title>
+ <para>
+ Ancestor type: <link linkend="type_CObject">CObject</link>
+ </para>
+ <para>
+ This type of object represents content stream in document (in page)
+ </para>
+ <sect2 id="ContentStream.equals">
+ <title><funcsynopsis>bool equals(QObject* otherObject)</funcsynopsis></title>
+ Return true, if this object is equal to specified object (i.e. if they internally point to the same item) Reference is compared, not the value of objects
+ </sect2>
+ <sect2 id="ContentStream.deleteOperator">
+ <title><funcsynopsis>void deleteOperator(PdfOperator op,bool indicateChange=true)</funcsynopsis></title>
+ Delete specified operator from this content stream. If parameter indicateChange is true (which is default), changes are immediately written to underlying stream.
+ </sect2>
+ <sect2 id="ContentStream.getText">
+ <title><funcsynopsis>string getText()</funcsynopsis></title>
+ Return text representation of this content stream
+ </sect2>
+ <sect2 id="ContentStream.insertOperator">
+ <title><funcsynopsis>void insertOperator(PdfOperator op,PdfOperator newOp,bool indicateChange=true)</funcsynopsis></title>
+ Insert specified operator newOp in this content stream, after operator op. If parameter indicateChange is true (which is default), changes are immediately written to underlying stream.
+ </sect2>
+ <sect2 id="ContentStream.replace">
+ <title><funcsynopsis>void replace(PdfOperator oldOp,PdfOperator newOp,bool indicateChange=true)</funcsynopsis></title>
+ Replace old operator oldOp with new operator newOp in this stream. If parameter indicateChange is true (which is default), changes are immediately written to underlying stream.
+ </sect2>
+ <sect2 id="ContentStream.saveChange">
+ <title><funcsynopsis>void saveChange()</funcsynopsis></title>
+ Write any unwritten changes to operators to underlying stream.
+ </sect2>
+ <sect2 id="ContentStream.getFirstOperator">
+ <title><funcsynopsis>PdfOperator getFirstOperator()</funcsynopsis></title>
+ Return first operator in this contentstream. If not contains any operator, return NULL.
+ </sect2>
+ <sect2 id="ContentStream.getLastOperator">
+ <title><funcsynopsis>PdfOperator getLastOperator()</funcsynopsis></title>
+ Return last operator in this contentstream. If not contains any operator, return NULL.
+ </sect2>
+ <sect2 id="ContentStream.isEmpty">
+ <title><funcsynopsis>bool isEmpty()</funcsynopsis></title>
+ Check if contentstream contains some operator.
+ </sect2>
+ </sect1>
+ <sect1 id="type_Dict">
+ <title>Dict</title>
+ <para>
+ Ancestor type: <link linkend="type_IProperty">IProperty</link>
+ </para>
+ <para>
+ This type represents a dictionary in PDF document. It hold keys (String) and values. Each key is corresponding to one value. Keys are strings, values can be of any type, either simple types (int, bool, float, string) or complex types (Dict, Array)
+ </para>
+ <sect2 id="Dict.add">
+ <title><funcsynopsis>void add(string name,IProperty ip)</funcsynopsis></title>
+ Add property with given name to this dictionary
+ </sect2>
+ <sect2 id="Dict.add__2">
+ <title><funcsynopsis>void add(string name,string ip)</funcsynopsis></title>
+ Add string property with given name to this dictionary
+ </sect2>
+ <sect2 id="Dict.add__3">
+ <title><funcsynopsis>void add(string name,int ip)</funcsynopsis></title>
+ Add integer property with given name to this dictionary
+ </sect2>
+ <sect2 id="Dict.child">
+ <title><funcsynopsis>CObject child(string name)</funcsynopsis></title>
+ Get Dict/Array property recursively Will take the name as slash-separated list of childs to traverse to get to target property, going through Dicts and Arrays. Any references on the way are automatically dereferenced
+ </sect2>
+ <sect2 id="Dict.count">
+ <title><funcsynopsis>int count()</funcsynopsis></title>
+ Return number of properties held in this dictionary
+ </sect2>
+ <sect2 id="Dict.delProperty">
+ <title><funcsynopsis>void delProperty(string name)</funcsynopsis></title>
+ Delete property with given name from this dictionary
+ </sect2>
+ <sect2 id="Dict.exist">
+ <title><funcsynopsis>bool exist(string name)</funcsynopsis></title>
+ Check for existence of property with given name in this dictionary. If it exists, returns true
+ </sect2>
+ <sect2 id="Dict.getText">
+ <title><funcsynopsis>string getText()</funcsynopsis></title>
+ Return string representation of this dictionary
+ </sect2>
+ <sect2 id="Dict.property">
+ <title><funcsynopsis>CObject property(string name)</funcsynopsis></title>
+ Get property with given name from this dictionary
+ </sect2>
+ <sect2 id="Dict.propertyDef">
+ <title><funcsynopsis>CObject propertyDef(string name,int defValue)</funcsynopsis></title>
+ Get property with given name from this dictionary. If the property does not exist, add it to the dictionary with given defValue (as Int) and return it
+ </sect2>
+ <sect2 id="Dict.propertyDef__2">
+ <title><funcsynopsis>CObject propertyDef(string name,string defValue)</funcsynopsis></title>
+ Get property with given name from this dictionary. If the property does not exist, add it to the dictionary with given defValue (as String) and return it
+ </sect2>
+ <sect2 id="Dict.propertyNames">
+ <title><funcsynopsis>string[] propertyNames()</funcsynopsis></title>
+ Return array containing names of all properties
+ </sect2>
+ </sect1>
+ <sect1 id="type_IProperty">
+ <title>IProperty</title>
+ <para>
+ Ancestor type: <link linkend="type_CObject">CObject</link>
+ </para>
+ <para>
+ This object represent one property in dictionary or array
+ </para>
+ <sect2 id="IProperty.equals">
+ <title><funcsynopsis>bool equals(QObject* otherObject)</funcsynopsis></title>
+ Return true, if this object is equal to specified object (i.e. if they internally point to the same item) Reference is compared, not the value of objects
+ </sect2>
+ <sect2 id="IProperty.value">
+ <title><funcsynopsis>Variant value()</funcsynopsis></title>
+ Return value store inside the property, if it is a simple type. For complex types (Array, Dict, Stream), NULL is returned
+ </sect2>
+ <sect2 id="IProperty.getText">
+ <title><funcsynopsis>string getText()</funcsynopsis></title>
+ Return text representation of this property
+ </sect2>
+ <sect2 id="IProperty.ref">
+ <title><funcsynopsis>CObject ref()</funcsynopsis></title>
+ Return reference to this property, but if the property is a reference, return the reference target. This way you will always get dereferenced property for correct manipulation
+ </sect2>
+ <sect2 id="IProperty.getInt">
+ <title><funcsynopsis>int getInt()</funcsynopsis></title>
+ Get integer representation of this property's value, return 0 if it cannot be represented as integer
+ </sect2>
+ <sect2 id="IProperty.getType">
+ <title><funcsynopsis>string getType()</funcsynopsis></title>
+ Get type identifier of this Property. Can be one of: Null, Bool, Int, Real, String, Name, Ref, Array, Dict, Stream
+ </sect2>
+ <sect2 id="IProperty.getTypeName">
+ <title><funcsynopsis>string getTypeName()</funcsynopsis></title>
+ Get human readable and localized name of type of this Property
+ </sect2>
+ <sect2 id="IProperty.set">
+ <title><funcsynopsis>void set(string value)</funcsynopsis></title>
+ Set value of this property. Work only on Bool, Int, Real, String or Name types, automatically converts value if type of property is different than type of parameter Will do nothing if called on different types (Dict, Array, etc ...)
+ </sect2>
+ <sect2 id="IProperty.set__2">
+ <title><funcsynopsis>void set(int value)</funcsynopsis></title>
+ Overloaded variant of set method
+ </sect2>
+ <sect2 id="IProperty.set__3">
+ <title><funcsynopsis>void set(double value)</funcsynopsis></title>
+ Overloaded variant of set method
+ </sect2>
+ <sect2 id="IProperty.set__4">
+ <title><funcsynopsis>void set(bool value)</funcsynopsis></title>
+ Overloaded variant of set method
+ </sect2>
+ </sect1>
+ <sect1 id="type_IPropertyArray">
+ <title>IPropertyArray</title>
+ <para>
+ Ancestor type: <link linkend="type_CObject">CObject</link>
+ </para>
+ <para>
+ This type represents arbitrary array of IProperty items It hold zero or more values indexed by positive integer, starting from zero. Values can be of any type, either simple types (int, bool, float, string) or complex types (Dict, Array)
+ </para>
+ <sect2 id="IPropertyArray.append">
+ <title><funcsynopsis>void append(IProperty prop)</funcsynopsis></title>
+ append one IProperty element to end of array.
+ </sect2>
+ <sect2 id="IPropertyArray.clear">
+ <title><funcsynopsis>void clear()</funcsynopsis></title>
+ Delete all elements in the array
+ </sect2>
+ <sect2 id="IPropertyArray.count">
+ <title><funcsynopsis>int count()</funcsynopsis></title>
+ Return size of this array (number of elements)
+ </sect2>
+ <sect2 id="IPropertyArray.property">
+ <title><funcsynopsis>CObject property(int index)</funcsynopsis></title>
+ Get IProperty element with given index from this array
+ </sect2>
+ </sect1>
+ <sect1 id="type_Page">
+ <title>Page</title>
+ <para>
+ Ancestor type: <link linkend="type_CObject">CObject</link>
+ </para>
+ <para>
+ This type of object represents one page in document.
+ </para>
+ <sect2 id="Page.moveAbove">
+ <title><funcsynopsis>void moveAbove(ContentStream cs)</funcsynopsis></title>
+ Move specified content stream in this page one level up in painting order.
+ </sect2>
+ <sect2 id="Page.moveBelow">
+ <title><funcsynopsis>void moveBelow(ContentStream cs)</funcsynopsis></title>
+ Move specified content stream in this page one level down in painting order.
+ </sect2>
+ <sect2 id="Page.moveAbove__2">
+ <title><funcsynopsis>void moveAbove(int csi)</funcsynopsis></title>
+ Move content stream with specified index in this page one level up in painting order.
+ </sect2>
+ <sect2 id="Page.moveBelow__2">
+ <title><funcsynopsis>void moveBelow(int csi)</funcsynopsis></title>
+ Move content stream with specified index in this page one level down in painting order.
+ </sect2>
+ <sect2 id="Page.addAnnotation">
+ <title><funcsynopsis>void addAnnotation(Annotation an)</funcsynopsis></title>
+ Add copy of given annotation to this page
+ </sect2>
+ <sect2 id="Page.setTransformMatrix">
+ <title><funcsynopsis>void setTransformMatrix(Variant tMatrix)</funcsynopsis></title>
+ Set transform matrix of this page. Expects array with 6 real numbers as the matrix.
+ </sect2>
+ <sect2 id="Page.prependContentStream">
+ <title><funcsynopsis>void prependContentStream(PdfOperatorStack opStack)</funcsynopsis></title>
+ Add new content stream to page, created from provided stack of PDF operators. They must form a valid content stream Content stream is prepended before other content streams
+ </sect2>
+ <sect2 id="Page.appendContentStream">
+ <title><funcsynopsis>void appendContentStream(PdfOperatorStack opStack)</funcsynopsis></title>
+ Add new content stream to page, created from provided stack of PDF operators. They must form a valid content stream Content stream in appended after other content streams
+ </sect2>
+ <sect2 id="Page.getFontId">
+ <title><funcsynopsis>string getFontId(string fontName)</funcsynopsis></title>
+ For given font name (case sensitive) return it's ID if present on page. If the font is not present, returns NULL
+ </sect2>
+ <sect2 id="Page.getFontIdsAndNames">
+ <title><funcsynopsis>string[] getFontIdsAndNames(bool onlyNames)</funcsynopsis></title>
+ Return list of all font id's and base names from resource dictionary of a page. For each font id and name pair there are two consecutive elements in returned array, first one containing font id and second one containing the name, so number of elements in output array is always even. If parametr onlyNames is true, id's are ommited and only list of names is returned instead.
+ </sect2>
+ <sect2 id="Page.addSystemType1Font">
+ <title><funcsynopsis>void addSystemType1Font(string fontName)</funcsynopsis></title>
+ Add new Type 1 font to this page resource dictionary with specified font name It is supposed that you insert standard system font name that should be avaiable to all PDF viewers.
+ </sect2>
+ <sect2 id="Page.getContentStream">
+ <title><funcsynopsis>ContentStream getContentStream(int streamNumber)</funcsynopsis></title>
+ Returns content stream with given number from this page Use data fetched by loadContentStreams method, if it wasn't called, it is called before returning the stream
+ </sect2>
+ <sect2 id="Page.removeContentStream">
+ <title><funcsynopsis>void removeContentStream(int streamNumber)</funcsynopsis></title>
+ Removes content stream with given number from page.
+ </sect2>
+ <sect2 id="Page.getContentStreamCount">
+ <title><funcsynopsis>int getContentStreamCount()</funcsynopsis></title>
+ Returns number of content streams in this page Use data fetched by loadContentStreams method, if it wasn't called, it is called before returning the count
+ </sect2>
+ <sect2 id="Page.getChange">
+ <title><funcsynopsis>ContentStream getChange(int changeNumber)</funcsynopsis></title>
+ Return change with given number as content stream
+ </sect2>
+ <sect2 id="Page.getChangeCount">
+ <title><funcsynopsis>int getChangeCount()</funcsynopsis></title>
+ Return number of changes
+ </sect2>
+ <sect2 id="Page.loadContentStreams">
+ <title><funcsynopsis>void loadContentStreams()</funcsynopsis></title>
+ Get all content streams from page and store them. Get the streams with getContentStreamCount and getContentStream functions. Usually it is not necessary to call this method, as these funtions will call it automatically on first need, but you may call it explicitly to reload the streams stored in this object from the page
+ </sect2>
+ <sect2 id="Page.getDictionary">
+ <title><funcsynopsis>Dict getDictionary()</funcsynopsis></title>
+ Returns page dictionary
+ </sect2>
+ <sect2 id="Page.getText">
+ <title><funcsynopsis>string getText()</funcsynopsis></title>
+ Return text representation of this page
+ </sect2>
+ <sect2 id="Page.mediabox">
+ <title><funcsynopsis>double[] mediabox();
+</funcsynopsis></title>
+ Return media box of this page as array (x1,y1,x2,y2). The mediabox is a rectangle from (x1,y1) to (x2,y2)
+ </sect2>
+ <sect2 id="Page.setMediabox">
+ <title><funcsynopsis>void setMediabox(double x1,double y1,double x2,double y2)</funcsynopsis></title>
+ Set media box of this page to given rectangle - from (x1,y1) to (x2,y2)
+ </sect2>
+ <sect2 id="Page.setMediabox__2">
+ <title><funcsynopsis>void setMediabox(Rect rc)</funcsynopsis></title>
+ Set media box of this page to given rectangle
+ </sect2>
+ </sect1>
+ <sect1 id="type_Pdf">
+ <title>Pdf</title>
+ <para>
+ Ancestor type: <link linkend="type_CObject">CObject</link>
+ </para>
+ <para>
+ This type of object represents entire document. Note to page manipulation - page numbers start from number 1 (not from zero as some programmers may expect), number of last page is equal to count of pages.
+ </para>
+ <sect2 id="Pdf.isReadOnly">
+ <title><funcsynopsis>bool isReadOnly()</funcsynopsis></title>
+ Returns true if document is opened in read-only mode, false if in read-write mode
+ </sect2>
+ <sect2 id="Pdf.isEncrypted">
+ <title><funcsynopsis>bool isEncrypted()</funcsynopsis></title>
+ Returns true if document is encrypted.
+ </sect2>
+ <sect2 id="Pdf.isLinearized">
+ <title><funcsynopsis>bool isLinearized()</funcsynopsis></title>
+ Return true, if document is linearized PDF, false otherwise
+ </sect2>
+ <sect2 id="Pdf.needsCredentials">
+ <title><funcsynopsis>bool needsCredentials()</funcsynopsis></title>
+ Return true if document is protected and opening the document reqires credentials (usually a password), false otherwise.
+ </sect2>
+ <sect2 id="Pdf.isValid">
+ <title><funcsynopsis>bool isValid()</funcsynopsis></title>
+ Check for PDF validity - return true, if this object is valid PDF document, false if the PDF document was closed or not yet opened (so the object is invalid)
+ </sect2>
+ <sect2 id="Pdf.unloadPdf">
+ <title><funcsynopsis>void unloadPdf()</funcsynopsis></title>
+ Close the document. If the document was opened directly in editor window (with openFile function), it won't be closed, you must use closeFile() function for this. However, all documents loaded with loadPdf function should be closed using this function.
+ </sect2>
+ <sect2 id="Pdf.saveAs">
+ <title><funcsynopsis>bool saveAs(string name)</funcsynopsis></title>
+ Save this document under different name. Does not modify name of file in editor, original file is still edited, not this one. Does not check for file existence - it will overwrite the file without warning if it already exists Return true if document was saved, false if it failed to save for any reason
+ </sect2>
+ <sect2 id="Pdf.save">
+ <title><funcsynopsis>bool save(bool newRevision)</funcsynopsis></title>
+ Save document to disk under original name If newRevision is true, create new revision while saving. Return true if saved successfully, false if failed to save because of any reason
+ </sect2>
+ <sect2 id="Pdf.setPassword">
+ <title><funcsynopsis>bool setPassword(string pass)</funcsynopsis></title>
+ Sets PDF password to use for decryption. Needed for opening password-protected documents Return true if the password was successfully set, false in case of error (bad password ...)
+ </sect2>
+ <sect2 id="Pdf.getDictionary">
+ <title><funcsynopsis>Dict getDictionary()</funcsynopsis></title>
+ Get document dictionary (object catalog)
+ </sect2>
+ <sect2 id="Pdf.removePage">
+ <title><funcsynopsis>void removePage(int position)</funcsynopsis></title>
+ Remove page with given number from document.
+ </sect2>
+ <sect2 id="Pdf.getPagePosition">
+ <title><funcsynopsis>int getPagePosition(Page page)</funcsynopsis></title>
+ Get position of given page in document or -1 in case of error (page not in document, invalid page, etc...)
+ </sect2>
+ <sect2 id="Pdf.getPageCount">
+ <title><funcsynopsis>int getPageCount()</funcsynopsis></title>
+ Get number of pages in document
+ </sect2>
+ <sect2 id="Pdf.insertPage">
+ <title><funcsynopsis>Page insertPage(Page page, int position)</funcsynopsis></title>
+ Insert given page in document, at given position. Return inserted page.
+ </sect2>
+ <sect2 id="Pdf.getPage">
+ <title><funcsynopsis>Page getPage(int position)</funcsynopsis></title>
+ Return page from document, given its page number.
+ </sect2>
+ <sect2 id="Pdf.getFirstPage">
+ <title><funcsynopsis>Page getFirstPage()</funcsynopsis></title>
+ Return first page in document.
+ </sect2>
+ <sect2 id="Pdf.getLastPage">
+ <title><funcsynopsis>Page getLastPage()</funcsynopsis></title>
+ Return last page in document.
+ </sect2>
+ <sect2 id="Pdf.getNextPage">
+ <title><funcsynopsis>Page getNextPage(Page page)</funcsynopsis></title>
+ Return next page in document, relative to specified page.
+ </sect2>
+ <sect2 id="Pdf.getPrevPage">
+ <title><funcsynopsis>Page getPrevPage(Page page)</funcsynopsis></title>
+ Return previous page in document, relative to specified page.
+ </sect2>
+ <sect2 id="Pdf.hasNextPage">
+ <title><funcsynopsis>bool hasNextPage(Page page)</funcsynopsis></title>
+ Return true, if there is next page in document for given page.
+ </sect2>
+ <sect2 id="Pdf.hasPrevPage">
+ <title><funcsynopsis>bool hasPrevPage(Page page)</funcsynopsis></title>
+ Return true, if there is previous page in document for given page.
+ </sect2>
+ <sect2 id="Pdf.getRevisionsCount">
+ <title><funcsynopsis>int getRevisionsCount()</funcsynopsis></title>
+ Return number of available revisions in document
+ </sect2>
+ <sect2 id="Pdf.getActualRevision">
+ <title><funcsynopsis>int getActualRevision()</funcsynopsis></title>
+ Return number of currently active revisions
+ </sect2>
+ </sect1>
+ <sect1 id="type_PdfOperator">
+ <title>PdfOperator</title>
+ <para>
+ Ancestor type: <link linkend="type_CObject">CObject</link>
+ </para>
+ <para>
+ This type of object represents pdf operator in content stream
+ </para>
+ <sect2 id="PdfOperator.equals">
+ <title><funcsynopsis>bool equals(QObject* otherObject)</funcsynopsis></title>
+ Return true, if this object is equal to specified object (i.e. if they internally point to the same item) Reference is compared, not the value of objects
+ </sect2>
+ <sect2 id="PdfOperator.getBBox">
+ <title><funcsynopsis>double[4] getBBox (); 
+</funcsynopsis></title>
+ Return bounding box (rectangle) of this PDF operator
+ </sect2>
+ <sect2 id="PdfOperator.getLastOperator">
+ <title><funcsynopsis>PdfOperator getLastOperator()</funcsynopsis></title>
+ Return last operator if a this operator is a composite
+ </sect2>
+ <sect2 id="PdfOperator.containsNonStrokingOperator">
+ <title><funcsynopsis>bool containsNonStrokingOperator()</funcsynopsis></title>
+ Tries to find first non stroking operator. (some operators are modified by stroking operators, some by nonestroking) Return true if non stroking operator found, false otherwise.
+ </sect2>
+ <sect2 id="PdfOperator.containsStrokingOperator">
+ <title><funcsynopsis>bool containsStrokingOperator()</funcsynopsis></title>
+ Tries to find first stroking operator. (some operators are modified by stroking operators, some by nonestroking) Return true if stroking operator found, false otherwise.
+ </sect2>
+ <sect2 id="PdfOperator.iterator">
+ <title><funcsynopsis>PdfOperatorIterator iterator()</funcsynopsis></title>
+ Return PDF Operator iterator, initially pointing at this operator
+ </sect2>
+ <sect2 id="PdfOperator.graphicalIterator">
+ <title><funcsynopsis>PdfOperatorIterator graphicalIterator(bool forwardDir=true)</funcsynopsis></title>
+ Return PDF Graphical Operator iterator, initialialized from this operator Graphical iterator iterate only through Graphical operators in content stream
+ </sect2>
+ <sect2 id="PdfOperator.inlineImageIterator">
+ <title><funcsynopsis>PdfOperatorIterator inlineImageIterator(bool forwardDir=true)</funcsynopsis></title>
+ Return PDF Inline Image Operator iterator, initialialized from this operator Inline Image iterator iterate only through inline image operators in content stream
+ </sect2>
+ <sect2 id="PdfOperator.textIterator">
+ <title><funcsynopsis>PdfOperatorIterator textIterator(bool forwardDir=true)</funcsynopsis></title>
+ Return PDF Text Operator iterator, initialialized from this operator Text iterator iterate only through text operators in content stream
+ </sect2>
+ <sect2 id="PdfOperator.changeableIterator">
+ <title><funcsynopsis>PdfOperatorIterator changeableIterator(bool forwardDir=true)</funcsynopsis></title>
+ Return PDF Changeable Operator iterator, initialialized from this operator Font iterator iterate only through changeable operators in content stream
+ </sect2>
+ <sect2 id="PdfOperator.strokingIterator">
+ <title><funcsynopsis>PdfOperatorIterator strokingIterator(bool forwardDir=true)</funcsynopsis></title>
+ Return PDF Stroking Operator iterator, initialialized from this operator Font iterator iterate only through stroking operators in content stream
+ </sect2>
+ <sect2 id="PdfOperator.nonStrokingIterator">
+ <title><funcsynopsis>PdfOperatorIterator nonStrokingIterator(bool forwardDir=true)</funcsynopsis></title>
+ Return PDF Non stroking Operator iterator, initialialized from this operator Font iterator iterate only through non-stroking operators in content stream
+ </sect2>
+ <sect2 id="PdfOperator.fontIterator">
+ <title><funcsynopsis>PdfOperatorIterator fontIterator(bool forwardDir=true)</funcsynopsis></title>
+ Return PDF Font Operator iterator, initialialized from this operator Font iterator iterate only through font operators in content stream
+ </sect2>
+ <sect2 id="PdfOperator.childs">
+ <title><funcsynopsis>PdfOperatorStack childs()</funcsynopsis></title>
+ Returns stack with all child operators
+ </sect2>
+ <sect2 id="PdfOperator.childCount">
+ <title><funcsynopsis>int childCount()</funcsynopsis></title>
+ Returns number of child operators under this pdf operator
+ </sect2>
+ <sect2 id="PdfOperator.getText">
+ <title><funcsynopsis>string getText()</funcsynopsis></title>
+ Return text representation of this pdf operator
+ </sect2>
+ <sect2 id="PdfOperator.getEncodedText">
+ <title><funcsynopsis>string getEncodedText()</funcsynopsis></title>
+ Returns encoded text from text operator. Returns an empty string for all other operators.
+ </sect2>
+ <sect2 id="PdfOperator.getName">
+ <title><funcsynopsis>string getName()</funcsynopsis></title>
+ Return name of this pdf operator
+ </sect2>
+ <sect2 id="PdfOperator.params">
+ <title><funcsynopsis>IPropertyArray params()</funcsynopsis></title>
+ Returns parameters of this operator in array
+ </sect2>
+ <sect2 id="PdfOperator.paramCount">
+ <title><funcsynopsis>int paramCount()</funcsynopsis></title>
+ Returns number of parameters in this pdf operator
+ </sect2>
+ <sect2 id="PdfOperator.pushBack">
+ <title><funcsynopsis>void pushBack(PdfOperator op,PdfOperator prev)</funcsynopsis></title>
+ Add an operator oper to the end of composite operator prev The operator will be added after operator prev. Second parameter is optional and will default to null operator if not specified
+ </sect2>
+ <sect2 id="PdfOperator.remove">
+ <title><funcsynopsis>void remove()</funcsynopsis></title>
+ Remove this PDF operator from its ContentStream. After calling this function, this object became invalid and must not be used further, doing so may result in an exception
+ </sect2>
+ <sect2 id="PdfOperator.setNext">
+ <title><funcsynopsis>void setNext(PdfOperator op)</funcsynopsis></title>
+ Set next operator
+ </sect2>
+ <sect2 id="PdfOperator.setPrev">
+ <title><funcsynopsis>void setPrev(PdfOperator op)</funcsynopsis></title>
+ Set previous operator
+ </sect2>
+ <sect2 id="PdfOperator.clone">
+ <title><funcsynopsis>PdfOperator clone()</funcsynopsis></title>
+ Clone this object
+ </sect2>
+ <sect2 id="PdfOperator.stream">
+ <title><funcsynopsis>ContentStream stream()</funcsynopsis></title>
+ Return content stream in which this operator is contained May return NULL if the stream is not known or if this operator is not contained in any content stream
+ </sect2>
+ </sect1>
+ <sect1 id="type_PdfOperatorIterator">
+ <title>PdfOperatorIterator</title>
+ <para>
+ Ancestor type: <link linkend="type_CObject">CObject</link>
+ </para>
+ <para>
+ This type of object represents pdf operator in content stream
+ </para>
+ <sect2 id="PdfOperatorIterator.current">
+ <title><funcsynopsis>PdfOperator current()</funcsynopsis></title>
+ Returns current operator from this iterator, or NULL if the iterator is at invalid position (after end, before beginning)
+ </sect2>
+ <sect2 id="PdfOperatorIterator.copy">
+ <title><funcsynopsis>PdfOperatorIterator copy()</funcsynopsis></title>
+ Create and return copy of this iterator, initially pointing to the same item
+ </sect2>
+ <sect2 id="PdfOperatorIterator.next">
+ <title><funcsynopsis>PdfOperatorIterator next()</funcsynopsis></title>
+ Move the iterator to next operator. Return reference to itself, or NULL, if we are after last valid item
+ </sect2>
+ <sect2 id="PdfOperatorIterator.prev">
+ <title><funcsynopsis>PdfOperatorIterator prev()</funcsynopsis></title>
+ Move the iterator to previous operator Return reference to itself, or NULL, if we are before first valid item
+ </sect2>
+ <sect2 id="PdfOperatorIterator.stream">
+ <title><funcsynopsis>ContentStream stream()</funcsynopsis></title>
+ Return content stream in which the initial operator used to construct the iterator was contained. May return NULL, if operator is not contained in any content stream or if content stream is not known at time of creation
+ </sect2>
+ <sect2 id="PdfOperatorIterator.isEnd">
+ <title><funcsynopsis>bool isEnd()</funcsynopsis></title>
+ Return true, if we are at the end of the operator list (this means after last valid item, so calling current() will return NULL )
+ </sect2>
+ <sect2 id="PdfOperatorIterator.isBegin">
+ <title><funcsynopsis>bool isBegin()</funcsynopsis></title>
+ Return true, if we are at the beginning of the operator list (this means before first valid item, so calling current() will return NULL )
+ </sect2>
+ <sect2 id="PdfOperatorIterator.valid">
+ <title><funcsynopsis>bool valid()</funcsynopsis></title>
+ Return true, if current position is valid (not before beginning or after end of list) (calling current() will return valid item, not NULL)
+ </sect2>
+ </sect1>
+ <sect1 id="type_PdfOperatorStack">
+ <title>PdfOperatorStack</title>
+ <para>
+ Ancestor type: <link linkend="type_CObject">CObject</link>
+ </para>
+ <para>
+ This type represents arbitrary array of PDFOperator items It hold zero or more values indexed by positive integer, starting from zero. You can add pdf operators to beginning or end of the array, so the array can behave like double-ended stack
+ </para>
+ <sect2 id="PdfOperatorStack.count">
+ <title><funcsynopsis>int count()</funcsynopsis></title>
+ Return size of the stack (number of operators)
+ </sect2>
+ <sect2 id="PdfOperatorStack.append">
+ <title><funcsynopsis>void append(PdfOperator prop)</funcsynopsis></title>
+ append one PdfOperator element to end of stack.
+ </sect2>
+ <sect2 id="PdfOperatorStack.prepend">
+ <title><funcsynopsis>void prepend(PdfOperator prop)</funcsynopsis></title>
+ prepend one PdfOperator element at beginning of stack.
+ </sect2>
+ <sect2 id="PdfOperatorStack.first">
+ <title><funcsynopsis>CObject first()</funcsynopsis></title>
+ Return first element in stack (from beginning of stack)
+ </sect2>
+ <sect2 id="PdfOperatorStack.last">
+ <title><funcsynopsis>CObject last()</funcsynopsis></title>
+ Return last element in stack (from end of stack)
+ </sect2>
+ <sect2 id="PdfOperatorStack.removeFirst">
+ <title><funcsynopsis>void removeFirst()</funcsynopsis></title>
+ Remove first element from stack (from beginning of stack)
+ </sect2>
+ <sect2 id="PdfOperatorStack.removeLast">
+ <title><funcsynopsis>void removeLast()</funcsynopsis></title>
+ Remove last element from stack (from end of stack)
+ </sect2>
+ <sect2 id="PdfOperatorStack.element">
+ <title><funcsynopsis>CObject element(int index)</funcsynopsis></title>
+ Get PdfOperator element with given index from stack
+ </sect2>
+ </sect1>
+ <sect1 id="type_Stream">
+ <title>Stream</title>
+ <para>
+ Ancestor type: <link linkend="type_IProperty">IProperty</link>
+ </para>
+ <para>
+ This type of object represents stream in document (in page)
+ </para>
+ <sect2 id="Stream.setBuffer">
+ <title><funcsynopsis>void setBuffer(ByteArray a)</funcsynopsis></title>
+ Sets buffer of this stream from given byte array
+ </sect2>
+ <sect2 id="Stream.setBuffer__2">
+ <title><funcsynopsis>void setBuffer(string s)</funcsynopsis></title>
+ Sets buffer of this stream from given string (overloaded method)
+ </sect2>
+ <sect2 id="Stream.setRawBuffer">
+ <title><funcsynopsis>void setRawBuffer(ByteArray a)</funcsynopsis></title>
+ Sets raw buffer of this stream from given byte array
+ </sect2>
+ <sect2 id="Stream.setRawBuffer__2">
+ <title><funcsynopsis>void setRawBuffer(string s)</funcsynopsis></title>
+ Sets raw buffer of this stream from given string (overloaded method)
+ </sect2>
+ <sect2 id="Stream.loadBuffer">
+ <title><funcsynopsis>bool loadBuffer(string fileName)</funcsynopsis></title>
+ Loads buffer of this stream from given file. Return true on success, false on failure while loading
+ </sect2>
+ <sect2 id="Stream.loadRawBuffer">
+ <title><funcsynopsis>bool loadRawBuffer(string fileName)</funcsynopsis></title>
+ Loads raw buffer of this stream from given file. Return true on success, false on failure while loading
+ </sect2>
+ <sect2 id="Stream.getBufferString">
+ <title><funcsynopsis>string getBufferString()</funcsynopsis></title>
+ Gets buffer of this stream as string
+ </sect2>
+ <sect2 id="Stream.getBuffer">
+ <title><funcsynopsis>ByteArray getBuffer()</funcsynopsis></title>
+ Gets buffer of this stream
+ </sect2>
+ <sect2 id="Stream.saveBuffer">
+ <title><funcsynopsis>bool saveBuffer(string fileName)</funcsynopsis></title>
+ Saves buffer of this stream to given file. Return true on success, false on failure while saving
+ </sect2>
+ <sect2 id="Stream.getDecoded">
+ <title><funcsynopsis>string getDecoded()</funcsynopsis></title>
+ Return decoded text representation of this property
+ </sect2>
+ <sect2 id="Stream.getRawDecoded">
+ <title><funcsynopsis>ByteArray getRawDecoded()</funcsynopsis></title>
+ Return decoded raw bytes representation of this property
+ </sect2>
+ <sect2 id="Stream.add">
+ <title><funcsynopsis>void add(string name,IProperty ip)</funcsynopsis></title>
+ Add property with given name to stream dictionary
+ </sect2>
+ <sect2 id="Stream.add__2">
+ <title><funcsynopsis>void add(string name,string ip)</funcsynopsis></title>
+ Add string property with given name to stream dictionary
+ </sect2>
+ <sect2 id="Stream.add__3">
+ <title><funcsynopsis>void add(string name,int ip)</funcsynopsis></title>
+ Add integer property with given name to stream dictionary
+ </sect2>
+ <sect2 id="Stream.count">
+ <title><funcsynopsis>int count()</funcsynopsis></title>
+ Return number of properties held in stream dictionary
+ </sect2>
+ <sect2 id="Stream.delProperty">
+ <title><funcsynopsis>void delProperty(string name)</funcsynopsis></title>
+ Delete property with given name from stream dictionary
+ </sect2>
+ <sect2 id="Stream.exist">
+ <title><funcsynopsis>bool exist(string name)</funcsynopsis></title>
+ Check for existence of property with given name in stream dictionary. If it exists, returns true
+ </sect2>
+ <sect2 id="Stream.property">
+ <title><funcsynopsis>CObject property(string name)</funcsynopsis></title>
+ Get property with given name from stream dictionary
+ </sect2>
+ <sect2 id="Stream.propertyNames">
+ <title><funcsynopsis>string[] propertyNames()</funcsynopsis></title>
+ Return array containing names of all properties in stream dictionary
+ </sect2>
+ </sect1>
+ </chapter>
+ <chapter id="object_types_gui">
+ <title>Object types (GUI objects)</title>
+ <para>
+ These object types do not have direct corespondence to any object inside PDF document,
+ but some of them may allow you to manipulate them indirectly.
+ Main focus of these types is to interact with user.
+ </para>
+ <sect1 id="type_Menu">
+ <title>Menu</title>
+ <para>
+ Ancestor type: <link linkend="type_CObject">CObject</link>
+ </para>
+ <para>
+ This type of object represent one popup menu. You can add menu items and submenus to it and you can execute the menu, which will then return the action picked by user (if any) To create new popup menu object, use the <link linkend="popupMenu">popupMenu</link> function
+ </para>
+ <sect2 id="Menu.popup">
+ <title><funcsynopsis>string popup()</funcsynopsis></title>
+ Invoke popup menu near position of mouse pointer. Return script for action selected in menu
+ </sect2>
+ <sect2 id="Menu.reset">
+ <title><funcsynopsis>void reset()</funcsynopsis></title>
+ Reset the menu, removing all items from it
+ </sect2>
+ <sect2 id="Menu.addItemDef">
+ <title><funcsynopsis>void addItemDef(string def)</funcsynopsis></title>
+ Append item (only item, not a list) to menu using its definition
+ </sect2>
+ <sect2 id="Menu.addItem">
+ <title><funcsynopsis>void addItem(string name)</funcsynopsis></title>
+ Append item or submenu (list) to menu using its name (it will be loaded from configuration)
+ </sect2>
+ <sect2 id="Menu.addSeparator">
+ <title><funcsynopsis>void addSeparator()</funcsynopsis></title>
+ Add separator to the menu
+ </sect2>
+ </sect1>
+ <sect1 id="type_TreeItem">
+ <title>TreeItem</title>
+ <para>
+ Ancestor type: <link linkend="type_CObject">CObject</link>
+ </para>
+ <para>
+ This type of object represents one item in treeview. One item in tree usually corespond to one object in PDF document
+ </para>
+ <sect2 id="TreeItem.setSelected">
+ <title><funcsynopsis>void setSelected(bool selected=true)</funcsynopsis></title>
+ Select or unselect this item (true to select, false to unselect)
+ </sect2>
+ <sect2 id="TreeItem.selected">
+ <title><funcsynopsis>bool selected()</funcsynopsis></title>
+ Check if this item is selected Return true if the item is selected, false if not
+ </sect2>
+ <sect2 id="TreeItem.valid">
+ <title><funcsynopsis>bool valid()</funcsynopsis></title>
+ Check if the tree item wrapper is valid, i.e. if corresponding tree item still exist in the tree view. Using most of invalid wrapper's functions will result in exception Return true if valid, false if not
+ </sect2>
+ <sect2 id="TreeItem.setOpen">
+ <title><funcsynopsis>void setOpen(bool opened)</funcsynopsis></title>
+ Set the item to be opened or closed. Specify true if the item is to be opened, false if closed.
+ </sect2>
+ <sect2 id="TreeItem.item">
+ <title><funcsynopsis>CObject item()</funcsynopsis></title>
+ Get object contained in this tree item
+ </sect2>
+ <sect2 id="TreeItem.itemref">
+ <title><funcsynopsis>CObject itemref()</funcsynopsis></title>
+ Get object inside this tree item, as item() does, but with one exception: If the object is reference, return reference target instead of the reference
+ </sect2>
+ <sect2 id="TreeItem.itemtype">
+ <title><funcsynopsis>string itemtype()</funcsynopsis></title>
+ Get type of object contained in this tree item (shortcut for .item().type())
+ </sect2>
+ <sect2 id="TreeItem.child">
+ <title><funcsynopsis>TreeItem child(string name)</funcsynopsis></title>
+ Return child of this tree item with given name, or NULL if this item have no child with such name
+ </sect2>
+ <sect2 id="TreeItem.getChildNames">
+ <title><funcsynopsis>string[] getChildNames()</funcsynopsis></title>
+ Get names of all visible childs items of this treeitem Childs that are not shown in tree (because of treeview settings, etc ...) are not returned. Childs that are "not yet known" (unopened references) are not returned too.
+ </sect2>
+ <sect2 id="TreeItem.parent">
+ <title><funcsynopsis>TreeItem parent()</funcsynopsis></title>
+ Return parent of this tree item, or NULL if this item have no parent
+ </sect2>
+ <sect2 id="TreeItem.id">
+ <title><funcsynopsis>string id()</funcsynopsis></title>
+ Return name of this tree item
+ </sect2>
+ <sect2 id="TreeItem.text">
+ <title><funcsynopsis>string text()</funcsynopsis></title>
+ Return caption of this tree item (sometimes can differ from name)
+ </sect2>
+ <sect2 id="TreeItem.path">
+ <title><funcsynopsis>string path()</funcsynopsis></title>
+ Return path of this tree item (sequence of names from root item to this item, separated by slashes: "/" )
+ </sect2>
+ <sect2 id="TreeItem.reload">
+ <title><funcsynopsis>void reload()</funcsynopsis></title>
+ Explicitly reload contents of this item and its subtree from current state of PDF document
+ </sect2>
+ <sect2 id="TreeItem.remove">
+ <title><funcsynopsis>void remove()</funcsynopsis></title>
+ Remove object in this tree item (and also any possible subitems) from document
+ </sect2>
+ </sect1>
+ <sect1 id="type_TreeItemContentStream">
+ <title>TreeItemContentStream</title>
+ <para>
+ Ancestor type: <link linkend="type_TreeItem">TreeItem</link>
+ </para>
+ <para>
+ This type of object represents one item in treeview representing content stream.
+ </para>
+ <sect2 id="TreeItemContentStream.setMode">
+ <title><funcsynopsis>void setMode(string newMode)</funcsynopsis></title>
+ Set mode of this tree item, i.e. what operators to show as children. Can be: <informaltable frame="none"> <tgroup cols="2"><tbody> <row><entry>all	</entry><entry>Show all operators</entry></row> <row><entry>text	</entry><entry>Show only text operators</entry></row> <row><entry>font	</entry><entry>Show only font operators</entry></row> <row><entry>graphic	</entry><entry>Show only graphic operators</entry></row> </tbody></tgroup> </informaltable>
+ </sect2>
+ <sect2 id="TreeItemContentStream.getMode">
+ <title><funcsynopsis>string getMode()</funcsynopsis></title>
+ Get mode of this tree item, i.e. what operators to show as children. See setMode for list of modes it can return.
+ </sect2>
+ </sect1>
+ </chapter>
+ &qsa_util;
+ &qsa_dialog;
+</part>

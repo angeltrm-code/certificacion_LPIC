@@ -1,0 +1,15 @@
+Compilar pdfedit v 0.4.5
+------------------------
+copiamos el archivo pdfedit-0.4.5.tar.gz con WinSCP a la carpeta /opt de la VM Centos6
+
+cd /opt/
+tar xvzf pdfedit-0.4.5.tar.gz -C /opt/
+cd pdfedit-0.4.5
+yum install boost-devel qt3-delevel glib2-devel t1lib-devel
+
+
+
+./configure
+make
+make install
+/usr/local/bin/pdfedit

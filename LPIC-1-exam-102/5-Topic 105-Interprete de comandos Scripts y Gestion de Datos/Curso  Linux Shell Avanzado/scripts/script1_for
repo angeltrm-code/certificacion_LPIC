@@ -1,0 +1,4 @@
+for i in `seq 4 90`
+do
+   echo $i
+done
