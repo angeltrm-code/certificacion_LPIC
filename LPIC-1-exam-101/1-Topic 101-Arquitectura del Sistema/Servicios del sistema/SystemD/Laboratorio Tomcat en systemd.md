@@ -1,6 +1,6 @@
-##Instalar tomcat 9.0.112 de forma manual y trabajar con system-v y system-d
+## Instalar tomcat 9.0.112 de forma manual y trabajar con system-v y system-d
 
-##He descagado:
+## He descagado:
 cd /root
 dnf install wget -y
 wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.112/bin/apache-tomcat-9.0.112.tar.gz
@@ -9,33 +9,33 @@ tar xvfz  apache-tomcat-9.0.112.tar.gz  -C /
 ls -l /apache-tomcat-9.0.112
 mv /apache-tomcat-9.0.112 /tomcat-9
 
-##Lo he descomprimido en el / de la maquina de linux con este nombre:
+## Lo he descomprimido en el / de la maquina de linux con este nombre:
 ls -ld /tomcat-9
 
-##Damos permisos de ejecucion:
+## Damos permisos de ejecucion:
 chmod 700 /tomcat-9/bin/*.sh
 
-##Tenemos que tener java (jdk)  openjdk instalado en el servidor, en este ejemplo:
+## Tenemos que tener java (jdk)  openjdk instalado en el servidor, en este ejemplo:
 java -version
 openjdk version "1.8.0_292"
 
 
-##Iniciarlo y pararlo de forma manual:
+## Iniciarlo y pararlo de forma manual:
 /tomcat-9/bin/startup.sh
 /tomcat-9/bin/shutdown.sh
 
-##Compromabos que esta iniciado:
+## Compromabos que esta iniciado:
 netstat -putan |grep 8080
 tcp        0      0 0.0.0.0:8080            0.0.0.0:*               LISTEN      1170/java
 
-##Para averiguar la ip de nuestro servidor:
+## Para averiguar la ip de nuestro servidor:
 ip a
 http://192.168.33.10:8080
 
 
-###SystemD
+### SystemD
 
-##Lo he descomprimido en el / de la maquina de linux con este nombre:
+## Lo he descomprimido en el / de la maquina de linux con este nombre:
 /tomcat-9
 
 
@@ -59,18 +59,18 @@ WantedBy=multi-user.target
 
 
 
-##Le decimos a systemd que tenemos una nueva unit de tipo service:
+## Le decimos a systemd que tenemos una nueva unit de tipo service:
 systemctl daemon-reload
 systemctl start tomcat.service
 
 
-##Compromabos que esta iniciado:
+## Comprobamos que esta iniciado:
 netstat -putan |grep 8080
 tcp        0      0 0.0.0.0:8080            0.0.0.0:*               LISTEN      1170/java
 
 http://192.168.33.10:8080
 
-##Paro el tomcat 
+## Paro el tomcat 
 systemctl stop tomcat.service
 
 netstat -putan |grep 8080
@@ -78,7 +78,7 @@ http://192.168.33.10:8080
 
 
 
-##Lo ponemos al inicio, para cuando arranque mi servidor:
+## Lo ponemos al inicio, para cuando arranque mi servidor:
 systemctl enable tomcat.service
 systemctl disable tomcat.service
 

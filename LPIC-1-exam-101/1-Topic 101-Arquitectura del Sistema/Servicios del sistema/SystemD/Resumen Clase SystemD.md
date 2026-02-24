@@ -1,15 +1,15 @@
 https://wiki.archlinux.org/index.php/systemd_(Espa%C3%B1ol)
 
-##SystemD##
+## SystemD##
 
 systemd apareció por primera vez en 2010, cuando fue anunciado por Lennart Poettering y Kay Sievers, ingenieros de Red Hat. Fue diseñado como un reemplazo moderno para el tradicional System V init y Upstart, con el objetivo de mejorar la gestión de servicios en sistemas Linux.
 
 
 SystemD es un sistema de inicialización y gestor de servicios ampliamente utilizado en sistemas operativos basados en Linux. Fue diseñado para reemplazar sistemas de inicialización tradicionales como SysVinit y Upstart, proporcionando una forma más eficiente y flexible de gestionar los servicios del sistema.
 
-##Principales características de SystemD:
+## Principales características de SystemD:
 
-#Gestión de servicios:
+# Gestión de servicios:
 
 SystemD permite iniciar, detener y supervisar servicios del sistema mediante unidades (units).
 Soporta dependencias entre servicios y garantiza un inicio ordenado del sistema.
@@ -19,13 +19,13 @@ Unidades (units):
 
 Representan configuraciones de servicios, montajes, dispositivos, temporizadores, etc.
 
-#Tipos comunes de unidades:
+# Tipos comunes de unidades:
 service: Un servicio (e.g., nginx, sshd).
 target: Agrupaciones de unidades (equivalente a los runlevels tradicionales).
 timer: Tareas programadas.
 mount: Puntos de montaje.
 
-#Journaling:
+# Journaling:
 SystemD incluye journald, un sistema de logging centralizado que almacena logs binarios del sistema y servicios.
 Soporte para cgroups:
 Integra cgroups para limitar y monitorizar recursos utilizados por procesos.
@@ -33,7 +33,7 @@ Compatibilidad retroactiva:
 
 Ofrece compatibilidad con scripts de inicio de SysVinit para facilitar la transición.
 
-##Principales características de systemd
+## Principales características de systemd
 Inicio paralelo de servicios, reduciendo el tiempo de arranque.
 Uso de "sockets" para activación de servicios.
 Administración simplificada de procesos con systemctl.
@@ -61,7 +61,7 @@ apt install psmisc -y
 pstree -Apn |more
 
 ------------------------------------------------------------------------------------------------------------
-##Existen siete tipos diferentes de unidades:
+## Existen siete tipos diferentes de unidades:
 - service: Demonios que pueden ser iniciados, detenidos, reiniciados o recargados.
 
 - socket: Esta unidad encapsula un socket en el sistema de archivos o en Internet. Cada unidad socket tiene una unidad de servicio correspondiente.
@@ -78,14 +78,14 @@ pstree -Apn |more
 
 - timer (.timer) es una unidad que programa la ejecución de un servicio (.service) en un momento específico o de manera recurrente, funcionando como un reemplazo más flexible y moderno de cron.
 
-##systemd-cgls nos muestra recursivamente el contenido del árbol de jerarquías de un determinado
-##grupo de control de Linux:
+## systemd-cgls nos muestra recursivamente el contenido del árbol de jerarquías de un determinado
+## grupo de control de Linux:
 
 systemd-cgls
 
  systemctl list-units --all
  
-##Para ver las units de tipo service
+## Para ver las units de tipo service
 systemctl list-units --type service --all
 
 UNIT               LOAD      ACTIVE   SUB     DESCRIPTION
@@ -118,29 +118,29 @@ listening → Está esperando conexiones.
 Breve descripción de la unidad, generalmente tomada del archivo .service o .timer.
 
 
-##Para trabajar con targets.
+## Para trabajar con targets.
 
 En systemd, un target (.target) es una unidad que agrupa varias unidades (.service, .socket, .mount, etc.) y se usa para gestionar el estado del sistema. Los targets reemplazan los runlevels de SysVinit y permiten organizar el inicio y apagado del sistema de manera flexible.
 
 cat /etc/inittab
 To view current default target, run:
-# systemctl get-default
-#
-# To set a default target, run:
-# systemctl set-default TARGET.target
+systemctl get-default
+
+To set a default target, run:
+systemctl set-default TARGET.target
 
 systemctl get-default
 
 systemctl set-default graphical.target
 
-##Para cambiar en caliente de target equivalente al comando init o el comando telinit
+## Para cambiar en caliente de target equivalente al comando init o el comando telinit
 systemctl isolate  TARGET.target
 
 systemctl isolate runlevel1.target 
 systemctl isolate rescue.target
 
 
-##Targets Principales en systemd
+## Targets Principales en systemd
 Los targets más importantes en un sistema Linux con systemd son:
 
 Target	         Descripción
@@ -167,14 +167,14 @@ systemctl snapshot actualizacion
 systemctl list-units --type snapshot --all
 
 Ahora podemos revertir el snapshot:
-# systemctl isolate actualizacion.snapshot
+systemctl isolate actualizacion.snapshot
 
-##Borrar el snapshot del laboratorio
+## Borrar el snapshot del laboratorio
 systemctl delete actualizacion.snapshot
 
 
-##Systemd introduce el concepto de unidades systemd. Estas unidades están configuradas en archivos localizados 
-##en las siguientes ubicaciones:
+## Systemd introduce el concepto de unidades systemd. Estas unidades están configuradas en archivos localizados 
+## en las siguientes ubicaciones:
 
 /usr/lib/systemd/system/: unidades distribuidas con paquetes RPM deb instalados.
 /run/systemd/system/: unidades creadas en tiempo de ejecución. Tiene precedencia sobre el directorio anterior.
@@ -197,7 +197,7 @@ systemctl enable httpd
 systemctl disable  httpd.service
 systemctl is-enabled  httpd
 
-##Pondria al inicio el service httpd y lo arrancara ahora.
+## Pondria al inicio el service httpd y lo arrancara ahora.
 systemctl enable httpd --now
 
 # Enmascarar
@@ -206,11 +206,11 @@ systemctl mask nombre.service
 # Desenmascarar
 systemctl unmask nombre.service
 
-##Para ver todas las units en masked:
+## Para ver todas las units en masked:
 systemctl list-unit-files | grep masked
 
 
-#Para controlar Systemd en otra máquina:
+# Para controlar Systemd en otra máquina:
 systemctl --host nombre_usuario@nombre_maquina comando
 
 O bien, también se puede utilizar SSH:
@@ -219,7 +219,7 @@ para controlar una instancia de systemd en una máquina remota.
 Esto utilizará SSH para conectarse a la instancia systemd remota.
 
 
-##Ejemplo Conflicts unit service con sendmial y postfix levan los dos el mismo puerto 25
+## Ejemplo Conflicts unit service con sendmial y postfix levan los dos el mismo puerto 25
 systemctl restart  sendmail
 netstat -putan |grep -w 25
 tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN      23638/sendmail: acc
@@ -239,39 +239,39 @@ apt-get install apache2 -y
 
 systemctl cat sendmail.service
 
-#Muestra todas las propiedades del servicio sendmail.service, que es el servicio de Sendmail en sistemas basados en systemd 
+# Muestra todas las propiedades del servicio sendmail.service, que es el servicio de Sendmail en sistemas basados en systemd 
 systemctl show sendmail.service
 
 vi /root/.bash_profile
 export EDITOR=/usr/bin/vi
 
-##Ejecutando este comando recargamos el .bash_profile
+## Ejecutando este comando recargamos el .bash_profile
 source /root/.bash_profile
 
 echo $EDITOR
 
 systemctl edit --full sendmail.service
 
-##Averguar las modificaciones en nuestras units de tipo service:
+## Averiguar las modificaciones en nuestras units de tipo service:
 systemd-delta
 
-#Se pueden ver todas las sobreescrituras de scripts con el comando:
+# Se pueden ver todas las sobreescrituras de scripts con el comando:
 
 
-* El comando systemd-delta permite comparar configuraciones personalizadas de systemd con las predeterminadas del sistema. Es útil cuando has modificado archivos de configuración o cuando systemd anula archivos debido a sobreescrituras en /etc/systemd/system/
+# El comando systemd-delta permite comparar configuraciones personalizadas de systemd con las predeterminadas del sistema. Es útil cuando has modificado archivos de configuración o cuando systemd anula archivos debido a sobreescrituras en /etc/systemd/system/
 
 systemd-delta
 
-#Este comando devolverá los siguientes estados:
+# Este comando devolverá los siguientes estados:
 
-MASKET: Muesta las unidades que no se pueden iniciar.
+MASKED: Muestra las unidades que no se pueden iniciar.
 EQUIVALENT: Sobreescriben otras unidades con el mismo contenido
 REDIRECT: Symbolic links a otras unidades
 OVERRIDDEN: Unidades sobreescritas
 EXTENDED: Unidades extendidas con ficheros .conf
 
 -----------------------------------------------------------------------------------------------------------------
-###Resumen de comandos systemd:
+### Resumen de comandos systemd:
 systemctl start	Iniciar un servicio
 systemctl stop	Detener un servicio
 systemctl restart	Reiniciar un servicio
@@ -285,13 +285,13 @@ journalctl -u	Ver logs de un servicio específico
 systemctl reboot	Reiniciar el sistema
 systemctl poweroff	Apagar el sistema
 
-#Estos comandos te permiten gestionar qué servicios o targets se inician automáticamente cuando el sistema arranca y te ayudan a verificar si un servicio está habilitado o no.
+# Estos comandos te permiten gestionar qué servicios o targets se inician automáticamente cuando el sistema arranca y te ayudan a verificar si un servicio está habilitado o no.
 
 sudo systemctl enable	Habilita un servicio para que se inicie al arrancar
 sudo systemctl disable	Deshabilita un servicio para que no se inicie al arrancar
 systemctl is-enabled	Verifica si un servicio está habilitado o deshabilitado
 
-##TARGET:
+## TARGET:
 systemctl list-units --type=target	Listar todos los targets disponibles
 systemctl isolate nombre_del_target	Cambiar al target especificado
 systemctl set-default nombre_del_target	Establecer el target por defecto al arrancar
@@ -302,11 +302,11 @@ systemctl disable nombre_del_target	Deshabilitar un target
 
 
 
-#El comando journalctl permite ver, buscar y analizar registros (logs) generados por systemd. Es el reemplazo moderno de syslog y almacena los logs de todos los servicios del sistema en un solo lugar.
+# El comando journalctl permite ver, buscar y analizar registros (logs) generados por systemd. Es el reemplazo moderno de syslog y almacena los logs de todos los servicios del sistema en un solo lugar.
 
 -->Lectura Laboratorio journalctl.pdf
 
-##Comandos journalctl:
+## Comandos journalctl:
 journalctl	Ver todos los logs
 journalctl -f	Seguir los logs en tiempo real
 journalctl -b	Ver logs desde el último arranque
@@ -318,42 +318,42 @@ journalctl --since "YYYY-MM-DD HH:MM:SS"	Ver logs desde un tiempo específico
 journalctl --vacuum-size=500M	Limpiar logs antiguos que excedan un tamaño
 journalctl -r	Ver los logs en orden inverso (más reciente primero)
 
-#muestra los registros del journal de systemd con detalles extendidos (-x) y en modo seguimiento (-e para ir al final del log).
+# muestra los registros del journal de systemd con detalles extendidos (-x) y en modo seguimiento (-e para ir al final del log).
 journalctl -xe
 
 
-#¿Quién puede ver los registros que va recopilando journald?
+# ¿Quién puede ver los registros que va recopilando journald?
  Solo root
  
-#Para que un usuario nominal pueda utilizar el comando journalctl, tiene que estar en el grupo systemd-journal:
+# Para que un usuario nominal pueda utilizar el comando journalctl, tiene que estar en el grupo systemd-journal:
 adduser operador
 passwd operador
 usermod -aG  systemd-journal operador
 
 
-#Procedimiento para persistir el journal:
+# Procedimiento para persistir el journal:
 
-#mkdir -p /var/log/journal/
-#systemd-tmpfiles --create --prefix /var/log/journal
-#chown root:systemd-journal /var/log/journal
-#chmod 2775 /var/log/journal
+mkdir -p /var/log/journal/
+systemd-tmpfiles --create --prefix /var/log/journal
+chown root:systemd-journal /var/log/journal
+chmod 2775 /var/log/journal
 
 Then, restart journald to apply the change:
-#systemctl restart systemd-journald
+systemctl restart systemd-journald
  
 
 
-###Límite del tamaño de journal
+### Límite del tamaño de journal
 
 Si journal se ha creado como permanente (no volátil), el límite de su tamaño se establece con un valor predeterminado correspondiente al 10% del tamaño del sistema de archivos.
 
 Por ejemplo, con /var/log/journal alojado en una partición raíz de 50 GiB, esto permitiría almacenar hasta 5 GiB de datos en journal. El tamaño máximo del journal permanente puede ser controlado por SystemMaxUse en /etc/systemd/journald.conf, por lo que, para limitarlo, por ejemplo, a 50 MiB, descomente y modifique la correspondiente línea a:
 SystemMaxUse=50M
 
-#Rotamos el log a 50 Megas.
-#vi /etc/systemd/journald.conf Descontentamos: SystemMaxUse=50M
+# Rotamos el log a 50 Megas.
+vi /etc/systemd/journald.conf Descontentamos: SystemMaxUse=50M
 
-#Limpiar registros reteniendo como máximo 2GB
+# Limpiar registros reteniendo como máximo 2GB
 journalctl --vacuum-size=2G
 
 # Limpiar registros y retener sólo los 2 últimos años
@@ -361,43 +361,43 @@ journalctl --vacuum-time=2years
 
 journalctl --vacuum-time=7d
 
-##Explicación:
+## Explicación:
 --vacuum-time=7d: Elimina los registros más antiguos de 7 días.
 7d significa 7 días (también puedes usar 1month, 1year, etc.).
 
-#Verificar el tamaño actual de los logs:
+# Verificar el tamaño actual de los logs:
 journalctl --disk-usage
 
 
-##ver los logs del service sshd del ultimo minuto:
+## ver los logs del service sshd del ultimo minuto:
 journalctl --since '1 min ago' -u sshd
 
 
-##Si quieres eliminar todos los logs, si tenemos el journal persistido usa:
+## Si quieres eliminar todos los logs, si tenemos el journal persistido usa:
 journalctl --flush --rotate
 rm -rf /var/log/journal/*
 systemctl restart systemd-journald
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-####Ejecutar un systemd Service en el Home del Usuario####
+#### Ejecutar un systemd Service en el Home del Usuario####
 
 Ejecutar un systemd Service en el Home del Usuario (~/.config/systemd/user/)
 En systemd, los usuarios pueden ejecutar sus propios servicios sin permisos de root. Estos servicios se definen en la carpeta ~/.config/systemd/user/ y pueden ejecutarse solo cuando el usuario ha iniciado sesión.
 
-#Si la carpeta no existe, créala:
+# Si la carpeta no existe, créala:
 mkdir -p ~/.config/systemd/user
 
 Ejemplo: Ejecutar un script ~/mi-script.sh al iniciar sesión.
 
-#Crear el script en ~/mi-script.sh
+# Crear el script en ~/mi-script.sh
 echo -e '#!/bin/bash\n\n echo "Servicio iniciado por el usuario $(whoami)" >> ~/mi-servicio.log' > ~/mi-script.sh
 
 
-##Le damos permiso al script:
+## Le damos permiso al script:
 chmod +x ~/mi-script.sh
 
-##Crear la unidad de servicio en ~/.config/systemd/user/mi-servicio.service:
+## Crear la unidad de servicio en ~/.config/systemd/user/mi-servicio.service:
 [Unit]
 Description=Mi Servicio Personal de Usuario
 After=default.target
@@ -417,15 +417,15 @@ Restart=always reinicia el servicio si se detiene.
 WantedBy=default.target asegura que se inicie con la sesión del usuario.
 
 
-##Tendremos que tener una session del usuario nomimal iniciada, a traves de ssh.
+## Tendremos que tener una session del usuario nomimal iniciada, a traves de ssh.
 
 
 systemctl --user daemon-reload
 
-#Para iniciar el servicio manualmente:
+# Para iniciar el servicio manualmente:
 systemctl --user start mi-servicio
 
-#Para habilitar el servicio y que se ejecute al iniciar sesión:
+# Para habilitar el servicio y que se ejecute al iniciar sesión:
 systemctl --user enable mi-servicio
 
 systemctl --user status mi-servicio
@@ -433,23 +433,23 @@ systemctl --user status mi-servicio
 #Ver los Logs del Servicio
 journalctl --user -u mi-servicio --follow
 
-#Detener y Deshabilitar el Servicio
+# Detener y Deshabilitar el Servicio
 systemctl --user stop mi-servicio
 systemctl --user disable mi-servicio
 
-#Si deseas eliminar completamente el servicio:
+# Si deseas eliminar completamente el servicio:
 rm ~/.config/systemd/user/mi-servicio.service
 systemctl --user daemon-reload
 
 
-#Habilitar Servicios de Usuario sin Iniciar Sesión
+# Habilitar Servicios de Usuario sin Iniciar Sesión
 Por defecto, los servicios en ~/.config/systemd/user/ solo funcionan si el usuario ha iniciado sesión. Para ejecutarlos en segundo plano sin necesidad de iniciar sesión:
 
 loginctl enable-linger usuario
 
 Esto permite que systemd mantenga corriendo los servicios incluso después de cerrar sesión.
 
-#Conclusión
+# Conclusión
 Los usuarios pueden ejecutar servicios sin permisos de root en ~/.config/systemd/user/.
 Se definen con archivos .service, usando %h para la home del usuario.
 Se gestionan con systemctl --user start/stop/status nombre-servicio.

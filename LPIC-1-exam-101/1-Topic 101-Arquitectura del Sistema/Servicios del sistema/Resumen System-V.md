@@ -149,11 +149,11 @@ chkconfig --level 35 httpd on
 ###SystemV
 ##He descagado:
 cd /root
-wget https://archive.apache.org/tomcat/tomcat-9/v9.0.112/bin/apache-tomcat-9.0.112.tar.gz
+wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.115/bin/apache-tomcat-9.0.115.tar.gz
 
-tar xvfz  /root/apache-tomcat-9.0.112.tar.gz -C /
-ls -l /apache-tomcat-9.0.112
-mv /apache-tomcat-9.0.112 /tomcat-9
+tar xvfz  /root/apache-tomcat-9.0.115.tar.gz -C /
+ls -l /apache-tomcat-9.0.115
+mv /apache-tomcat-9.0.115 /tomcat-9
 
 
 ##Lo he descomprimido en el / de la maquina de linux con este nombre:
