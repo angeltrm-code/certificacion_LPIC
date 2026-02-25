@@ -1,11 +1,13 @@
 Arquitectura del sistema operativo
-arch
+arch o  uname -a
+
 Modelo de cdrom del sistema operativo
+
 
 Cuanta memoria ram tiene nuestro servidor
 cuantas cpus tiene mi servidor
 Cuanto tiempo lleva encendido nuestro servidor
-Modiricar la fecha y hora de nustro servidor a 10/01/2016 18:10
+Modiricar la fecha y hora de nuestro servidor a 10/01/2016 18:10
 Informacion de modelo de nuestra tarjeta de red
 Informacion de sistema de ficheros soportados por el servidor
 Version del sistema oprativo que tenemos
