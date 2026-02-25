@@ -1,5 +1,7 @@
 Arquitectura del sistema operativo
+arch
 Modelo de cdrom del sistema operativo
+
 Cuanta memoria ram tiene nuestro servidor
 cuantas cpus tiene mi servidor
 Cuanto tiempo lleva encendido nuestro servidor

@@ -1,29 +1,29 @@
 https://webmin.com/
 
-##Comenzamos el laboratorio con la ultima verison de la web:
-###Instalacion de Webmin con procedimiento en su Web con system-D:
+## Comenzamos el laboratorio con la ultima verison de la web:
+### Instalacion de Webmin con procedimiento en su Web con system-D:
 https://webmin.com/download/
 
 cd /root
 curl -o setup-repos.sh https://raw.githubusercontent.com/webmin/webmin/master/setup-repos.sh
 
-##Ejecutamos el scrit setup-repos.sh genera los repositorios dependiendo del la version de sistema linux Red Hat Enterprise Linux, Alma, Rocky, Oracle, CentOS Stream, Fedora or Debian, Ubuntu, Kali.:
+## Ejecutamos el scrit setup-repos.sh genera los repositorios dependiendo del la version de sistema linux Red Hat Enterprise Linux, Alma, Rocky, Oracle, CentOS Stream, Fedora or Debian, Ubuntu, Kali.:
 
 sh setup-repos.sh
 
-###RHEL and derivatives
+### RHEL and derivatives
 dnf install webmin -y
 
 
-###Debian and derivatives
+### Debian and derivatives
 apt-get install webmin --install-recommends
 
-##Asegurarse de tener detenido el firewall en redhat:
+## Asegurarse de tener detenido el firewall en redhat:
 systemctl status firewalld
 systemctl stop firewalld
 systemctl disable firewalld
  
-##Para arrancar Webmin:
+## Para arrancar Webmin:
 systemctl start webmin
 systemctl status webmin
 
@@ -38,22 +38,22 @@ https://192.168.33.10:10000/
 
 Las credenciales de acceso el la cuenta del root del servidor, en maquinas con debian entramos con el usuario vagrant.
 
-###Parar el service de Webmin:
+### Parar el service de Webmin:
 systemctl stop webmin
 systemctl status webmin
 ss -tan |grep 10000
 
 ---------------------------------------------------------------------------------------------------------------
 
-#Cockpit
+# Cockpit
 Cockpit es una herramienta libre de administración de servidores de código abierto que nos va a permitir supervisar y administrar fácilmente servidores Gnu/Linux individuales o múltiples a través de un navegador web.
 
 
 
-##Para debian:
+## Para debian:
 sudo apt-get install -y cockpit*
 
-##En debian si tenemos el firewall
+## En debian si tenemos el firewall
 sudo ufw allow 9090/tcp
 sudo ufw reload
 sudo ufw allow 9090/tcp
@@ -63,18 +63,18 @@ sudo ufw disable
 sudo systemctl disable ufw
 
 
-##Cómo instalar Cockpit en Redhat x
+## Cómo instalar Cockpit en Redhat x
 
 dnf install -y cockpit*
 
-##Para iniciar el service cockpit
+## Para iniciar el service cockpit
 systemctl start cockpit
 
-#Y para habilitar Cockpit y que inicie automáticamente  usaremos la opción enable:
+# Y para habilitar Cockpit y que inicie automáticamente  usaremos la opción enable:
 
 systemctl enable cockpit.socket
 
-##Comprobamos tenemos el puerto del service cockpit iniciado, el puerto es el 9090:
+## Comprobamos tenemos el puerto del service cockpit iniciado, el puerto es el 9090:
 netstat -putan |grep 9090
 tcp        0      0 0.0.0.0:9090            0.0.0.0:*               LISTEN      1/systemd
 
@@ -85,7 +85,7 @@ Puedes comprobar en cualquier momento el estado del servicio Cockpit con el coma
 systemctl status cockpit
 
 
-##Para entrar en cockpit con las credenciales del usuario root y la ip de nuestra mv de linux:
+## Para entrar en cockpit con las credenciales del usuario root y la ip de nuestra mv de linux:
 ip a
 
 http://192.168.33.10:9090/

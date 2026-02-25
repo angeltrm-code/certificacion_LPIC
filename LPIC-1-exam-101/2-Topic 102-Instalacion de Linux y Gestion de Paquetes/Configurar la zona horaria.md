@@ -1,4 +1,4 @@
-#El comando timedatectl en Linux se utiliza para consultar y configurar la fecha, la hora y la zona horaria del sistema, especialmente en distribuciones que usan systemd (como Ubuntu, Debian, Rocky, RHEL, etc.).
+# El comando timedatectl en Linux se utiliza para consultar y configurar la fecha, la hora y la zona horaria del sistema, especialmente en distribuciones que usan systemd (como Ubuntu, Debian, Rocky, RHEL, etc.).
 
 timedatectl list-timezones
 timedatectl set-timezone   Europe/Madrid
@@ -7,13 +7,13 @@ timedatectl set-ntp true
 
 
 
-#El comando localectl se utiliza en sistemas Linux con systemd para consultar y configurar el idioma (locale) y el teclado del sistema
+# El comando localectl se utiliza en sistemas Linux con systemd para consultar y configurar el idioma (locale) y el teclado del sistema
 
 localectl
 localectl set-locale LANG=es_ES.utf8
 localectl set-keymap es
  
-##Para centos8: 
+## Para centos8: 
 dnf install langpacks-es 
 
 
@@ -23,15 +23,15 @@ LANG="es_ES.UTF-8"
 
 
 
-##Instalacion cliente NTP
+## Instalacion cliente NTP
 
-#Chrony es un conjunto de herramientas para sincronizar la hora del sistema mediante NTP. Es más preciso y rápido que el antiguo ntpd, especialmente en máquinas virtuales y servidores con cambios de red frecuentes.
+# Chrony es un conjunto de herramientas para sincronizar la hora del sistema mediante NTP. Es más preciso y rápido que el antiguo ntpd, especialmente en máquinas virtuales y servidores con cambios de red frecuentes.
 
-#Los comandos principales son:
+# Los comandos principales son:
 chronyd → servicio (daemon)
 chronyc → cliente para consultar y administrar
 
-#En muchas distribuciones modernas (Rocky, RHEL, Ubuntu Server), es el servicio NTP por defecto.
+# En muchas distribuciones modernas (Rocky, RHEL, Ubuntu Server), es el servicio NTP por defecto.
 
 dnf install chrony -y
 

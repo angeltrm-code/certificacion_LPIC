@@ -1,21 +1,21 @@
-##Pagina 208 y pagina 39 Manual del curso PDF Almacenamiento ##
+## Pagina 208 y pagina 39 Manual del curso PDF Almacenamiento ##
 
-##Pagina 38 Manual del curso PDF-Instalación de Linux y de los paquetes de software
+## Pagina 38 Manual del curso PDF-Instalación de Linux y de los paquetes de software
 
-##Introduccion a discos en linux
+## Introduccion a discos en linux
 
 cat /proc/partitions
 fdisk -l /dev/sda
 lsscsi
 lsblk -f
 
-##Tipo de particiones para GPT
+## Tipo de particiones para GPT
 8300 : partición de tipo Linux (datos)
  • 8200 : partición de tipo swap 
  • fd00 : partición de tipo RAID 
  • 8e00 : partición de tipo LVM
  
-##Tipo de particiones MBR 
+## Tipo de particiones MBR 
 83 : partición de tipo Linux (datos)
  • 82 : partición de tipo swap 
  • fd : partición de tipo RAID 
@@ -63,11 +63,11 @@ sda               8:0    0  64G  0 disk
   ├─centos-swap 253:1    0   2G  0 lvm  [SWAP]
   └─centos-home 253:2    0  20G  0 lvm  /home
 -------------------------------------------------------------------------------------
-#Instalar servidor NTP  chrony
+# Instalar servidor NTP  chrony
 El paquete chrony, un binario que nos ofrece la posibilidad de mantener la hora sincronizada con servidores NTP y a la vez él mismo ofrecerse como servidor NTP para otros clientes
 
-#yum install chrony -y
-#apt install chrony -y
+yum install chrony -y
+apt install chrony -y
 
 vi /etc/chrony.conf
 server hora.roa.es iburst
@@ -77,19 +77,21 @@ systemctl enable chronyd
 systemctl start chronyd
 systemctl status chronyd
 
-Mostrar la información sobre NTP
-# chronyc sources -v
+# Mostrar la información sobre NTP
+chronyc sources -v
 
 
-##Debian
+## Debian
 vi /etc/chrony/chrony.conf
 server 3.es.pool.ntp.org iburst
 server 1.europe.pool.ntp.org iburst
 server 3.europe.pool.ntp.org iburst
 
-#systemctl enable chronyd
-#systemctl start chronyd
-#systemctl status chronyd
+Servidores de la marina en Rota
+
+systemctl enable chronyd
+systemctl start chronyd
+systemctl status chronyd
 
 Mostrar la información sobre NTP
 # chronyc sources -v
@@ -104,7 +106,7 @@ System clock synchronized: yes
           RTC in local TZ: no
 
 
-#Qué hace exactamente iburst
+# Qué hace exactamente iburst
 Cuando un cliente NTP o Chrony arranca, normalmente envía una sola solicitud NTP al servidor, y espera su respuesta.
 Si el servidor tarda o hay pérdida de paquetes, la sincronización inicial puede demorar hasta varios minutos.
 

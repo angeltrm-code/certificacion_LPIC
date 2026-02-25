@@ -1,6 +1,6 @@
-##Pagina 75 Manual del curso Debian Package
+## Pagina 75 Manual del curso Debian Package
 
-##.deb##
+## .deb ##
 La base de datos dpkg en /var/lib/dpkg
 /root/webmin.deb
 
@@ -9,69 +9,69 @@ eliminación y compilación. En una distribución basada en Debian, Linux precon
 
 **Este comando no resuelve dependencias
 
-##Resumen esencial de  los comandos para trabajar con dpkg:
+## Resumen esencial de  los comandos para trabajar con dpkg:
 
-#Instalar un paquete:
+# Instalar un paquete:
 dpkg -i paquete.deb
 
-#Eliminar un paquete (sin borrar configuración):
+# Eliminar un paquete (sin borrar configuración):
 dpkg -r paquete
 
-#Eliminar un paquete y su configuración:
+# Eliminar un paquete y su configuración:
 dpkg --purge paquete
 
-#Listar todos los paquetes instalados:
+# Listar todos los paquetes instalados:
 dpkg -l
 
-#Mostrar información de un paquete instalado:
+# Mostrar información de un paquete instalado:
 dpkg -s paquete
 
-#Listar archivos instalados por un paquete:
+# Listar archivos instalados por un paquete:
 dpkg -L paquete
 
-#Buscar qué paquete instaló un archivo:
+# Buscar qué paquete instaló un archivo:
 dpkg -S /ruta/al/archivo
 
-#Reconfigurar un paquete:
+# Reconfigurar un paquete:     !!!  Pregunta de certificacion   !!!
 El comando dpkg-reconfigure se usa en distribuciones Debian y Ubuntu para reconfigurar paquetes instalados mediante dpkg (Debian Package Manager). Permite volver a ejecutar el asistente de configuración de un paquete sin necesidad de reinstalarlo.
 
 dpkg-reconfigure paquete
 
 
-##Opciones avanzadas de dpkg:
+## Opciones avanzadas de dpkg:
 
-#Instalar ignorando dependencias:
+# Instalar ignorando dependencias:
 dpkg --force-depends -i paquete.deb
 
-#Listar paquetes con patrón:
+# Listar paquetes con patrón:
 dpkg -l 'paquete*'
 
-#Mostrar problemas de instalación:
+# Mostrar problemas de instalación:
 dpkg --audit
 
-#Ver archivos dentro de un .deb:
+# Ver archivos dentro de un .deb:
 dpkg --contents paquete.deb
 
-#Eliminar paquetes parcialmente instalados:
+# Eliminar paquetes parcialmente instalados:
 dpkg --remove paquete
 
-#Reparar paquetes rotos:
+# Reparar paquetes rotos:
 dpkg --configure -a
 
-#Cambiar arquitectura:
+# Cambiar arquitectura:
 dpkg --add-architecture i386
 
-#Verificar integridad de un paquete:
+# Verificar integridad de un paquete:
 dpkg -V paquete
 
-#Extraer archivos de un .deb sin instalar:
+# Extraer archivos de un .deb sin instalar:
 dpkg-deb -x paquete.deb directorio
 
-#Ver información de un .deb:
+# Ver información de un .deb:
 dpkg-deb --info paquete.deb
 
 
-##Resumen extendido:
+## Resumen extendido:
 
 dpkg -i {package.deb} : usado para instalar el paquete.
 dpkg -R {directory} : este comando instala todos los paquetes de un estructura de directorio.
@@ -104,7 +104,7 @@ Comandos "apt-get":
 
 /etc/apt/sources.list
 
-###APT (Advanced Package Tool)
+### APT (Advanced Package Tool)
 
 El comando APT (Advanced Package Tool por sus siglas en inglés que traducen Herramienta Avanzada de Empaquetado)
 es un elemento de línea de comandos creado por el proyecto Debian con el objetivo de permitirle a los usuarios gestionar y administrar los paquetes de sus distribuciones de Linux Debian.
@@ -117,7 +117,7 @@ Dentro de las funciones principales de este comando, se puede encontrar que Linu
 Los llamados repositorios APT Linux hacen referencia a una colección de paquetes Deb que pueden ser entendidos por toda la familia de herramientas apt (es decir apt-get y demás). Contar con este tipo de repositorios, te permitirá realizarla instalación, eliminación, actualización y demás operaciones de paquetes, a través del uso de paquetes individuales
 o grupos de paquetes. 
 
-##Principales comandos de APT:
+## Principales comandos de APT:
 
 apt-get install {package} : funciona para instalar programas o paquetes.
 apt-get reinstall {package} : cumple la función de reinstalar un paquete completo desde cero, en caso de que este presente
@@ -130,7 +130,7 @@ apt-get update: Actualiza la lista local de paquetes disponibles desde los repos
 apt-get upgrade: funciona para actualizar el sistema de Linux, incluyendo los paquetes de seguridad.
 apt-get dist-upgrade: encargado de actualizar las distribuciones de Linux.
 
-#El comando APT, también cuenta con otras herramientas que le facilitan la ejecución de ordenes y el cumplimiento de sus funciones
+# El comando APT, también cuenta con otras herramientas que le facilitan la ejecución de ordenes y el cumplimiento de sus funciones
 como por ejemplo:
 
 apt-cache search {package} : la ejecución de este elemento cumplirá la función de buscar elementos a través del nombre del paquete.
@@ -143,7 +143,7 @@ apt satisfy {package} : este comando se encarga de recuperar y satisfacer depend
 
 
 
-###Ejemplos apt-get:
+### Ejemplos apt-get:
 
 1. Actualizar el listado de paquetes disponibles:
 
@@ -299,25 +299,25 @@ Opciones:
 Actualización: A partir de Ubuntu 14.04, el gestor de paquetes apt ("Avanced Package Tool") tiene nuevas opciones. Ya no es necesario
 escribir "apt-get" y se puede utilizar simplemente "apt", (apt seguirá funcionando).
 
-##Para consultar un comando que paquete nos lo instala....
+## Para consultar un comando que paquete nos lo instala....
 sudo apt-get update
 sudo apt install apt-file
 sudo apt-file search lspci
 ---------------------------------------------------------------------
-##La herramienta alien permite convertir paquetes RPM en DPKG y viceversa##
+## La herramienta alien permite convertir paquetes RPM en DPKG y viceversa ##
 El parámetro por defecto -d convierte del rpm al dpkg (.deb):
 alien -d lgtoclnt-7.4-1.i686.rpm
 alien -r lgtoclnt-7.4-1.i686.deb
 ----------------------------------------------
 -----------------------------------------------------------------
-###Red Hat Package Manager pagina 63 pdf manual del curso###
+### Red Hat Package Manager pagina 63 pdf manual del curso ###
 
 El comando rpm es el gestor de paquetes de bajo nivel en distribuciones basadas en Red Hat, como Rocky Linux, RHEL, CentOS y Fedora. Se usa para instalar, eliminar, actualizar y consultar paquetes .rpm.
 
 **Este comando no resuelve dependencias
 
 
-##paquete.rpm##
+## paquete.rpm ##
 /var/lib/rpm
 rpm --rebuilddb
 
@@ -326,20 +326,20 @@ Corrige inconsistencias cuando la base de datos está corrupta.
 No afecta los paquetes instalados, solo repara la información sobre ellos.
 
 
-##Instalar con rpm
+## Instalar con rpm
 rpm -ivh paquete.rpm
 
-##Borrar un paquete:
+# Borrar un paquete:
 rpm -evh paquete
 --nodeps
 --force
 rpm -ivh --nodeps paquete.rpm
 
-##Actualizar##
+## Actualizar ##
 rpm -U paquetev2.rpm
 rpm -F paquetev2.rpm
 
-##Auditar el chesksums de un paquete
+## Auditar el chesksums de un paquete
 rpm -V php
 Un punto significa que una etapa de comprobación está OK. Si no es así:
 • S: se modificó el tamaño del archivo.
@@ -351,7 +351,7 @@ Un punto significa que una etapa de comprobación está OK. Si no es así:
 • M: se modificaron los permisos o el tipo de archivo.
 • D: se modificó el periférico (major/minor).
 
-##Consultas##
+## Consultas ##
 rpm -qa php
 rpm -qa httpd*
 rpm -qi paquete --> informacion sobre el paquete
@@ -366,7 +366,7 @@ netstat -tan |grep -i listen
 ss -tan
 https://192.168.2.5:10000/
 ---------------------------------------------------------------------------
-##Trabajar con yum/dnf
+## Trabajar con yum/dnf
 /etc/dnf/dnf.conf
 /etc/yum.conf: Fichero de configuración
 • /var/log/yum.log: Registro de actividad
@@ -410,14 +410,14 @@ exclude=php* kernel*
 yum --exclude=php* kernel*  update
 yum update php
 
-##El gestor de paquetes yum provee de la opción --downloadonly.
+## El gestor de paquetes yum provee de la opción --downloadonly.
 Como su nombre lo indica, el uso de esta opción hará que se simplemente se descarguen los programas requeridos
 y sus dependencias.
 Por defecto, los archivos se guardarán en el directorio /var/cache/yum/x86_64/<versión de distro>/<repositorio>/packages
 
 yum install  --downloadonly --downloaddir=/root  mc
 
-##Instalar rpm locales gestionando dependencias con yum:
+## Instalar rpm locales gestionando dependencias con yum:
 
 yum --nogpgcheck localinstall /root/nginx-1.12.2-2.el7.x86_64.rpm
 
@@ -435,13 +435,13 @@ yum history list
 yum history info 29
 
 Repetir o deshacer una determinada transacción.
-##Rehacer
+## Rehacer
 yum history redo 23
 
-##deshacer
+## deshacer
 yum history undo 23
 
-##Configurar salida yum con proxy en empresa:
+## Configurar salida yum con proxy en empresa:
 vi /etc/yum.conf
 /etc/dnf/dnf.conf
 [main]
@@ -451,12 +451,12 @@ proxy_username=<Proxy-User-Name>
 proxy_password=<Proxy-Password> 
 
 ------------------------------------------------------------------------------------------------
-#Zypper
+# Zypper
 
 zypper es el gestor de paquetes de openSUSE y SUSE Linux Enterprise (SLE).
 Trabaja con paquetes RPM y repositorios configurados en el sistema.
 
-#Es el equivalente a:
+# Es el equivalente a:
 apt en Debian/Ubuntu
 dnf en RHEL/Rocky
 

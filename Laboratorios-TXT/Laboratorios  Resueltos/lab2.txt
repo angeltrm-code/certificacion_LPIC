@@ -20,7 +20,7 @@ ls -la /etc/passwd
 #Buscar archivos desde el / modificados hace menos de 24 horas
 find / -type f -mtime -1
 
-Buscar archivos desde el / con un tamaño superior a 200M
+Buscar archivos desde el / con un tamaï¿½o superior a 200M
 find / -type f -size +200M
 
 Buscar archivos con permisos de setuid, setguid y stickibit
@@ -50,7 +50,7 @@ timedatectl set-time "2014-11-03 14:30:00"
 Con el comando dmesg averiguar el modelo de disco duro
 dmesg |grep -i sda
 
-Tamaño ocupado de la particion /
+Tamaï¿½o ocupado de la particion /
 df -h /
 
 cuanto ocupa nuestro directorio /etc
@@ -65,7 +65,7 @@ hwclock --hctosys
 Enviar un mensaje de apagado del servidor a todos los usuarios
 echo "Reinicio del Servidor a la 12h" |wall
 
-El comando wall (abreviatura de "write all") es una utilidad en Linux que permite enviar mensajes a todos los usuarios conectados a la máquina en ese momento. Los mensajes enviados con wall aparecerán en las terminales abiertas de los usuarios.
+El comando wall (abreviatura de "write all") es una utilidad en Linux que permite enviar mensajes a todos los usuarios conectados a la mï¿½quina en ese momento. Los mensajes enviados con wall aparecerï¿½n en las terminales abiertas de los usuarios.
 
 
 Permisos al archivo  /datos.txt rw- --- ---
@@ -82,7 +82,7 @@ averiguar mascara por defecto
 umask -S
 
 Que hace el comando ldd
-El comando ldd en Linux se utiliza para listar las dependencias de las bibliotecas compartidas que un ejecutable o un programa necesita para funcionar correctamente. En otras palabras, te muestra qué bibliotecas dinámicas (.so) requiere un programa.
+El comando ldd en Linux se utiliza para listar las dependencias de las bibliotecas compartidas que un ejecutable o un programa necesita para funcionar correctamente. En otras palabras, te muestra quï¿½ bibliotecas dinï¿½micas (.so) requiere un programa.
 
 Me da las librerias vinculadas a un comando:
 ldd /usr/sbin/fsck
@@ -101,7 +101,7 @@ Poner al inicio el servicio httpd en systemd y sistemv
 systemctl enable httpd
 chkconfig --level 35 httpd on
 
-arrancat ahora el servicio httpd  systemd y sistemv
+arrancar ahora el servicio httpd  systemd y sistemv
 service httpd start
 /etc/init.d/apache2 start
 systemct start httpd
