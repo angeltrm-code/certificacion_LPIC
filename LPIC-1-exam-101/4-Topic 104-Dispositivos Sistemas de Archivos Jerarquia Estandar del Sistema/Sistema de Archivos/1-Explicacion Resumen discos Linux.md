@@ -1,41 +1,41 @@
-##Pagina 208 Manual del curso PDF## 
+## Pagina 208 Manual del curso PDF## 
 
 ### IDE Los discos con controladores IDE (también llamados PATA, Parallel Ata o ATAPI) 
 se llaman hdX: • hda: IDE0, Master • hdb: IDE0, Slave • hdc: IDE1, Master • hdd: IDE1, Slave
 
-###SCSI, SATA, USB, FIREWIRE, etc.
+### SCSI, SATA, USB, FIREWIRE, etc.
 • sda: primer disco SCSI • sdb: segundo disco SCSI • sdc: tercer disco SCSI 
 • etc. La norma SCSI marca una diferencia entre los diversos soportes. Así, los
 
 lectores de CD-Rom, DVD, HD-DVD, BlueRay y los grabadores asociados no llevan el mismo nombre.
  Los lectores y grabadores están en srX (sr0, sr1, etc.).
  
-##La mv esta en un hipervisor KVM:
+## La mv esta en un hipervisor KVM:
 /dev/vda 
 /dev/vdb
 ...
 
-##La mv esta en un hipervisor XEM Linux:
+## La mv esta en un hipervisor XEM Linux:
 /dev/xvda 
 /dev/xvdb
 ...
 
-##Averiguar los discos que tiene nuestro servidor:
+## Averiguar los discos que tiene nuestro servidor:
 cat /proc/partitions
 fdisk -l
 fdisk -l /dev/sda
 
 lsscsi 
 
-#lsblk
+# lsblk
 El comando lsblk (list block devices) en Linux se usa para mostrar una lista de dispositivos de bloques, como discos duros, SSDs, particiones, y unidades USB, en forma de árbol.
 
 lsblk -fp
 -f	Muestra información del sistema de archivos, como el tipo (xfs, ext4), el UUID, y la etiqueta (LABEL).
 -p	Muestra la ruta completa del dispositivo, como /dev/sda1 en lugar de solo sda1.
 
-##Visualizar puntos de montaje:
-#mount
+## Visualizar puntos de montaje:
+mount
 
 El comando mount se usa para asociar un dispositivo o sistema de archivos a un directorio (punto de montaje) para poder acceder a su contenido.
 
@@ -45,20 +45,20 @@ El comando findmnt en Linux se utiliza para buscar, mostrar o verificar informac
 findmnt
 
 
-##Tipo de particiones para GPT ---> UEFI --> con gdisk
+## Tipo de particiones para GPT ---> UEFI --> con gdisk
  • 8300 : partición de tipo Linux (datos)
  • 8200 : partición de tipo swap 
  • fd00 : partición de tipo RAID 
  • 8e00 : partición de tipo LVM
  
-##Tipo de particiones MBR --> BIOS-->fdisk
+## Tipo de particiones MBR --> BIOS-->fdisk
  • 83 : partición de tipo Linux (datos)
  • 82 : partición de tipo swap 
  • fd : partición de tipo RAID 
  • 8e : partición de tipo LVM
  
  
-##Tabla Comparativa: MBR vs GPT
+## Tabla Comparativa: MBR vs GPT
 
 Característica	               MBR (Master Boot Record)	                        GPT (GUID Partition Table)
 Compatibilidad	              Compatible con BIOS antiguo	                    Compatible con UEFI
@@ -69,7 +69,7 @@ Seguridad y redundancia	No tiene redundancia	                       Almacena cop
 Corrección de errores	Sin detección de errores	                  Incluye CRC32 para verificar y corregir errores
 Compatibilidad con sistemas operativos	Windows XP, Vista, 7 (modo BIOS) y Linux	Windows 10/11, macOS, Linux (modo UEFI) 
 
-##Explicación Detallada
+## Explicación Detallada
 
 a) MBR (Master Boot Record)
 MBR es el esquema de particionado más antiguo, utilizado desde los años 80.
@@ -82,7 +82,7 @@ No tiene mecanismos de redundancia, por lo que si el MBR se corrompe, el disco p
 📌 Ejemplo de uso: Discos antiguos, sistemas BIOS heredados.
 
 
-#GPT (GUID Partition Table)
+# GPT (GUID Partition Table)
 GPT es la tecnología más moderna, diseñada para reemplazar MBR.
 Utiliza UEFI en lugar de BIOS para gestionar el arranque.
 Ventajas principales:
@@ -94,7 +94,7 @@ Usa sumas de verificación CRC32 para detectar y corregir errores en la tabla de
 📌 Ejemplo de uso: Discos modernos, servidores, almacenamiento masivo, sistemas con UEFI.
 
 
-#¿Cuál elegir?
+# ¿Cuál elegir?
 ✅ Usar MBR si:
 Tienes un sistema antiguo con BIOS.
 El disco tiene menos de 2 TB.
@@ -121,7 +121,7 @@ Disposit. Inicio    Comienzo      Fin      Bloques  Id  Sistema
 /dev/sda1   *        2048     2099199     1048576   83  Linux
 /dev/sda2         2099200   134217727    66059264   8e  Linux LVM
 
-#lsblk
+# lsblk
 El comando lsblk muestra información sobre los dispositivos de bloque en el sistema, como discos duros, particiones, SSDs y dispositivos extraíbles
 
 lsblk
@@ -144,7 +144,7 @@ TYPE: Tipo de dispositivo (disk, part, rom, lvm, etc.).
 MOUNTPOINT: Punto de montaje del dispositivo.
 
 
-#parted
+# parted
 parted es una herramienta en Linux utilizada para crear, modificar y administrar particiones de disco. Es compatible con sistemas de particiones GPT y MS-DOS (MBR), permitiendo la creación de particiones sin necesidad de reiniciar el sistema.
 
 #Comandos básicos de parted
@@ -159,10 +159,10 @@ resizepart	                    Redimensiona una partición existente.
 set	                            Cambia atributos de la partición (arranque, LVM, swap, etc.).
 
 ----------------------------------------------------------------------------
-#Escanear controladora scsi para detectar disco en caliente:
-*Estmos forzando al kernel a reescanear los buses SCSI para detectar nuevos discos sin reiniciar el sistema.
+# Escanear controladora scsi para detectar disco en caliente:
+*Estamos forzando al kernel a reescanear los buses SCSI para detectar nuevos discos sin reiniciar el sistema.
 
-#Se usa cuando:
+# Se usa cuando:
 Añades un disco nuevo en VMware / Proxmox / KVM
 Expandes un disco virtual
 Añades almacenamiento SAN
@@ -175,13 +175,13 @@ echo - - - > /sys/class/scsi_host/host0/scan
 echo "- - -" | sudo tee /sys/class/scsi_host/host*/scan
 
 
-#Para averiguar en que controladora tengo los discos:
+# Para averiguar en que controladora tengo los discos:
 cat /proc/scsi/scsi
 
 ## o Utilizar el script para rescanear:
 El script rescan-scsi-bus.sh es una herramienta utilizada en sistemas Linux para redetectar discos conectados a un bus SCSI, como SAN, iSCSI, Fibre Channel y discos virtuales en VMware/KVM sin necesidad de reiniciar el sistema.
 
-#¿Para qué se usa?
+# ¿Para qué se usa?
 Detectar nuevos discos agregados dinámicamente.
 Redetectar cambios en el tamaño de un disco ya presente.
 Eliminar dispositivos desconectados.
@@ -197,17 +197,17 @@ sudo apt install -y sg3-utils
 -----------------------------------------------------------------------
 fdisk -l   /dev/sdb
 
-#partprobe
+# partprobe
 El comando partprobe en Linux se utiliza para informar al sistema operativo de los cambios realizados en las tablas de particiones de los discos sin necesidad de reiniciar o desmontar las unidades. Este comando actualiza la información del kernel sobre las particiones de los dispositivos que han sido modificadas, para que el sistema reconozca las nuevas particiones o cambios en las existentes.
 
 partprobe
 
 
-#¿Qué es un Superbloque en Linux?
+# ¿Qué es un Superbloque en Linux?
 El superbloque es una estructura clave dentro de un sistema de archivos en Linux y otros sistemas Unix. Contiene metadatos críticos que describen la organización del sistema de archivos en un disco o partición.
 
-##Función del Superbloque
-#El superbloque almacena información fundamental sobre el sistema de archivos, como:
+## Función del Superbloque
+# El superbloque almacena información fundamental sobre el sistema de archivos, como:
 
 Tipo de sistema de archivos (ext2, ext3, ext4, xfs, etc.).
 Tamaño del sistema de archivos.
@@ -218,7 +218,7 @@ Ubicación del primer inodo y la estructura de bloques.
 Opciones de montaje y configuración.
 Si el superbloque se corrompe, el sistema de archivos puede volverse inaccesible.
 
-##Borrar el superbloque de un disco:
+## Borrar el superbloque de un disco:
 Eliminar Firmas y Superbloques en Linux
 
 #wipefs
@@ -230,7 +230,7 @@ fdisk -l /dev/sdb
 
 fdisk /dev/sdb
 
-##Dar formato a la particion en linux podemo utilizar ext4 o xfs:
+## Dar formato a la particion en linux podemo utilizar ext4 o xfs:
 mkfs -t xfs /dev/sdb1
 mkfs.xfs /dev/sdb1
 
@@ -250,14 +250,14 @@ mount /logs
 mount /viernes9
 mount -a
 
-##Montaje por dispositivo a traves del fstab:
+## Montaje por dispositivo a traves del fstab:
 
 <dispositivo>   <punto_de_montaje>  <tipo_fs>  <opciones>  <dump>  <fsck>
 
 vi /etc/fstab 
 /dev/sdb1               /informes     xfs          defaults  0        0
 
-##Explicacion:
+## Explicacion:
 Campo	Descripción
 <dispositivo>	Puede ser /dev/sdX, UUID o LABEL.
 <punto_de_montaje>	Ruta donde se montará (ej: /mnt/datos).
@@ -267,11 +267,11 @@ Campo	Descripción
 <fsck>	Orden de chequeo de disco en el arranque (0 = no, 1 = raíz, 2 = otros).
 
 
-##Para comprobar que la linea que creamos en el fstab es correcto:
+## Para comprobar que la linea que creamos en el fstab es correcto:
 mount -a
 
 
-##Explicacion de opciones comunes en /etc/fstab:
+## Explicacion de opciones comunes en /etc/fstab:
 
 defaults	Parámetros por defecto (rw, suid, dev, exec, auto, nouser, async).
 ro / rw	ro (solo lectura), rw (lectura y escritura).
@@ -282,7 +282,7 @@ nouser/user	user permite que usuarios monten el sistema.
 exec / noexec	exec permite ejecutar archivos binarios, noexec los bloquea.
 auto / noauto	auto monta automáticamente al inicio, noauto requiere mount manual.
 
-##Ejemplo:
+## Ejemplo:
 /dev/sdb1  /home  ext4  defaults,noexec  0  0
 
 *La opcion defaults: Usa opciones predeterminadas de Linux:
@@ -300,25 +300,25 @@ mount -o remount,ro /logs
 mount -o remount,rw /logs
 
 **mount --bind 
-#Hace que el contenido de /origen aparezca también en /destino. Ambos apuntarán al mismo contenido físico, aunque tengan rutas diferentes.
+# Hace que el contenido de /origen aparezca también en /destino. Ambos apuntarán al mismo contenido físico, aunque tengan rutas diferentes.
 mount --bind /origen /destino
 
-#¿Qué hace exactamente mount --bind?
+# ¿Qué hace exactamente mount --bind?
 Crea una segunda entrada (alias) al mismo contenido de un directorio (o archivo), sin copiar datos.
 Ambos caminos (el original y el destino) apuntan a los mismos datos físicos.
 Los cambios hechos en uno se reflejan en el otro automáticamente.
 
-#¿Qué hace exactamente?
+# ¿Qué hace exactamente?
 No copia archivos, solo crea una nueva vista del mismo contenido.
 Es útil para hacer accesible un directorio desde otro lugar, sin duplicar datos.
 Cualquier cambio en uno se refleja en el otro.
 
-#Nota:
+# Nota:
 Este montaje no es persistente tras reiniciar.
 Para hacerlo persistente, añade esta línea en /etc/fstab:
 /data /backup none bind 0 0
 
-##Para desmontarlo:
+## Para desmontarlo:
 umount /destino
 #Solo necesitas desmontar el punto de destino (/backup en este caso), no el origen.
 mount
@@ -342,7 +342,7 @@ UUID=be1671ac-e150-4a1b-84aa-da00070e8a10               /logs           xfs     
 -------------------------------------------------------------------------------------------------------------------------------
 *Las unidades de tipo mount en systemd permiten montar automáticamente sistemas de archivos en Linux sin necesidad de modificar /etc/fstab.
 
-#¿Cómo funcionan las unidades .mount?
+# ¿Cómo funcionan las unidades .mount?
 Se definen en /etc/systemd/system/ con el sufijo .mount.
 El nombre del archivo debe coincidir con el punto de montaje, reemplazando / por -
 
@@ -378,7 +378,7 @@ vi /etc/fstab
 
 /dev/sdb1            /informes         xfs     defaults 0 0
 
-##Unit tipo mount creada en tiempo de ejecucion desde el /etc/fstab
+## Unit tipo mount creada en tiempo de ejecucion desde el /etc/fstab
 /run/systemd/generator/informes.mount
 
 [Unit]
@@ -393,7 +393,7 @@ Type=xfs
 
 
 
-##Crear una unit desde cero, personalizada, el nombre de la unit se tiene que corresponder con el punto de montaje.
+## Crear una unit desde cero, personalizada, el nombre de la unit se tiene que corresponder con el punto de montaje.
 
 find /run -name "*.mount"
 /run/systemd/generator/home.mount
@@ -413,7 +413,7 @@ Where=/boot
 Type=xfs
 
 
-##LABORATORIO crar una unit desde cero, personalizada, el nombre de la unit se tiene que corresponder con el punto de montaje.
+## LABORATORIO crar una unit desde cero, personalizada, el nombre de la unit se tiene que corresponder con el punto de montaje.
 
 vi /etc/systemd/system/logs.mount
 
@@ -437,21 +437,21 @@ El término by-uuid hace referencia a la forma en que los sistemas Linux pueden 
 ls -l /dev/disk/by-uuid
 
  
-# systemctl daemon-reload
-# systemctl start logs.mount
+systemctl daemon-reload
+systemctl start logs.mount
 df -hT
 
-# systemctl stop logs.mount
+systemctl stop logs.mount
 df -hT
 
-# systemctl enable logs.mount
-# systemctl disable logs.mount
+systemctl enable logs.mount
+systemctl disable logs.mount
 
 systemctl list-units --type mount --all
 
 
 
-##Archivo /etc/systemd/system/logs.mount con Comentarios y mejorado:
+## Archivo /etc/systemd/system/logs.mount con Comentarios y mejorado:
 
 [Unit]
 # Descripción de la unidad de montaje
@@ -477,10 +477,10 @@ Where=/logs
 Type=xfs
 
 # Opciones de montaje:
-# - defaults -> Configuración estándar del sistema (rw, suid, dev, exec, auto, nouser, async).
-# - nofail -> Evita que el sistema falle al arrancar si el dispositivo no está disponible.
-# - x-systemd.automount -> Permite automontar cuando se accede a /logs, reduciendo el tiempo de arranque.
-# - noatime -> Desactiva la actualización del timestamp de acceso a archivos, mejorando el rendimiento en HDD y SSD.
+- defaults -> Configuración estándar del sistema (rw, suid, dev, exec, auto, nouser, async).
+- nofail -> Evita que el sistema falle al arrancar si el dispositivo no está disponible.
+- x-systemd.automount -> Permite automontar cuando se accede a /logs, reduciendo el tiempo de arranque.
+- noatime -> Desactiva la actualización del timestamp de acceso a archivos, mejorando el rendimiento en HDD y SSD.
 Options=defaults,nofail,x-systemd.automount,noatime
 
 [Install]
@@ -489,7 +489,7 @@ Options=defaults,nofail,x-systemd.automount,noatime
 WantedBy=multi-user.target
 
 -------------------------------------------------------------------------------------------------------------------------------
-##El comando lsof le ayuda a determinar qué proceso está utilizando un archivo del punto de montaje en el momento de iniciar el comando
+## El comando lsof le ayuda a determinar qué proceso está utilizando un archivo del punto de montaje en el momento de iniciar el comando
 lsof /backup/
 
 lsof /backup/
@@ -501,7 +501,7 @@ Como administrador, puede iniciar fuser para forzar la parada de los procesos qu
 Es más que probable que no le guste nada al usuario correspondiente (en el caso presentado aquí, se parará  su shell y se cerrará la sesión).
 
 
-#fuser
+# fuser
 El comando fuser en Linux se utiliza para identificar los procesos que están utilizando un archivo, directorio o sistema de archivos en particular. Es muy útil cuando quieres saber qué procesos están accediendo a un recurso específico, lo que puede ser necesario antes de desmontar un sistema de archivos o eliminar un archivo que está en uso.
 
 fuser --help
@@ -509,10 +509,10 @@ fuser -km /backup
 
 kill -9 8153
 ----------------------------------------------------------------------------------------------
-#EXT4 - Sistema de Archivos en Linux
+# EXT4 - Sistema de Archivos en Linux
 El sistema de archivos EXT4 (Fourth Extended Filesystem) es el más utilizado en distribuciones Linux debido a su fiabilidad, rendimiento y compatibilidad. Es una mejora de EXT3, con nuevas características como journaling mejorado, mayor capacidad de archivos y mejor gestión de fragmentación.
 
-##Características principales de EXT4
+## Características principales de EXT4
 ✅ Journaling mejorado: Protege contra corrupción de datos en caso de apagado inesperado.
 ✅ Soporte de archivos grandes: Maneja archivos de hasta 16 TiB y sistemas de archivos de hasta 1 EiB.
 ✅ Extents: Reduce la fragmentación y mejora el rendimiento.
@@ -521,9 +521,8 @@ El sistema de archivos EXT4 (Fourth Extended Filesystem) es el más utilizado en
 ✅ Reducible y expandible: Se puede aumentar y reducir el tamaño del sistema de archivos.
 
 
-##comando fsck permite comprobar y arreglar un sistema de archivos extendida (ext2 ext3 ext4)
-##El sistema de archivos que se quiere comprobar o arreglar no debería estar montado,
-## o, como mucho, montado en modo de sólo lectura.
+## comando fsck permite comprobar y arreglar un sistema de archivos extendida (ext2 ext3 ext4)
+## El sistema de archivos que se quiere comprobar o arreglar no debería estar montado o, como mucho, montado en modo de sólo lectura.
 
 df -Th
 
@@ -541,7 +540,7 @@ touch /informes/forcefsck
 
 
 
-###badblocks 
+### badblocks 
 El comando badblocks intenta comprobar los bloques defectuosos en el periférico de almacenamiento proporcionado como argumento. 
 mkfs o fsck pueden llamar a este comando si se les proporciona el parámetro -c (check).
 Por defecto, badblocks lee la totalidad de los bloques del soporte y devuelve un error si uno o varios de ellos son ilegibles. 
