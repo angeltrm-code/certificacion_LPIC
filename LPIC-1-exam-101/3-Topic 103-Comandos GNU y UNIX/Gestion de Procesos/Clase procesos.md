@@ -1,15 +1,14 @@
-##Manual de la certificacion:
+## Manual de la certificacion:
 Manual LINUX.pdf -->Pagina 161
 
-##103.5 Crear, supervisar y matar procesos
+## 103.5 Crear, supervisar y matar procesos
 
-##Un proceso representa un programa en curso de ejecución y, al mismo tiempo, todo su entorno de ejecución
+## Un proceso representa un programa en curso de ejecución y, al mismo tiempo, todo su entorno de ejecución
 (memoria, estado, identificación, propietario, padre...).
 
 
-##El comando ps es el que permite informar sobre el estado de los procesos. ps esta
-##basado en el sistema de archivos /proc, es decir, lee directamente la información de los
-##archivos que se encuentran en este directorio
+## El comando ps es el que permite informar sobre el estado de los procesos. 
+# ps esta basado en el sistema de archivos /proc, es decir, lee directamente la información de los archivos que se encuentran en este directorio
 (-e muestra todos los procesos)
 
 La salida que muestras es el formato típico de la información obtenida a través del comando ps en sistemas Unix o Linux. A continuación, te explico lo que significa cada campo:
@@ -48,7 +47,7 @@ TTY	         Terminal desde donde se ejecutó el proceso (si aplica).
 TIME	     Tiempo de CPU utilizado por el proceso.
 CMD     	 Comando que ejecutó el proceso.
 
-##Formato BSD, lo que nos da es un resument del %CPU %MEM
+## Formato BSD, lo que nos da es un resument del %CPU %MEM
 ps aux |more
 
 ps -eo user,pid,tty,stat,command |more
@@ -75,9 +74,8 @@ Subárboles de cgroups: Agrupaciones de procesos bajo un mismo cgroup, lo que pe
 systemd-cgls
 
 
-##kill
-##El comando kill, que literalmente quiere decir matar, sirve no solo para matar o terminar
-##procesos sino principalmente para enviar señales (signals) a los procesos
+## kill
+## El comando kill, que literalmente quiere decir matar, sirve no solo para matar o terminar procesos sino principalmente para enviar señales (signals) a los procesos
 
 kill -l
 kill -9 pid
@@ -133,10 +131,8 @@ Notas:
 
 
 
-##killall
-##El comando killall, que funciona de manera similar a kill, pero con la diferencia de en
-##vez de indicar un PID se indica el nombre del programa, lo que afectará a todos los
-##procesos que tengan ese nombre.
+## killall
+## El comando killall, que funciona de manera similar a kill, pero con la diferencia de en vez de indicar un PID se indica el nombre del programa, lo que afectará a todos los procesos que tengan ese nombre.
 killall -9
 
 killall -l
@@ -150,7 +146,7 @@ yes
 ##Desde otra consola lo puedo matar con el comando:
 killall yes
 
-##Señales disponibles en Linux (killall -l):
+## Señales disponibles en Linux (killall -l):
 
 HUP   (1)  - Reinicia procesos, útil para recargar configuración sin detener el proceso.
 INT   (2)  - Interrumpe un proceso (equivalente a Ctrl + C en la terminal).
@@ -188,9 +184,9 @@ Nota: `KILL (9)` y `STOP (19)` no pueden ser ignoradas ni manejadas por el proce
 
 
 
-##nice
-##Permite cambiar la prioridad de un proceso. Por defecto, todos los procesos tienen una
-##prioridad igual ante el CPU que es de 0. Prioridad -20 a +19 de un proceso.
+## nice
+## Permite cambiar la prioridad de un proceso. Por defecto, todos los procesos tienen una
+## prioridad igual ante el CPU que es de 0. Prioridad -20 a +19 de un proceso.
 
 nice -n -5 comando
 nice -n -5 yes
@@ -232,7 +228,7 @@ Dash	/bin/dash o -dash
 Sh	/bin/sh o -sh
 Fish	/usr/bin/fish
 
-Los comandos bg y jfg permiten actuar en estos jobs tomando como parámetro su número. Se ejecuta el comando bg en un job parado para iniciarlo de nuevo en segundo plano
+Los comandos bg y fg permiten actuar en estos jobs tomando como parámetro su número. Se ejecuta el comando bg en un job parado para iniciarlo de nuevo en segundo plano
 jobs
 fg (foreground) y bg background
 
@@ -344,7 +340,7 @@ CPU usage: Porcentaje de uso del CPU dividido en usuarios, sistema, y procesos i
 Memory (Mem y Swap): Información del uso de la memoria RAM y de la memoria de intercambio (swap).
 
 
-###Lista de procesos: Muestra los procesos actualmente en ejecución, con columnas que incluyen:
+### Lista de procesos: Muestra los procesos actualmente en ejecución, con columnas que incluyen:
 
 PID: Identificador del proceso.
 USER: Usuario que ejecuta el proceso.
@@ -361,37 +357,37 @@ COMMAND: El nombre del comando o proceso.
 
 El comando vmstat en Linux y sistemas Unix proporciona información sobre el rendimiento del sistema, mostrando estadísticas relacionadas con la memoria, los procesos, la CPU y el uso de I/O (entrada/salida). Es una herramienta útil para monitorizar el estado del sistema y diagnosticar problemas de rendimiento.
 
-#Campos importantes en la salida de vmstat:
+# Campos importantes en la salida de vmstat:
 Procesos (procs):
 r: Número de procesos en cola de ejecución (running o waiting).
 b: Número de procesos bloqueados, esperando recursos de I/O.
 
-#Memoria (memory):
+# Memoria (memory):
 swpd: Cantidad de memoria usada en el espacio de intercambio (swap) en KB.
 free: Memoria libre disponible en KB.
 buff: Memoria utilizada como buffers (normalmente para escritura en disco).
 cache: Memoria utilizada como caché de disco.
 
-#Swap:
+# Swap:
 si: Cantidad de memoria intercambiada desde el disco (swap-in) en KB/s.
 so: Cantidad de memoria intercambiada hacia el disco (swap-out) en KB/s.
 
-#I/O:
+# I/O:
 bi: Cantidad de bloques de entrada desde dispositivos de bloque (lecturas de disco) en bloques/s.
 bo: Cantidad de bloques de salida hacia dispositivos de bloque (escrituras en disco) en bloques/s.
 
-#Sistema (system):
+# Sistema (system):
 in: Número de interrupciones por segundo, incluyendo las de hardware.
 cs: Número de cambios de contexto por segundo (cuando el CPU cambia de un proceso a otro).
 
-#CPU:
+# CPU:
 us: Porcentaje de tiempo de CPU usado por procesos en espacio de usuario.
 sy: Porcentaje de tiempo de CPU usado por el sistema (procesos del kernel).
 id: Porcentaje de tiempo que la CPU está inactiva.
 wa: Porcentaje de tiempo que la CPU está esperando operaciones de I/O.
 st: Porcentaje de tiempo robado a una máquina virtual por el hipervisor.
 ----------------------------------------------------------------------------------------------------------------------------
-##Laboratorio  Matar un programa zombi
+## Laboratorio  Matar un programa zombi
 yum install  make gcc  -y
 apt install make gcc  -y
 
@@ -427,13 +423,13 @@ exit(0);
 return(0);
 }
 
-##Compile con gcc:
+## Compile con gcc:
 gcc zombi.c -o zombi
 
-##Ejecute el programa zombi en segundo plano.
+## Ejecute el programa zombi en segundo plano.
 ./zombi &
 
-##Dispone de dos minutos. Identifique el PID y el PPID del proceso zombi.
+## Dispone de dos minutos. Identifique el PID y el PPID del proceso zombi.
 
 ps -eo uname,pid,ppid,stat,args |grep Z
 root 1961 1960 Z [zombi] <defunct>
@@ -444,8 +440,8 @@ El PID es 1961 y el PPID es 1960.
 Hay que matar el proceso padre:
 kill -9 1960
 
-##Verifique.
-# ps -eo uname,pid,ppid,stat,args |grep Z
+## Verifique.
+ps -eo uname,pid,ppid,stat,args |grep Z
 root 1974 1895 S+ grep Z
 
 ----------------------------------------------------------------------------------------------------------------------------
@@ -459,11 +455,10 @@ cd /lpic1
 unzip access_log.zip
 du -hs access_log
 
-vi /etc/resolv.conf
-nameserver 8.8.8.8
+
 -----------------------------------------------------------------------------------------------------------------------------
-El término lsof es la abreviatura de LiSt Open Files que como lo indica su nombre lista los archivos abiertos
-##El comando lsof le ayuda a determinar  qué proceso está utilizando un archivo del punto de montaje en el momento de iniciar el comando
+## El término lsof es la abreviatura de LiSt Open Files que como lo indica su nombre lista los archivos abiertos
+## El comando lsof le ayuda a determinar  qué proceso está utilizando un archivo del punto de montaje en el momento de iniciar el comando
 
 lsof --help
 lsof /backup/
@@ -472,7 +467,7 @@ COMMAND  PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
 bash    8153 root  cwd    DIR   8,17     4096    2 /backup
 
 
-##Ver todos los puertos que estan listando:
+## Ver todos los puertos que estan listando:
  lsof -i -P -n
  
 Visualizar los puertos TCP y UDP así como las conexiones activas en el sistema, usando el parámetro -i
@@ -505,7 +500,7 @@ Ver archivos en uso por un usuario, en un directorio o path específico
 
 # lsof -u nksistemas -a +D /bin
 
-##Como administrador, puede iniciar fuser para forzar la parada de los procesos que estén accediendo al punto de montaje.
+## Como administrador, puede iniciar fuser para forzar la parada de los procesos que estén accediendo al punto de montaje.
 fuser --help
 -a,--all              display unused files too
   -i,--interactive      ask before killing (ignored without -k)
