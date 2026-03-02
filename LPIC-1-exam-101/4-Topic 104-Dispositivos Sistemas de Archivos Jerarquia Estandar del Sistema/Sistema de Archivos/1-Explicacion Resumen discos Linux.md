@@ -234,19 +234,19 @@ fdisk /dev/sdb
 mkfs -t xfs /dev/sdb1
 mkfs.xfs /dev/sdb1
 
-mkdir /logs
-mount -vvv /dev/sdb1 /logs
+mkdir /informes
+mount -vvv /dev/sdb1 /informes
 df -hT
 mount -a
 
 
-umount /logs
+umount /informes
 
 vi /etc/fstab
 /dev/sdb1                       /informes                  xfs     defaults       0 0
 /dev/sdc1                       /viernes9                ext4    defaults       0 0
 
-mount /logs
+mount /informes
 mount /viernes9
 mount -a
 
@@ -296,8 +296,8 @@ nouser → Solo root puede montar.
 async → Operaciones de lectura/escritura asíncronas.
 
 
-mount -o remount,ro /logs
-mount -o remount,rw /logs
+mount -o remount,ro /informes
+mount -o remount,rw /informes
 
 **mount --bind 
 #  Hace que el contenido de /origen aparezca también en /destino. Ambos apuntarán al mismo contenido físico, aunque tengan rutas diferentes.
@@ -338,7 +338,7 @@ UUID es un número aleatorio codificado en bits lo suficientemente complejo como
 # lsblk -f
 
 vi /etc/fstab 
-UUID=be1671ac-e150-4a1b-84aa-da00070e8a10               /logs           xfs     defaults 0 0
+UUID=be1671ac-e150-4a1b-84aa-da00070e8a10               /informes           xfs     defaults 0 0
 -------------------------------------------------------------------------------------------------------------------------------
 *Las unidades de tipo mount en systemd permiten montar automáticamente sistemas de archivos en Linux sin necesidad de modificar /etc/fstab.
 
@@ -370,7 +370,7 @@ WantedBy=multi-user.target         #  Activa el montaje al inicio del sistema
 
 
 
-/run/systemd/generator/logs.mount
+/run/systemd/generator/informes.mount
 
 El archivo /etc/fstab (File System Table) es el archivo de configuración que define qué sistemas de archivos deben montarse automáticamente al iniciar Linux.
 
@@ -415,7 +415,7 @@ Type=xfs
 
 # #  LABORATORIO crar una unit desde cero, personalizada, el nombre de la unit se tiene que corresponder con el punto de montaje.
 
-vi /etc/systemd/system/logs.mount
+vi /etc/systemd/system/informes.mount
 
 [Unit]
 Description=Mount System Backups Directory
@@ -424,8 +424,8 @@ Description=Mount System Backups Directory
 What=/dev/sdb1
 # # by-uuid para el disco /dev/sdb1
 # What=/dev/disk/by-uuid/5a2591ba-7009-4949-a0cd-b2792bf80820
-Where=/logs
-# Where=/cliente1/logs/data
+Where=/informes
+# Where=/cliente1/informes/data
 Type=xfs
 Options=defaults
 
@@ -438,20 +438,20 @@ ls -l /dev/disk/by-uuid
 
  
 systemctl daemon-reload
-systemctl start logs.mount
+systemctl start informes.mount
 df -hT
 
-systemctl stop logs.mount
+systemctl stop informes.mount
 df -hT
 
-systemctl enable logs.mount
-systemctl disable logs.mount
+systemctl enable informes.mount
+systemctl disable informes.mount
 
 systemctl list-units --type mount --all
 
 
 
-# #  Archivo /etc/systemd/system/logs.mount con Comentarios y mejorado:
+# #  Archivo /etc/systemd/system/informes.mount con Comentarios y mejorado:
 
 [Unit]
 #  Descripción de la unidad de montaje
@@ -471,7 +471,7 @@ After=network-online.target
 What=/dev/disk/by-uuid/5a2591ba-7009-4949-a0cd-b2792bf80820
 
 #  Punto de montaje en el sistema de archivos donde se accederá a los datos del dispositivo.
-Where=/logs
+Where=/informes
 
 #  Tipo de sistema de archivos que se montará (en este caso, XFS).
 Type=xfs
@@ -479,7 +479,7 @@ Type=xfs
 #  Opciones de montaje:
 - defaults -> Configuración estándar del sistema (rw, suid, dev, exec, auto, nouser, async).
 - nofail -> Evita que el sistema falle al arrancar si el dispositivo no está disponible.
-- x-systemd.automount -> Permite automontar cuando se accede a /logs, reduciendo el tiempo de arranque.
+- x-systemd.automount -> Permite automontar cuando se accede a /informes, reduciendo el tiempo de arranque.
 - noatime -> Desactiva la actualización del timestamp de acceso a archivos, mejorando el rendimiento en HDD y SSD.
 Options=defaults,nofail,x-systemd.automount,noatime
 
@@ -530,7 +530,7 @@ df -Th
 -p para intentar una reparación automática
 -y para forzar las respuestas a sí
 
-umount /logs
+umount /informes
 fsck -fpVy /dev/sdb1
 
 
@@ -616,13 +616,13 @@ badblocks -vn /dev/sdb1
 # # Asigna una etiqueta al dispositivo de almacenamiento dispositivo formateado a  xfs
 xfs_admin -L etiqueta dispositivo
 xfs_admin -L oracle /dev/sdb1
-mount -L oracle /logs
+mount -L oracle /informes
 
 # # Para ver la label
 lsblk -f
 
 vi /etc/fstab
-LABEL=oracle    /logs        xfs   defaults       0 0
+LABEL=oracle    /informes        xfs   defaults       0 0
 
 mount -a
 df hT
@@ -632,7 +632,7 @@ df hT
 # Defragmentación de sistema de archivos.
 
 La defragmentación se puede realizar con toda seguridad con el sistema de archivos
-activo y montado. Se utiliza la herramienta xfs_fsr con la ruta del dispositivo de la
+activo y montado. Se utiliza la herramienta con la ruta del dispositivo de la
 partición deseada. Ejemplo:
 
 xfs_fsr /dev/sdf1
@@ -766,7 +766,7 @@ xfsrestore: Restaura datos desde un archivo de respaldo generado con xfsdump.
 
 df -hT
 S.ficheros              Tipo     Tamaño Usados  Disp Uso% Montado en
-/dev/sdb1               xfs        5,0G    33M  5,0G   1% /logs
+/dev/sdb1               xfs        5,0G    33M  5,0G   1% /informes
 
 # Comprobamos y instalamos el software:
 rpm -qa xfsdump
@@ -775,39 +775,38 @@ yum install xfsdump -y
 # Creamos la particion y formateamos y la montamos
 fdisk /dev/sdb
 mkfs.xfs /dev/sdb1
-mount /dev/sdb1 /logs
+mount /dev/sdb1 /informes
 
 
-# Particionamos el /dev/sdb1 y lo monto en /logs 
-cp /etc/*.conf /logs
-touch /logs/viernes4
+# Particionamos el /dev/sdb1 y lo monto en /informes 
+cp /etc/*.conf /informes
+touch /informes/lunes02
 
 # # Realizo el backup de la particion /dev/sdb1 en un fichero en /cs
 xfsdump -f /cs /dev/sdb1
 
-rm -rf /logs/*
+rm -rf /informes/*
 
-xfsrestore -f /cs /logs
-ls -l /logs
+xfsrestore -f /cs /informes
+ls -l /informes
 
-# # Con este comando podemos ver lo que tenemos en la copia, y restaurar los archivos de uno en uno
-# # si es necesario -i interactiva:
-# Para este laboratorio utilizaremos el archivo viernes4
+# # Con este comando podemos ver lo que tenemos en la copia, y restaurar los archivos de uno en uno si es necesario -i interactiva:
+# Para este laboratorio utilizaremos el archivo lunes02
 
-rm -rf /logs/viernes4
+rm -rf /informes/lunes02
 
-# # Comenzamos la restauracion solo del archivo viernes4
+# # Comenzamos la restauracion solo del archivo lunes02
 
-xfsrestore -f /cs -i -v silent /logs
+xfsrestore -f /cs -i -v silent /informes
  -> ls
- -> add viernes4
+ -> add lunes02
  -> extract
  
 # # Comprobamos que se ha restaurado:
-#  ls -l /logs/viernes4
+#  ls -l /informes/lunes02
 -----------------------------------------------------------------------------------------------
 
-Particionamos el /dev/sdc1 y lo monto en /logs-resplado
+# Particionamos el /dev/sdc1 y lo monto en /informes-respaldo
 
 
-xfsrestore -f /cs /logs-resplado
+xfsrestore -f /cs /informes-respaldo

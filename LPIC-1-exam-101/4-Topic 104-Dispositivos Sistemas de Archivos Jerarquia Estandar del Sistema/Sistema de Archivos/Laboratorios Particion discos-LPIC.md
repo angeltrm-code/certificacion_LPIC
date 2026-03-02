@@ -87,7 +87,7 @@ UUID=be1671ac-e150-4a1b-84aa-da00070e8a10               /informes     xfs       
 
 ## Comprobamos que todo esta correcto en el /etc/fstab:
 mount -a
-df hT
+df -hT
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -183,9 +183,8 @@ wipefs -a /dev/sdb
 fdisk -l /dev/sdb
 
 
-## Crear una particion /dev/sdb1
-formatearla a xfs
-Montarla en el directorio /logs
+## Crear una particion /dev/sdb1 formatearla a xfs
+# Montarla en el directorio /logs
 
 
 ## Averiguar como se llaman los discos en nuestro equipo
