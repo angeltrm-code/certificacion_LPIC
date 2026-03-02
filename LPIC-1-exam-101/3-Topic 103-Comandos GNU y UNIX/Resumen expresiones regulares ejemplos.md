@@ -1,4 +1,4 @@
-##Clonar repositorio formador:
+## Clonar repositorio formador:
 dnf install git unzip -y
 cd /
 git clone https://github.com/agarciafer/lpic1.git
@@ -6,10 +6,10 @@ cd /lpic1
 unzip access_log.zip
 
 
-##El Shell y los comandos GNU pagina 112 pdf del manual curso
+## El Shell y los comandos GNU pagina 112 pdf del manual curso
 
 
-###Resumen Expresión regular###
+### Resumen Expresión regular###
 Shell Bash de Linux Comandos Manejo de Texto.pdf pagina 90
 pagina 48 Cuantificadores
  
@@ -26,7 +26,7 @@ pagina 48 Cuantificadores
 
 grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' access_log
 
-##Agrupar la expresion regular con ( )
+## Agrupar la expresion regular con ( )
 
 grep -Eo "([0-9]{1,3}\.){3}[0-9]{1,3}" access_log
 
@@ -41,7 +41,7 @@ grep -Eio '[a-z0-9]{1,}\.[a-z]{1,}\.[a-z]{1,}\.[a-z]{1,}' access_log
 
 grep -Eio '[a-z0-9]{1,}\.[a-z0-9]{1,}\.[a-z0-9]{1,}\.[a-z0-9]{1,}' access_log |sort |uniq -c |sort -rn
 
-##Controlar dominos de maquina con 3 o mas 3 0 4 octetos
+## Controlar dominos de maquina con 3 o mas 3 0 4 octetos
 
 grep -Eio '([a-z]{1,}\.){2,3}[a-z]{1,}' access_log
 
@@ -65,7 +65,7 @@ sort -t. -k1,1n -k2,2n -k3,3n -k4,4n:
 -k1,1n -k2,2n -k3,3n -k4,4n: Ordena numéricamente cada parte de la dirección IP. Para las FQDN, sort manejará los dominios como cadenas de texto.
 
 
-##Laboratorio grep con expresiones regulares:
+## Laboratorio grep con expresiones regulares:
 – Obtener la dirección MAC de la interfaz de red eth0 de nuestra máquina:
 
 08:00:27:c2:05:d3
@@ -76,7 +76,7 @@ ifconfig eth0 | grep -oiE '([0-9A-F]{2}:){5}[0-9A-F]{2}'
 ifconfig eth0 | grep -oE '([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}'
 
 
-###Explicación:
+### Explicación:
 
 Sacamos la dirección MAC de la interfaz eth0 de nuestra máquina haciendo un: ifconfig eth0
 Y aplicando el filtro grep: grep -oiE ‘([0-9A-F]{2}:){5}[0-9A-F]{2}’
@@ -102,7 +102,7 @@ non.magna2@curso.cat
 Curabitur.sed@elitpellentesque.co.uk
 agarcia_fer@dominio.es
 
-##Extraer la lista de direcciones de correo electrónico de un archivo:
+## Extraer la lista de direcciones de correo electrónico de un archivo:
 grep -Eio '[a-z0-9._-]+@[a-z0-9.-]+[a-z]{2,4}' empleados.csv
 
 grep -Eio  '[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}' empleados.csv
@@ -117,14 +117,14 @@ Parte de la RegEx	     Explicación
 [a-z]{2,4}	             Extensión de dominio de 2 a 4 letras (.com, .net, .org, etc.).
 
 
-#Posibles mejoras
-1. Permitir mayúsculas en el usuario y dominio
+# Posibles mejoras
+# 1. Permitir mayúsculas en el usuario y dominio
 La -i ya ignora mayúsculas, pero podemos hacer explícito el patrón:
 grep -Eio '[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}' empleados.csv
 ✔️ Esto permite dominios más largos (.museum, .technology) al cambiar {2,4} por {2,}.
 
 
-2. Usar \b para evitar falsos positivos
+# 2. Usar \b para evitar falsos positivos
 Si el archivo contiene caracteres que pueden afectar la detección, es recomendable usar \b para delimitar el email:
 grep -Eio '\b[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b' empleados.csv
 ✔️ Evita capturar emails parciales dentro de palabras más largas.
@@ -134,11 +134,11 @@ grep -Eio '\b[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b' empleados.csv
 grep -Eio  '[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z0-9]{2,}' empleados.csv
 non.magna2@miempresa.infoa1
 
-#Explicación:
+# Explicación:
 Utilizo las mismas opciones que en el caso anterior:
 -o Indica que la salida del comando debe contener sólo el texto que coincide con el patrón, en lugar de toda la línea, como es lo habitual. -i Lo he usado para que ignore la distinción entre mayúsculas y minúsculas. -E Indica que vamos a usar una expresión regular extendida.
 
-##Analicemos ahora la expresión regular:
+## Analicemos ahora la expresión regular:
 [a-z0-9._-]+@[a-z0-9.-]+[a-z]{2,4}
 
 Al igual que antes, la vamos dividiendo en partes:
@@ -148,7 +148,7 @@ Al igual que antes, la vamos dividiendo en partes:
 [a-z]{2,4} seguido de una cadena de entre dos y cuatro caracteres. 
  
 --------------------------------------------------------------------------------------------
-##Pagina 144 Manual de certificacion LPIC1  Los canales estándares
+## Pagina 144 Manual de certificacion LPIC1  Los canales estándares
 crontab -e
 0 3 * * 1-5 /scripts/backup.sh 2>&1 |mail -s "Backup servidorA"  usuario@correo.es usuario
 
@@ -157,7 +157,7 @@ Puede redireccionar los dos canales de salida a un único archivo poniéndolos e
  
  du -sh / >& /tmp/salida2 
 
-5. Los canales estándares Se puede considerar un canal como un archivo que posee su propio descriptor por defecto,  y en el cual se puede leer o escribir.
+# 5. Los canales estándares Se puede considerar un canal como un archivo que posee su propio descriptor por defecto,  y en el cual se puede leer o escribir.
  • El canal de entrada estándar se llama stdin y lleva el descriptor 0. 
  • El canal de salida estándar se llama stdout y lleva el descriptor 1. 
  • El canal de error estándar se llama stderr y lleva el descriptor 2.
@@ -188,8 +188,7 @@ El contenido de nombres.txt se envía como entrada al comando sort.
 mysql < cargabd.sql
 
   
-##Ejecute un comando que enumere todos los procesos, pero use un comando que permita expresiones regulares extendidas
-##para mostrar todos los procesos en ejecución que contengan dos caracteres "s" consecutivos:
+## Ejecute un comando que enumere todos los procesos, pero use un comando que permita expresiones regulares extendidas para mostrar todos los procesos en ejecución que contengan dos caracteres "s" consecutivos:
  
  ps -aux |egrep "^ss+"  
 
@@ -197,19 +196,19 @@ mysql < cargabd.sql
 grep -E "^root|^dbus" /etc/passwd
 
 
-##Para eliminar el grep del final:
+## Para eliminar el grep del final:
 ps -ef |grep -w apache |grep -v grep
 
 
-#sed
+# sed
 sed se usa para buscar, reemplazar, eliminar o modificar texto directamente desde la línea de comandos, sin abrir un editor interactivo
 
-##Para insertar texto encima de la 1 linea:
+## Para insertar texto encima de la 1 linea:
 -i (in-place) → Modifica el archivo directamente, en lugar de imprimir la salida en la terminal.
 Si no se usa -i, sed solo mostrará el resultado en pantalla sin modificar el archivo.
 -e (script de edición) → Permite especificar un script de sed como argumento.
 
-#Se puede usar -i.bak para crear un backup antes de hacer los cambios, por ejemplo
+# Se puede usar -i.bak para crear un backup antes de hacer los cambios, por ejemplo
 sed -i.bak 's/hola/bar2/g' archivo.txt
 
 
@@ -218,28 +217,28 @@ sed -i.bak '1i\##Empleados Cliente1-2025-Abril' empleados.csv
 
 
 
-#Primera coindicencia por linia en el fichero
+# Primera coindicencia por linia en el fichero
  sed  -e 's/es/ES/' empleados.csv |grep -i es
  sed  -e 's/ES/es/' empleados.csv |grep -i ES
 sed  -i -e   's/org/gal/g' empleados.csv |grep -i gal
 
 
-#En todo el fichero:
+# En todo el fichero:
 sed  -e 's/es/ES/g' empleados.csv |grep -i es
 sed  -e 's/edu/ES/g' empleados.csv 
 
  
-#En todo el fichero:
+# En todo el fichero:
 sed  -i -e 's/edu/es/g' empleados.csv |grep -i es
 sed  -i -e 's/ES/edu/g' empleados.csv |grep -i edu
 
  
- #Para sustituir en un archivo de empleados por ejemplo los dominios de correo .co.uk por .com:
+ # Para sustituir en un archivo de empleados por ejemplo los dominios de correo .co.uk por .com:
  sed -i -e 's/\.co\.es/\.gal/g' empleados.csv
 
  
  
-#Para aplicar cambios:
+# Para aplicar cambios:
  
  sed -i  -e 's/es/ES/g' empleados.csv |grep -i es
 
@@ -248,58 +247,58 @@ sed -i -e 's/miempresa.infoa1/miempresa.net/g' empleados.csv
 
 
 
-###Resumen de sed -i -e en Linux
+### Resumen de sed -i -e en Linux
 
-1. Opción -i (in-place):
+# 1. Opción -i (in-place):
 
-#Modifica el archivo directamente.
+# Modifica el archivo directamente.
 Se puede usar -i.bak para crear un backup antes de modificar el archivo.
 
-#Ejemplo:
+# Ejemplo:
 
 sed -i 's/foo/bar/' archivo.txt
 sed -i.bak 's/foo/bar/' archivo.txt  # Crea una copia archivo.txt.bak
 
-2. Opción -e (script de edición):
+# 2. Opción -e (script de edición):
 Permite especificar múltiples comandos de sed.
 
 Puede ser omitido si se usa solo un comando.
 Ejemplo:
 sed -i -e 's/foo/bar/' -e 's/baz/qux/' archivo.txt
 
-3. Reemplazo de texto (s/expresión/reemplazo/):
+# 3. Reemplazo de texto (s/expresión/reemplazo/):
 
 Sustituye un texto en todas las líneas del archivo.
 Ejemplo:
 sed -i 's/Apache/Nginx/' config.txt
 
-4. Borrar líneas que coincidan con un patrón:
+# 4. Borrar líneas que coincidan con un patrón:
 d elimina líneas que contengan el patrón especificado.
 
 Ejemplo:
 sed -i -e '/DEBUG/d' logs.txt
 
-5. Modificar solo una línea específica:
+# 5. Modificar solo una línea específica:
 N s/expresión/reemplazo/ permite modificar solo la línea N.
 
 Ejemplo:
 sed -i -e '2s/error/warning/' logs.txt  # Solo en la línea 2
 
-6. Resumen de comandos comunes:
+# 6. Resumen de comandos comunes:
 Opción
 Descripción
 -i
 
-Edita el archivo en su lugar (modifica directamente).
+# Edita el archivo en su lugar (modifica directamente).
 -e
 
-Permite especificar múltiples comandos de edición.
+# Permite especificar múltiples comandos de edición.
 s/exp/res/
 
-Reemplazo de expresiones.
+# Reemplazo de expresiones.
 /patrón/d
 
-#Elimina líneas que coinciden con el patrón.
+# Elimina líneas que coinciden con el patrón.
 Recomendación: Siempre hacer un backup antes de modificar archivos importantes:
 cp archivo.txt archivo.txt.bak
 sed -i -e 's/foo/bar/' archivo.txt
@@ -308,11 +307,11 @@ sed -i -e 's/foo/bar/' archivo.txt
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
-#xargs
+# xargs
 
 xargs es un comando muy útil en Linux/Unix que toma elementos de la entrada estándar y los pasa como argumentos a otro comando. Se usa mucho en combinación con find, echo, cat, etc.
 
-##En este ejemplo, xargs ayuda a encontrar todos los archivos que contienen la palabra “Factura”. Para ello, además de find se usa también el comando grep.
+## En este ejemplo, xargs ayuda a encontrar todos los archivos que contienen la palabra “Factura”. Para ello, además de find se usa también el comando grep.
 
 find -name "*.txt" | xargs grep "Factura"
 
@@ -339,17 +338,17 @@ Confirmación antes de ejecutar: echo archivo1 archivo2 | xargs -p rm
 
 Eliminar archivos con nombres que contienen espacios: find . -name "*.txt" -print0 | xargs
 
-##Busca archivos con extesion log y que los cuente:
+## Busca archivos con extesion log y que los cuente:
 find / -type f  -name "*.log" | xargs -I {} echo {} |wc -l
 
 | xargs -I {} echo {}: Usa xargs para procesar cada archivo encontrado, pasando su nombre a echo, lo cual permite generar una lista de nombres de archivo.
 
 
 
-#Ejemplo 1: Listar archivos .log mayores de 10 MB
+# Ejemplo 1: Listar archivos .log mayores de 10 MB
 find /var/log -type f -name "*.log" -size +10M | xargs -I {} ls -lh {}
 
-#Desglose paso a paso:
+# Desglose paso a paso:
 
 find /var/log
 → Busca dentro del directorio /var/log y sus subdirectorios.
@@ -372,10 +371,10 @@ Ejecuta ls -lh {} para mostrar su tamaño en formato legible.
 
 
 
-#Ejemplo 3: Borrar los .log antiguos (más de 30 días)
+# Ejemplo 3: Borrar los .log antiguos (más de 30 días)
 find /var/log -type f -name "*.log" -mtime +30 | xargs -I {} rm -f {}
 
-#Desglose paso a paso:
+# Desglose paso a paso:
 find /var/log
 → Explora /var/log y subdirectorios.
 

@@ -4,7 +4,7 @@ arch
 # Buscar archivos con extension mp3 en todo /
 find / -type f -name *.mp3
 
-# Buscar archivos en el directorio /var con un tama�o superior a 100M
+# Buscar archivos en el directorio /var con un tamaño superior a 100M
 find /var -type f -size +100M -ls
 
 # Buscar archivo el el directorio / con un tama�o menor de 1M
@@ -28,7 +28,7 @@ find /musica -type f -name "*.mp3" -exec rm -rf {} \;
 find /datos2 -type f -name "archivo*" -exec cp {} /miercoles7  \;
 
 # Que hace el comado fc
-El comando fc en Linux y sistemas similares a Unix es una utilidad del shell que permite manipular el historial de comandos, ya que el shell almacena los comandos que se han ejecutado para que se puedan reutilizar o editar m�s tarde.
+El comando fc en Linux y sistemas similares a Unix es una utilidad del shell que permite manipular el historial de comandos, ya que el shell almacena los comandos que se han ejecutado para que se puedan reutilizar o editar mas tarde.
 fc -l
 
 # Como repito el comando del historial 99
@@ -94,7 +94,7 @@ find / -type d -perm -2000
 umask -S
 umask
 
-Que hace la variable de entorno LD_LIBRARY_PATH
+# Que hace la variable de entorno LD_LIBRARY_PATH
 es una variable de entorno en sistemas Unix y Linux que especifica una lista de directorios donde el sistema debe buscar bibliotecas compartidas (shared libraries) antes de las rutas estandar del sistema cuando se ejecutan programas. Esta variable es muy util cuando tienes bibliotecas que no estan en las ubicaciones estandar o cuando quieres utilizar versiones personalizadas de las mismas sin alterar las del sistema.
 
 # instalar webmin con rpm como dpkg

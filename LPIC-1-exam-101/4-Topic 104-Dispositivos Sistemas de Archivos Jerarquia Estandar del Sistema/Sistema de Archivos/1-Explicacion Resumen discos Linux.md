@@ -1,64 +1,64 @@
-## Pagina 208 Manual del curso PDF## 
+# #  Pagina 208 Manual del curso PDF# #  
 
-### IDE Los discos con controladores IDE (también llamados PATA, Parallel Ata o ATAPI) 
+# # #  IDE Los discos con controladores IDE (también llamados PATA, Parallel Ata o ATAPI) 
 se llaman hdX: • hda: IDE0, Master • hdb: IDE0, Slave • hdc: IDE1, Master • hdd: IDE1, Slave
 
-### SCSI, SATA, USB, FIREWIRE, etc.
+# # #  SCSI, SATA, USB, FIREWIRE, etc.
 • sda: primer disco SCSI • sdb: segundo disco SCSI • sdc: tercer disco SCSI 
 • etc. La norma SCSI marca una diferencia entre los diversos soportes. Así, los
 
 lectores de CD-Rom, DVD, HD-DVD, BlueRay y los grabadores asociados no llevan el mismo nombre.
  Los lectores y grabadores están en srX (sr0, sr1, etc.).
  
-## La mv esta en un hipervisor KVM:
+# #  La mv esta en un hipervisor KVM:
 /dev/vda 
 /dev/vdb
 ...
 
-## La mv esta en un hipervisor XEM Linux:
+# #  La mv esta en un hipervisor XEM Linux:
 /dev/xvda 
 /dev/xvdb
 ...
 
-## Averiguar los discos que tiene nuestro servidor:
+# #  Averiguar los discos que tiene nuestro servidor:
 cat /proc/partitions
 fdisk -l
 fdisk -l /dev/sda
 
 lsscsi 
 
-# lsblk
+#  lsblk
 El comando lsblk (list block devices) en Linux se usa para mostrar una lista de dispositivos de bloques, como discos duros, SSDs, particiones, y unidades USB, en forma de árbol.
 
 lsblk -fp
 -f	Muestra información del sistema de archivos, como el tipo (xfs, ext4), el UUID, y la etiqueta (LABEL).
 -p	Muestra la ruta completa del dispositivo, como /dev/sda1 en lugar de solo sda1.
 
-## Visualizar puntos de montaje:
+# #  Visualizar puntos de montaje:
 mount
 
 El comando mount se usa para asociar un dispositivo o sistema de archivos a un directorio (punto de montaje) para poder acceder a su contenido.
 
-#findmnt
+# findmnt
 El comando findmnt en Linux se utiliza para buscar, mostrar o verificar información sobre los sistemas de archivos montados. Es una herramienta poderosa para mostrar la jerarquía de sistemas de archivos y puntos de montaje de una forma clara y organizada. findmnt puede buscar en diferentes orígenes, como el contenido de /etc/fstab, /etc/mtab y /proc/self/mountinfo.
 
 findmnt
 
 
-## Tipo de particiones para GPT ---> UEFI --> con gdisk
+# #  Tipo de particiones para GPT ---> UEFI --> con gdisk
  • 8300 : partición de tipo Linux (datos)
  • 8200 : partición de tipo swap 
  • fd00 : partición de tipo RAID 
  • 8e00 : partición de tipo LVM
  
-## Tipo de particiones MBR --> BIOS-->fdisk
+# #  Tipo de particiones MBR --> BIOS-->fdisk
  • 83 : partición de tipo Linux (datos)
  • 82 : partición de tipo swap 
  • fd : partición de tipo RAID 
  • 8e : partición de tipo LVM
  
  
-## Tabla Comparativa: MBR vs GPT
+# #  Tabla Comparativa: MBR vs GPT
 
 Característica	               MBR (Master Boot Record)	                        GPT (GUID Partition Table)
 Compatibilidad	              Compatible con BIOS antiguo	                    Compatible con UEFI
@@ -69,7 +69,7 @@ Seguridad y redundancia	No tiene redundancia	                       Almacena cop
 Corrección de errores	Sin detección de errores	                  Incluye CRC32 para verificar y corregir errores
 Compatibilidad con sistemas operativos	Windows XP, Vista, 7 (modo BIOS) y Linux	Windows 10/11, macOS, Linux (modo UEFI) 
 
-## Explicación Detallada
+# #  Explicación Detallada
 
 a) MBR (Master Boot Record)
 MBR es el esquema de particionado más antiguo, utilizado desde los años 80.
@@ -82,7 +82,7 @@ No tiene mecanismos de redundancia, por lo que si el MBR se corrompe, el disco p
 📌 Ejemplo de uso: Discos antiguos, sistemas BIOS heredados.
 
 
-# GPT (GUID Partition Table)
+#  GPT (GUID Partition Table)
 GPT es la tecnología más moderna, diseñada para reemplazar MBR.
 Utiliza UEFI en lugar de BIOS para gestionar el arranque.
 Ventajas principales:
@@ -94,7 +94,7 @@ Usa sumas de verificación CRC32 para detectar y corregir errores en la tabla de
 📌 Ejemplo de uso: Discos modernos, servidores, almacenamiento masivo, sistemas con UEFI.
 
 
-# ¿Cuál elegir?
+#  ¿Cuál elegir?
 ✅ Usar MBR si:
 Tienes un sistema antiguo con BIOS.
 El disco tiene menos de 2 TB.
@@ -121,7 +121,7 @@ Disposit. Inicio    Comienzo      Fin      Bloques  Id  Sistema
 /dev/sda1   *        2048     2099199     1048576   83  Linux
 /dev/sda2         2099200   134217727    66059264   8e  Linux LVM
 
-# lsblk
+#  lsblk
 El comando lsblk muestra información sobre los dispositivos de bloque en el sistema, como discos duros, particiones, SSDs y dispositivos extraíbles
 
 lsblk
@@ -144,10 +144,10 @@ TYPE: Tipo de dispositivo (disk, part, rom, lvm, etc.).
 MOUNTPOINT: Punto de montaje del dispositivo.
 
 
-# parted
+#  parted
 parted es una herramienta en Linux utilizada para crear, modificar y administrar particiones de disco. Es compatible con sistemas de particiones GPT y MS-DOS (MBR), permitiendo la creación de particiones sin necesidad de reiniciar el sistema.
 
-#Comandos básicos de parted
+# Comandos básicos de parted
 Comando	                        Descripción
 parted -l	                    Lista todos los discos y sus particiones.
 parted /dev/sdX print	        Muestra la tabla de particiones de un disco específico.
@@ -159,10 +159,10 @@ resizepart	                    Redimensiona una partición existente.
 set	                            Cambia atributos de la partición (arranque, LVM, swap, etc.).
 
 ----------------------------------------------------------------------------
-# Escanear controladora scsi para detectar disco en caliente:
+#  Escanear controladora scsi para detectar disco en caliente:
 *Estamos forzando al kernel a reescanear los buses SCSI para detectar nuevos discos sin reiniciar el sistema.
 
-# Se usa cuando:
+#  Se usa cuando:
 Añades un disco nuevo en VMware / Proxmox / KVM
 Expandes un disco virtual
 Añades almacenamiento SAN
@@ -175,13 +175,13 @@ echo - - - > /sys/class/scsi_host/host0/scan
 echo "- - -" | sudo tee /sys/class/scsi_host/host*/scan
 
 
-# Para averiguar en que controladora tengo los discos:
+#  Para averiguar en que controladora tengo los discos:
 cat /proc/scsi/scsi
 
-## o Utilizar el script para rescanear:
+# #  o Utilizar el script para rescanear:
 El script rescan-scsi-bus.sh es una herramienta utilizada en sistemas Linux para redetectar discos conectados a un bus SCSI, como SAN, iSCSI, Fibre Channel y discos virtuales en VMware/KVM sin necesidad de reiniciar el sistema.
 
-# ¿Para qué se usa?
+#  ¿Para qué se usa?
 Detectar nuevos discos agregados dinámicamente.
 Redetectar cambios en el tamaño de un disco ya presente.
 Eliminar dispositivos desconectados.
@@ -197,17 +197,17 @@ sudo apt install -y sg3-utils
 -----------------------------------------------------------------------
 fdisk -l   /dev/sdb
 
-# partprobe
+#  partprobe
 El comando partprobe en Linux se utiliza para informar al sistema operativo de los cambios realizados en las tablas de particiones de los discos sin necesidad de reiniciar o desmontar las unidades. Este comando actualiza la información del kernel sobre las particiones de los dispositivos que han sido modificadas, para que el sistema reconozca las nuevas particiones o cambios en las existentes.
 
 partprobe
 
 
-# ¿Qué es un Superbloque en Linux?
+#  ¿Qué es un Superbloque en Linux?
 El superbloque es una estructura clave dentro de un sistema de archivos en Linux y otros sistemas Unix. Contiene metadatos críticos que describen la organización del sistema de archivos en un disco o partición.
 
-## Función del Superbloque
-# El superbloque almacena información fundamental sobre el sistema de archivos, como:
+# #  Función del Superbloque
+#  El superbloque almacena información fundamental sobre el sistema de archivos, como:
 
 Tipo de sistema de archivos (ext2, ext3, ext4, xfs, etc.).
 Tamaño del sistema de archivos.
@@ -218,10 +218,10 @@ Ubicación del primer inodo y la estructura de bloques.
 Opciones de montaje y configuración.
 Si el superbloque se corrompe, el sistema de archivos puede volverse inaccesible.
 
-## Borrar el superbloque de un disco:
+# #  Borrar el superbloque de un disco:
 Eliminar Firmas y Superbloques en Linux
 
-#wipefs
+# wipefs
 El comando wipefs en Linux se usa para eliminar firmas de sistemas de archivos, tablas de particiones y superbloques en discos o particiones. No sobrescribe los datos del disco, pero hace que el sistema no reconozca el formato del disco.
 
 wipefs -a /dev/sdb
@@ -230,7 +230,7 @@ fdisk -l /dev/sdb
 
 fdisk /dev/sdb
 
-## Dar formato a la particion en linux podemo utilizar ext4 o xfs:
+# #  Dar formato a la particion en linux podemo utilizar ext4 o xfs:
 mkfs -t xfs /dev/sdb1
 mkfs.xfs /dev/sdb1
 
@@ -250,14 +250,14 @@ mount /logs
 mount /viernes9
 mount -a
 
-## Montaje por dispositivo a traves del fstab:
+# #  Montaje por dispositivo a traves del fstab:
 
 <dispositivo>   <punto_de_montaje>  <tipo_fs>  <opciones>  <dump>  <fsck>
 
 vi /etc/fstab 
 /dev/sdb1               /informes     xfs          defaults  0        0
 
-## Explicacion:
+# #  Explicacion:
 Campo	Descripción
 <dispositivo>	Puede ser /dev/sdX, UUID o LABEL.
 <punto_de_montaje>	Ruta donde se montará (ej: /mnt/datos).
@@ -267,11 +267,11 @@ Campo	Descripción
 <fsck>	Orden de chequeo de disco en el arranque (0 = no, 1 = raíz, 2 = otros).
 
 
-## Para comprobar que la linea que creamos en el fstab es correcto:
+# #  Para comprobar que la linea que creamos en el fstab es correcto:
 mount -a
 
 
-## Explicacion de opciones comunes en /etc/fstab:
+# #  Explicacion de opciones comunes en /etc/fstab:
 
 defaults	Parámetros por defecto (rw, suid, dev, exec, auto, nouser, async).
 ro / rw	ro (solo lectura), rw (lectura y escritura).
@@ -282,7 +282,7 @@ nouser/user	user permite que usuarios monten el sistema.
 exec / noexec	exec permite ejecutar archivos binarios, noexec los bloquea.
 auto / noauto	auto monta automáticamente al inicio, noauto requiere mount manual.
 
-## Ejemplo:
+# #  Ejemplo:
 /dev/sdb1  /home  ext4  defaults,noexec  0  0
 
 *La opcion defaults: Usa opciones predeterminadas de Linux:
@@ -300,49 +300,49 @@ mount -o remount,ro /logs
 mount -o remount,rw /logs
 
 **mount --bind 
-# Hace que el contenido de /origen aparezca también en /destino. Ambos apuntarán al mismo contenido físico, aunque tengan rutas diferentes.
+#  Hace que el contenido de /origen aparezca también en /destino. Ambos apuntarán al mismo contenido físico, aunque tengan rutas diferentes.
 mount --bind /origen /destino
 
-# ¿Qué hace exactamente mount --bind?
+#  ¿Qué hace exactamente mount --bind?
 Crea una segunda entrada (alias) al mismo contenido de un directorio (o archivo), sin copiar datos.
 Ambos caminos (el original y el destino) apuntan a los mismos datos físicos.
 Los cambios hechos en uno se reflejan en el otro automáticamente.
 
-# ¿Qué hace exactamente?
+#  ¿Qué hace exactamente?
 No copia archivos, solo crea una nueva vista del mismo contenido.
 Es útil para hacer accesible un directorio desde otro lugar, sin duplicar datos.
 Cualquier cambio en uno se refleja en el otro.
 
-# Nota:
+#  Nota:
 Este montaje no es persistente tras reiniciar.
 Para hacerlo persistente, añade esta línea en /etc/fstab:
 /data /backup none bind 0 0
 
-## Para desmontarlo:
+# #  Para desmontarlo:
 umount /destino
-#Solo necesitas desmontar el punto de destino (/backup en este caso), no el origen.
+# Solo necesitas desmontar el punto de destino (/backup en este caso), no el origen.
 mount
 
-#Usos comunes de --bind:
+# Usos comunes de --bind:
 Dar acceso limitado a un directorio en otro lugar (por ejemplo, dentro de un chroot o contenedor).
 Montar un subdirectorio como si fuera un punto de montaje independiente.
 Reorganizar la estructura de directorios sin mover archivos.
 ---------------------------------------------------------------------------------------------------------------
-##Montaje por UUID Cada sistema de archivos dispone de un identificador único llamado UUID que es un sinónimo de GUID en Linux: 
+# # Montaje por UUID Cada sistema de archivos dispone de un identificador único llamado UUID que es un sinónimo de GUID en Linux: 
 UUID es un número aleatorio codificado en bits lo suficientemente complejo como para que todos sean diferentes  en uno o varios sistemas dados.
 
 **Averiguar el UUID de una particion podemos utilizar los comandos:
-# blkid /dev/sdb1
+#  blkid /dev/sdb1
 /dev/sdb1: UUID="be1671ac-e150-4a1b-84aa-da00070e8a10" TYPE="ext4"
 
-#lsblk -f
+# lsblk -f
 
 vi /etc/fstab 
 UUID=be1671ac-e150-4a1b-84aa-da00070e8a10               /logs           xfs     defaults 0 0
 -------------------------------------------------------------------------------------------------------------------------------
 *Las unidades de tipo mount en systemd permiten montar automáticamente sistemas de archivos en Linux sin necesidad de modificar /etc/fstab.
 
-# ¿Cómo funcionan las unidades .mount?
+#  ¿Cómo funcionan las unidades .mount?
 Se definen en /etc/systemd/system/ con el sufijo .mount.
 El nombre del archivo debe coincidir con el punto de montaje, reemplazando / por -
 
@@ -351,7 +351,7 @@ systemd usa mount y umount de forma automática cuando se inicia el sistema o se
 
 En systemd, el montaje de sistemas de archivos se gestiona a través de unit files (.mount y .automount). Estos permiten montar dispositivos de manera automática, persistente y bajo demanda.
 
-#Estructura de un archivo .mount
+# Estructura de un archivo .mount
 
 [Unit]
 Description=Montaje de /mnt/datos
@@ -360,13 +360,13 @@ Wants=network-online.target
 After=network-online.target
 
 [Mount]
-What=/dev/disk/by-uuid/1234-ABCD  # Disco o partición a montar (se recomienda usar UUID)
-Where=/mnt/datos                  # Punto de montaje
-Type=ext4                          # Sistema de archivos (ext4, xfs, etc.)
-Options=defaults,nofail            # Opciones de montaje
+What=/dev/disk/by-uuid/1234-ABCD  #  Disco o partición a montar (se recomienda usar UUID)
+Where=/mnt/datos                  #  Punto de montaje
+Type=ext4                          #  Sistema de archivos (ext4, xfs, etc.)
+Options=defaults,nofail            #  Opciones de montaje
 
 [Install]
-WantedBy=multi-user.target         # Activa el montaje al inicio del sistema
+WantedBy=multi-user.target         #  Activa el montaje al inicio del sistema
 
 
 
@@ -378,7 +378,7 @@ vi /etc/fstab
 
 /dev/sdb1            /informes         xfs     defaults 0 0
 
-## Unit tipo mount creada en tiempo de ejecucion desde el /etc/fstab
+# #  Unit tipo mount creada en tiempo de ejecucion desde el /etc/fstab
 /run/systemd/generator/informes.mount
 
 [Unit]
@@ -393,14 +393,14 @@ Type=xfs
 
 
 
-## Crear una unit desde cero, personalizada, el nombre de la unit se tiene que corresponder con el punto de montaje.
+# #  Crear una unit desde cero, personalizada, el nombre de la unit se tiene que corresponder con el punto de montaje.
 
 find /run -name "*.mount"
 /run/systemd/generator/home.mount
 /run/systemd/generator/boot.mount
 
 cat /run/systemd/generator/boot.mount
-# Automatically generated by systemd-fstab-generator
+#  Automatically generated by systemd-fstab-generator
 
 [Unit]
 SourcePath=/etc/fstab
@@ -413,7 +413,7 @@ Where=/boot
 Type=xfs
 
 
-## LABORATORIO crar una unit desde cero, personalizada, el nombre de la unit se tiene que corresponder con el punto de montaje.
+# #  LABORATORIO crar una unit desde cero, personalizada, el nombre de la unit se tiene que corresponder con el punto de montaje.
 
 vi /etc/systemd/system/logs.mount
 
@@ -422,10 +422,10 @@ Description=Mount System Backups Directory
 
 [Mount]
 What=/dev/sdb1
-##by-uuid para el disco /dev/sdb1
-#What=/dev/disk/by-uuid/5a2591ba-7009-4949-a0cd-b2792bf80820
+# # by-uuid para el disco /dev/sdb1
+# What=/dev/disk/by-uuid/5a2591ba-7009-4949-a0cd-b2792bf80820
 Where=/logs
-#Where=/cliente1/logs/data
+# Where=/cliente1/logs/data
 Type=xfs
 Options=defaults
 
@@ -451,32 +451,32 @@ systemctl list-units --type mount --all
 
 
 
-## Archivo /etc/systemd/system/logs.mount con Comentarios y mejorado:
+# #  Archivo /etc/systemd/system/logs.mount con Comentarios y mejorado:
 
 [Unit]
-# Descripción de la unidad de montaje
+#  Descripción de la unidad de montaje
 Description=Mount System Backups Directory
 
-# Referencia a la documentación oficial de systemd para mounts
+#  Referencia a la documentación oficial de systemd para mounts
 Documentation=man:systemd.mount(5)
 
-# Indica que este montaje debe estar disponible después de que la red esté activa.
-# Útil si el punto de montaje depende de almacenamiento en red o servicios externos.
+#  Indica que este montaje debe estar disponible después de que la red esté activa.
+#  Útil si el punto de montaje depende de almacenamiento en red o servicios externos.
 Wants=network-online.target
 After=network-online.target
 
 [Mount]
-# Especifica el dispositivo que se montará.
-# Se recomienda usar el UUID del disco en lugar de /dev/sdb1, ya que los nombres de dispositivos pueden cambiar.
+#  Especifica el dispositivo que se montará.
+#  Se recomienda usar el UUID del disco en lugar de /dev/sdb1, ya que los nombres de dispositivos pueden cambiar.
 What=/dev/disk/by-uuid/5a2591ba-7009-4949-a0cd-b2792bf80820
 
-# Punto de montaje en el sistema de archivos donde se accederá a los datos del dispositivo.
+#  Punto de montaje en el sistema de archivos donde se accederá a los datos del dispositivo.
 Where=/logs
 
-# Tipo de sistema de archivos que se montará (en este caso, XFS).
+#  Tipo de sistema de archivos que se montará (en este caso, XFS).
 Type=xfs
 
-# Opciones de montaje:
+#  Opciones de montaje:
 - defaults -> Configuración estándar del sistema (rw, suid, dev, exec, auto, nouser, async).
 - nofail -> Evita que el sistema falle al arrancar si el dispositivo no está disponible.
 - x-systemd.automount -> Permite automontar cuando se accede a /logs, reduciendo el tiempo de arranque.
@@ -484,12 +484,12 @@ Type=xfs
 Options=defaults,nofail,x-systemd.automount,noatime
 
 [Install]
-# Indica que esta unidad debe activarse en el arranque del sistema para usuarios multiusuario.
-# Esto significa que el montaje estará disponible después de que el sistema haya iniciado completamente.
+#  Indica que esta unidad debe activarse en el arranque del sistema para usuarios multiusuario.
+#  Esto significa que el montaje estará disponible después de que el sistema haya iniciado completamente.
 WantedBy=multi-user.target
 
 -------------------------------------------------------------------------------------------------------------------------------
-## El comando lsof le ayuda a determinar qué proceso está utilizando un archivo del punto de montaje en el momento de iniciar el comando
+# #  El comando lsof le ayuda a determinar qué proceso está utilizando un archivo del punto de montaje en el momento de iniciar el comando
 lsof /backup/
 
 lsof /backup/
@@ -501,7 +501,7 @@ Como administrador, puede iniciar fuser para forzar la parada de los procesos qu
 Es más que probable que no le guste nada al usuario correspondiente (en el caso presentado aquí, se parará  su shell y se cerrará la sesión).
 
 
-# fuser
+#  fuser
 El comando fuser en Linux se utiliza para identificar los procesos que están utilizando un archivo, directorio o sistema de archivos en particular. Es muy útil cuando quieres saber qué procesos están accediendo a un recurso específico, lo que puede ser necesario antes de desmontar un sistema de archivos o eliminar un archivo que está en uso.
 
 fuser --help
@@ -509,10 +509,10 @@ fuser -km /backup
 
 kill -9 8153
 ----------------------------------------------------------------------------------------------
-# EXT4 - Sistema de Archivos en Linux
+#  EXT4 - Sistema de Archivos en Linux
 El sistema de archivos EXT4 (Fourth Extended Filesystem) es el más utilizado en distribuciones Linux debido a su fiabilidad, rendimiento y compatibilidad. Es una mejora de EXT3, con nuevas características como journaling mejorado, mayor capacidad de archivos y mejor gestión de fragmentación.
 
-## Características principales de EXT4
+# #  Características principales de EXT4
 ✅ Journaling mejorado: Protege contra corrupción de datos en caso de apagado inesperado.
 ✅ Soporte de archivos grandes: Maneja archivos de hasta 16 TiB y sistemas de archivos de hasta 1 EiB.
 ✅ Extents: Reduce la fragmentación y mejora el rendimiento.
@@ -521,8 +521,8 @@ El sistema de archivos EXT4 (Fourth Extended Filesystem) es el más utilizado en
 ✅ Reducible y expandible: Se puede aumentar y reducir el tamaño del sistema de archivos.
 
 
-## comando fsck permite comprobar y arreglar un sistema de archivos extendida (ext2 ext3 ext4)
-## El sistema de archivos que se quiere comprobar o arreglar no debería estar montado o, como mucho, montado en modo de sólo lectura.
+# #  comando fsck permite comprobar y arreglar un sistema de archivos extendida (ext2 ext3 ext4)
+# #  El sistema de archivos que se quiere comprobar o arreglar no debería estar montado o, como mucho, montado en modo de sólo lectura.
 
 df -Th
 
@@ -540,23 +540,23 @@ touch /informes/forcefsck
 
 
 
-### badblocks 
+# # #  badblocks 
 El comando badblocks intenta comprobar los bloques defectuosos en el periférico de almacenamiento proporcionado como argumento. 
 mkfs o fsck pueden llamar a este comando si se les proporciona el parámetro -c (check).
 Por defecto, badblocks lee la totalidad de los bloques del soporte y devuelve un error si uno o varios de ellos son ilegibles. 
 
 Se puede ejecutar el comando incluso aunque el sistema de archivos esté montado, excepto si usted una prueba en lectura y escritura, incluso no destructiva. 
-# badblocks -vnf /dev/sdb1
+#  badblocks -vnf /dev/sdb1
 
 Los parámetros -n (no destructivo) y -w (write, con motivos, destructivo) intentan escribir en los bloques.
 
 
-##e2label - Change the label on an ext2/ext3/ext4 filesystem
+# # e2label - Change the label on an ext2/ext3/ext4 filesystem
 
-##Ponemos la label  oracledatos al /dev/sdb1
+# # Ponemos la label  oracledatos al /dev/sdb1
 e2label /dev/sdb1  oracledatos
 
-##Para ver la label del dispositivo
+# # Para ver la label del dispositivo
 e2label /dev/sdb1
 lsblk -f
 
@@ -564,12 +564,12 @@ vi /etc/fstab
 LABEL=oracledatos     /wwwdata              ext4    defaults       0 0
 
 
-##Para montarlo de forma manual:
+# # Para montarlo de forma manual:
 mount -L label_name_here /path/to/mount/point
 mount -t ext4 -L oracledatos  /wwwdata
 
 To list label name for all partitions or volumes you may try to use blkid command:
-# blkid
+#  blkid
 /dev/sda5: UUID="f2756986-3749-4bd3-a6e5-f6a867cb4ebb" TYPE="swap" 
 /dev/sdc1: UUID="60254c19-67c0-404b-9743-1b8b7f0b11cb" TYPE="ext4" LABEL="Boot"
 
@@ -577,10 +577,10 @@ e2label /dev/sdb1
 
 
 
-#Sistema de archivos XFS
+# Sistema de archivos XFS
 XFS es un sistema de archivos de alto rendimiento diseñado para manejar grandes volúmenes de datos y cargas de trabajo intensivas. Es el sistema de archivos predeterminado en distribuciones como RHEL, CentOS y Rocky Linux.
 
-##Características principales de XFS
+# # Características principales de XFS
 ✅ Journaling: Mantiene un registro (journal) para evitar corrupción de datos en caso de fallos.
 ✅ Alta escalabilidad: Soporta volúmenes de hasta 8 exabytes.
 ✅ Mejor rendimiento en archivos grandes: Más eficiente que ext4 en archivos grandes.
@@ -589,36 +589,36 @@ XFS es un sistema de archivos de alto rendimiento diseñado para manejar grandes
 
 
 
-#Creación de sistema de archivos XFS
+# Creación de sistema de archivos XFS
 mkfs.xfs /dev/sdf1
 
-#Agrandar el sistema de archivos a traves de LVM:
+# Agrandar el sistema de archivos a traves de LVM:
 Se pude utilizar la opción -D para indicar la cantidad de bloques a utilizar para crecer el
 sistema de archivos. Ejemplo:
 xfs_growfs 1048576 -D /dev/sdf1
 
 
-##Para particiones formateadas a xfs:
+# # Para particiones formateadas a xfs:
 Si se trata de un caso donde el sistema inicia en modo de sólo lectura y se requiere
 reparar sistema de archivos, puede utilizarse xfs_repair con la opción -d. Ejemplo:
 
 xfs_repair -d /dev/sdf1
 
-##Cabe señalar que xfs_repair carece de capacidad para verificar bloques dañados utilizar el comando badblocks
+# # Cabe señalar que xfs_repair carece de capacidad para verificar bloques dañados utilizar el comando badblocks
 
-##El comando badblocks intenta comprobar los bloques defectuosos en el periférico de almacenamiento
-##Los parámetros -n (no destructivo) y -w (write, con motivos, destructivo) intentan escribir en los bloques.
+# # El comando badblocks intenta comprobar los bloques defectuosos en el periférico de almacenamiento
+# # Los parámetros -n (no destructivo) y -w (write, con motivos, destructivo) intentan escribir en los bloques.
 
 badblocks -vn /dev/sdb1
 
 
 
-##Asigna una etiqueta al dispositivo de almacenamiento dispositivo formateado a  xfs
+# # Asigna una etiqueta al dispositivo de almacenamiento dispositivo formateado a  xfs
 xfs_admin -L etiqueta dispositivo
 xfs_admin -L oracle /dev/sdb1
 mount -L oracle /logs
 
-##Para ver la label
+# # Para ver la label
 lsblk -f
 
 vi /etc/fstab
@@ -629,7 +629,7 @@ df hT
 
 
 
-#Defragmentación de sistema de archivos.
+# Defragmentación de sistema de archivos.
 
 La defragmentación se puede realizar con toda seguridad con el sistema de archivos
 activo y montado. Se utiliza la herramienta xfs_fsr con la ruta del dispositivo de la
@@ -637,13 +637,13 @@ partición deseada. Ejemplo:
 
 xfs_fsr /dev/sdf1
 
-##Respaldo y restauración de sistema de archivos.
+# # Respaldo y restauración de sistema de archivos.
 Al igual que Ext3/Ext4 disponen de dump y restore, XFS dispone de xfsdump y
 xfsrestore. Ambas están diseñadas para funcionar específicamente con unidades de
 cinta.
 
 
-##Herramientas de gestión y monitoreo
+# # Herramientas de gestión y monitoreo
 Comando	               Descripción
 xfs_admin	           Modifica atributos del sistema de archivos XFS, como el UUID y el label.
 xfs_info	           Muestra información detallada sobre un sistema de archivos XFS montado.
@@ -651,13 +651,13 @@ xfs_spaceman	       Herramienta interactiva para ver y administrar la asignació
 xfs_estimate	       Calcula el tamaño necesario para convertir un sistema de archivos a XFS.
 
 
-#Herramientas de expansión y mantenimiento
+# Herramientas de expansión y mantenimiento
 Comando	               Descripción
 xfs_growfs	           Expande el tamaño de un sistema de archivos XFS montado.
 xfs_fsr	               Realiza la desfragmentación de un sistema de archivos XFS.
 xfs_freeze	           Congela el sistema de archivos (bloquea modificaciones, útil para snapshots).
 
-#Herramientas de diagnóstico y reparación
+# Herramientas de diagnóstico y reparación
 Comando	               Descripción
 xfs_repair	           Repara un sistema de archivos XFS corrupto.
 xfs_check              (obsoleto en nuevas versiones)	Verifica la integridad del sistema de archivos.
@@ -665,7 +665,7 @@ xfs_db	               Depurador para sistemas de archivos XFS (permite analizar 
 xfs_logprint	       Muestra el contenido del registro de journaling de XFS.
 
 
-#Herramientas de copia y backup
+# Herramientas de copia y backup
 Comando	               Descripción
 xfs_copy	           Clona un sistema de archivos XFS a otro dispositivo.
 xfs_mdrestore	       Restaura metadatos de un archivo generado por xfs_metadump.
@@ -673,13 +673,13 @@ xfs_metadump	       Crea un volcado de metadatos de un sistema de archivos XFS p
 xfs_rtcp	           Copia archivos de forma optimizada en sistemas XFS con real-time subvolumes.
 
 
-#Herramientas de cuota y control de espacio
+# Herramientas de cuota y control de espacio
 Comando	             Descripción
 xfs_quota	         Administra cuotas de usuarios y grupos en XFS.
 xfs_bmap	         Muestra la asignación de bloques de un archivo en XFS.
 xfs_ncheck	         Lista archivos en XFS con sus números de inodo.
 
-##Resumen
+# # Resumen
 Mantenimiento y gestión: xfs_admin, xfs_info, xfs_spaceman
 Expansión y optimización: xfs_growfs, xfs_fsr, xfs_freeze
 Diagnóstico y reparación: xfs_repair, xfs_db, xfs_logprint
@@ -687,14 +687,14 @@ Copia y backup: xfs_copy, xfs_metadump, xfs_mdrestore
 Cuotas y espacio: xfs_quota, xfs_bmap, xfs_ncheck
 
 
-##tune2fs
-##Pagina 250 Manual del curso PDF## --> Manual LINUX - Preparación a la certificación LPIC-1.pdf
+# # tune2fs
+# # Pagina 250 Manual del curso PDF# #  --> Manual LINUX - Preparación a la certificación LPIC-1.pdf
 
 Laboratorio Desactivar el fsck automático de los sistemas de ficheros.pdf
 
 El comando tune2fs en Linux se utiliza para ajustar los parámetros y configuraciones de un sistema de archivos ext2, ext3 o ext4. Con tune2fs, puedes modificar las opciones del sistema de archivos sin necesidad de desmontarlo, lo que lo hace útil para tareas de administración de sistemas, como ajustar el intervalo de revisiones del sistema de archivos, habilitar o deshabilitar ciertas características, o cambiar etiquetas.
 
-#Resumen de las opciones más comunes del comando tune2fs:
+# Resumen de las opciones más comunes del comando tune2fs:
 
 Opción	  Descripción
 -l	      Muestra la información detallada del sistema de archivos.
@@ -710,28 +710,28 @@ Opción	  Descripción
 
 
 
-#Ver información del sistema de archivos ext4:
+# Ver información del sistema de archivos ext4:
 sudo tune2fs -l /dev/sdc1
 
-#Establecer el número máximo de montajes antes de fsck:
+# Establecer el número máximo de montajes antes de fsck:
 sudo tune2fs -c 20 /dev/sdc1
 tune2fs -l /dev/sdc1 | grep -E Mount\|Max
 
-#Cambiar el intervalo de revisión automática a cada 30 días:
+# Cambiar el intervalo de revisión automática a cada 30 días:
 sudo tune2fs -i 30d /dev/sdc1
 
-#Cambiar la etiqueta (nombre) del sistema de archivos:
+# Cambiar la etiqueta (nombre) del sistema de archivos:
 sudo tune2fs -L "MI_DISCO" /dev/sdc1
 
-#Cambiar el porcentaje de bloques reservados al superusuario:
+# Cambiar el porcentaje de bloques reservados al superusuario:
 sudo tune2fs -m 2 /dev/sdc1
 
 
-#Btrfs
+# Btrfs
 
 Btrfs (B-tree File System) es un sistema de archivos moderno para Linux diseñado para ofrecer alta confiabilidad, escalabilidad y administración avanzada de almacenamiento. Fue desarrollado por Oracle y es utilizado en distribuciones como SUSE Linux Enterprise Server (SLES), openSUSE y Fedora.
 
-##Principales objetivos de Btrfs:
+# # Principales objetivos de Btrfs:
 Autocorrección de errores y checksums en datos y metadatos.
 Snapshots y subvolúmenes para backups instantáneos.
 Soporte de RAID integrado sin necesidad de LVM o herramientas externas.
@@ -739,7 +739,7 @@ Compresión transparente para reducir el uso de espacio.
 Redimensionamiento en vivo sin desmontar el sistema de archivos
 
 
-##Características principales de Btrfs
+# # Características principales de Btrfs
 
 Característica	            Descripción
 Snapshots	                Permite crear instantáneas del sistema sin duplicar datos.
@@ -757,7 +757,7 @@ Btrfs está soportado oficialmente por SUSE Linux Enterprise Server (SLES) y ope
 
 ---------------------------------------------------------------------------------------------------------------
 
-##Laboratorio Respaldo y restauración de sistema de archivos xfsdump y xfsrestore para xfs:
+# # Laboratorio Respaldo y restauración de sistema de archivos xfsdump y xfsrestore para xfs:
 
 Los comandos xfsdump y xfsrestore son herramientas utilizadas en sistemas de archivos XFS para realizar copias de seguridad y restauración de datos.
 
@@ -768,21 +768,21 @@ df -hT
 S.ficheros              Tipo     Tamaño Usados  Disp Uso% Montado en
 /dev/sdb1               xfs        5,0G    33M  5,0G   1% /logs
 
-#Comprobamos y instalamos el software:
+# Comprobamos y instalamos el software:
 rpm -qa xfsdump
 yum install xfsdump -y
 
-#Creamos la particion y formateamos y la montamos
+# Creamos la particion y formateamos y la montamos
 fdisk /dev/sdb
 mkfs.xfs /dev/sdb1
 mount /dev/sdb1 /logs
 
 
-#Particionamos el /dev/sdb1 y lo monto en /logs 
+# Particionamos el /dev/sdb1 y lo monto en /logs 
 cp /etc/*.conf /logs
 touch /logs/viernes4
 
-##Realizo el backup de la particion /dev/sdb1 en un fichero en /cs
+# # Realizo el backup de la particion /dev/sdb1 en un fichero en /cs
 xfsdump -f /cs /dev/sdb1
 
 rm -rf /logs/*
@@ -790,21 +790,21 @@ rm -rf /logs/*
 xfsrestore -f /cs /logs
 ls -l /logs
 
-##Con este comando podemos ver lo que tenemos en la copia, y restaurar los archivos de uno en uno
-##si es necesario -i interactiva:
-#Para este laboratorio utilizaremos el archivo viernes4
+# # Con este comando podemos ver lo que tenemos en la copia, y restaurar los archivos de uno en uno
+# # si es necesario -i interactiva:
+# Para este laboratorio utilizaremos el archivo viernes4
 
 rm -rf /logs/viernes4
 
-##Comenzamos la restauracion solo del archivo viernes4
+# # Comenzamos la restauracion solo del archivo viernes4
 
 xfsrestore -f /cs -i -v silent /logs
  -> ls
  -> add viernes4
  -> extract
  
-##Comprobamos que se ha restaurado:
-# ls -l /logs/viernes4
+# # Comprobamos que se ha restaurado:
+#  ls -l /logs/viernes4
 -----------------------------------------------------------------------------------------------
 
 Particionamos el /dev/sdc1 y lo monto en /logs-resplado
