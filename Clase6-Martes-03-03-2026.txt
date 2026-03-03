@@ -1,0 +1,325 @@
+Martes  03/03/2026
+https://www.lpi.org/es/our-certifications/lpic-1-overview
+
+##Materiales publicos de LPIC:
+https://learning.lpi.org/es/learning-materials/learning-materials/
+
+##Guias IBM:
+https://developer.ibm.com/tutorials/l-lpic1-map
+
+Profesor/a Titular: Alberto Garcia
+
+##Examen presencial del LPIC 101 y LPIC 102 el Lunes 17 Noviembre  en el CNTG
+https://www.lpi.org/about-lpi/frequently-asked-questions/
+
+
+
+##Conectarme a traves del cliente ssh de Windows abrimos un cmd:
+
+##Maquina rockylinux:
+ssh root@192.168.33.10
+ 
+##Maquina debian12:
+ 
+ssh vagrant@192.168.33.11
+##Para trabajar como root en la mv de debian:
+sudo -i
+
+##Clonar repositorio formador para realizar los laboratorio del Shell Bash de Linux Comandos Manejo de Texto.pdf :
+dnf install git unzip -y
+apt install git unzip -y
+
+cd /
+git clone https://github.com/agarciafer/lpic1.git
+cd /lpic1
+unzip access_log.zip
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##En esta clase veremos:
+
+
+
+## Finalizacion Tema 104: Dispositivos, sistemas de archivos Linux y el estándar de jerarquía de archivos
+Material Alumnos LPIC-1-2025\LPIC-1-exam-101\4-Topic 104-Dispositivos Sistemas de Archivos Jerarquia Estandar del Sistema\Sistema de Archivos
+-->Explicacion Resumen discos Linux.txt
+-->Explicacion Gestion de Swap.txt
+
+##Finalizacion Tema 103: Comandos GNU y Unix
+Material Alumnos LPIC-1-2025\LPIC-1-exam-101\3-Topic 103-Comandos GNU y UNIX
+-->Shell Bash de Linux Comandos Manejo de Texto.pdf
+
+
+
+
+###Comenzamos LPIC-102
+
+
+##Tema 107: Tareas administrativas
+Material Alumnos LPIC-1-2025\LPIC-1-exam-102\7-Topic 107-Tareas Administrativas\107.1 Manage user and group accounts and related system files
+-->Resumen explicacion creacion de usuarios en Linux.txt
+Administracion de Usuarios y Grupos.pdf
+
+Archivos de Bash en Linux
+~/.bashrc
+Se ejecuta cada vez que abres una shell interactiva no login (por ejemplo, cuando abres una nueva pestaña de terminal en tu entorno gráfico).
+Aquí suelen ponerse alias, funciones, variables de entorno personalizadas, configuraciones del prompt, etc.
+
+~/.bash_profile (ojo, no basch_profile)
+Se ejecuta solo al iniciar una shell de login (ej. cuando entras con usuario/contraseña en consola o al hacer ssh).
+Normalmente, este archivo suele llamar también a ~/.bashrc para que ambas configuraciones se apliquen.
+
+##Añadimos la linea al final del archivo
+vi  /root/.bash_profile
+export PS1='\[\e[1;36m\]\u\[\e[0m\]@\[\e[1;33m\]\h \[\e[1;37m\]\w\[\e[0m\] \[\e[1;32m\]\$\[\e[0m\] '
+
+##Para aplicar los cambios podemos iniciar session o ejecurar sin salir de la session:
+source /root/.bash_profile
+
+####Explicación por partes de la variable PS1
+
+\[\e[1;36m\] → cambia el color del texto a cian brillante.
+
+\u → nombre del usuario actual.
+
+\[\e[0m\] → restablece el color a normal.
+
+@ → carácter literal @.
+
+\[\e[1;33m\] → cambia el color a amarillo brillante.
+
+\h → nombre del host (máquina).
+
+\[\e[0m\] → restablece color.
+
+Espacio.
+
+\[\e[1;37m\] → cambia el color a blanco brillante.
+
+\w → directorio de trabajo actual.
+
+\[\e[0m\] → restablece color.
+
+Espacio.
+
+\[\e[1;32m\] → cambia el color a verde brillante.
+
+\$ → símbolo del prompt ($ para usuario normal, # si eres root).
+
+\[\e[0m\] → restablece color.
+
+Espacio final.
+
+
+##Explicacion .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+fi
+
+####Comentario
+
+# Get the aliases and functions → Indica que lo que se quiere es cargar los alias y funciones que tengas definidos en ~/.bashrc.
+
+if [ -f ~/.bashrc ]; then
+
+Comprueba si el archivo ~/.bashrc existe y es un archivo regular (-f).
+
+. ~/.bashrc
+
+El . (punto) es equivalente a source.
+
+Esto ejecuta el contenido de ~/.bashrc en el entorno actual de la shell (no en un subproceso).
+
+fi
+
+Cierra la condición if.
+
+##Si el usuario operador esta en otro grupo por ejemplo sistemas, para añadirlo al grupo informatica y no quitarlo del groupo sistemas:
+
+usermod -aG informatica operador
+
+##Opciones
+
+usermod → modifica la configuración de un usuario.
+-a → (append) añade el usuario a los grupos especificados, sin quitarlo de los que ya tenía.
+-G informatica → indica el grupo adicional al que se añadirá el usuario.
+operador → es el nombre del usuario que se va a modificar.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+##Laboratorio creacion de usuarios y grupos:
+Crear los grupo sistemas informatica y micro
+
+
+Crear los grupo sistemas informatica y micro
+groupadd sistemas
+groupadd informatica
+groupadd micro
+
+
+Crear el usario1 grupo primario informatica y no tiene shell
+adduser -g informatica -s /sbin/nologin usuario1
+passwd usuario1
+
+Crear el usuario2 y la cuenta le caduca mañana  01/10/2025
+adduser -e 2025-10-01 usuario2
+passwd usuario2
+chage -l usuario2
+
+Crear el usuario3 y que en el primer inicio de session le pida el cambio de password
+adduser usuario3
+passwd usuario3
+chage -d 0 usuario3
+
+##Cuando entre con el usuario3 el password que colocare sera por ejemplo Password,319
+
+
+El usuario4 tiene que caducar la cuenta el 03/10/2025
+
+adduser -e 2025-10-03 usuario4
+passwd usuario4
+chage -l usuario4
+
+
+
+Crear el usuario5
+tiene que tener el alias de comando listar y sea un ls com permisos largos y ordene los ficheros por fecha de modificacion
+Tiene instalado java en el directorio /usr/local/jdk1.7 tiene que esta la varible JAVA_HOME
+
+adduser usuario5
+passwd usuario5
+
+vi  /home/usuario5/.bashrc
+alias listar='ls -lrta'
+
+
+vi  /home/usuario5/.bash_profile
+JAVA_HOME=/usr/local/jdk1.7
+export JAVA_HOME
+
+##Comprobar el correcto funcionamiento del usuario5:
+[usuario5@rockylinux8 ~]$ echo $JAVA_HOME
+
+[usuario5@rockylinux8 ~]$ alias
+[usuario5@rockylinux8 ~]$ listar
+
+
+----------------------------------------------------------------------------------------------------------------------
+##Laboratorio sudo:
+
+#####Para nuestro laboratorio sustituimos berto por nuestro usuario nominal:
+/etc/sudoers se edita con visudo y añadimos al final del archivo:
+
+visudo
+
+berto  ALL = (ALL)  /bin/vi /etc/httpd/conf/httpd.conf, /usr/bin/systemctl restart httpd, /usr/bin/less,  /usr/bin/passwd [A-z]*, !/usr/bin/passwd root
+
+#berto ALL = (ALL)  NOEXEC: /bin/vi /etc/httpd/conf/httpd.conf, /usr/bin/systemctl restart httpd,/usr/bin/less, /bin/rm
+
+
+##Me conecto a al servidor con mi usuario nominal:
+sudo -l
+#Puedo ver que soy el usuario nominal:
+id 
+
+##Lanzo el editor httpd.conf
+sudo  /bin/vi /etc/httpd/conf/httpd.conf
+
+#Ahora dentro del vi ejecutamos
+:shell
+
+
+##Tendria que salirme al shell del sistema y quedarme como root:
+id
+
+##Cerramos la session de nuestro usuario nominal:
+exit
+
+----------------------------------------------------------
+##Ahora como root cambiamos la linea del /etc/sudoers:
+visudo
+
+#berto  ALL = (ALL)  /bin/vi /etc/httpd/conf/httpd.conf, /usr/bin/systemctl restart httpd, /usr/bin/less,  /usr/bin/passwd [A-z]*, !/usr/bin/passwd root
+
+berto ALL = (ALL)  NOEXEC: /bin/vi /etc/httpd/conf/httpd.conf, /usr/bin/systemctl restart httpd,/usr/bin/less, /bin/rm
+
+
+
+La opción NOEXEC en las configuraciones de sudoers se utiliza para impedir que un usuario ejecute programas adicionales desde un comando que se haya permitido con sudo. En otras palabras, si a un usuario se le concede permiso para ejecutar un comando con sudo con la opción NOEXEC, ese usuario no podrá lanzar otros programas desde el comando que se le permitió.
+
+
+##Me conecto a al servidor con mi usuario nominal:
+sudo -l
+#Puedo ver que soy el usuario nominal:
+id 
+
+##Lanzo el editor httpd.conf
+sudo  /bin/vi /etc/httpd/conf/httpd.conf
+
+#Ahora dentro del vi ejecutamos
+:shell
+
+Ya no me dejar salir al shell.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+######Laboratorio######
+
+Borrar los usuarios del usuario1 al usuario5 incluido el /home.
+
+
+Averiguar los accessos al sistema
+
+
+Averiguar los accesos fallidos del usuario root
+
+Ver la ultima vez que se han conectado todos los usuarios
+Ver los inicios de session de los ultimos 15 dias.
+Ver los usuarios conectados actualmente al sistema.
+Bloquear al ususario becario
+
+
+
+######Solucion laboratorio######
+
+##Borrar los usuarios del usu1 al usu5 incluido el /home.
+sudo userdel -r usuario1
+sudo userdel -r usuario2
+sudo userdel -r usuario3
+sudo userdel -r usuario4
+sudo userdel -r usuario5
+
+
+
+###Averiguar los accessos al sistema 
+last
+loginctl
+
+##Averiguar los accesos fallidos del usuario root
+utmpdump /var/log/btmp |grep root
+
+##Ver la ultima vez que se han conectado todos los usuarios
+lastlog
+
+##Ver los inicios de session de los ultimos 15 dias.
+last -n 15
+
+
+¿Qué muestra last -n 15?
+Usuario que inició sesión.
+TTY o puerto (por ejemplo pts/0).
+IP o nombre del host desde donde se conectó.
+Fecha y hora de inicio y cierre de sesión.
+Duración de la sesión (si aplicable).
+Reboot y apagados del sistema también pueden aparecer.
+
+##Ver los usuarios conectados actualmente al sistema.
+who
+w
+loginctl
+last |grep -w "still logged in"
+
+##Bloquear al ususario becario
+sudo passwd -l becario
+passwd -S
+
+
