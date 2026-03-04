@@ -1,34 +1,34 @@
 **108.1 Mantener la hora del sistema
 
-#Resumen del manual de certificacion LPIC-1 pagina 390
+# Resumen del manual de certificacion LPIC-1 pagina 390
 
 El paquete chrony, un binario que nos ofrece la posibilidad de mantener la hora sincronizada con servidores NTP
 
 
-#¿Qué es hwclock?
+# ¿Qué es hwclock?
 hwclock es una utilidad en Linux que permite leer y modificar el reloj de hardware (RTC, Real-Time Clock).
 Este reloj es independiente del sistema operativo y sigue funcionando aunque la máquina esté apagada (gracias a la batería CMOS).
 
-#Linux maneja dos relojes:
+# Linux maneja dos relojes:
 
 Reloj de Hardware (RTC, BIOS/UEFI) → Funciona con la batería de la placa base.
 Reloj del Sistema (System Clock) → Se inicia desde el RTC y se sincroniza con NTP o manualmente.
 
 Puede sincronizar la hora del sistema y la hora física en los dos sentidos.
 
-#Para que se sincronice la hora física desde la hora del sistema: 
+# Para que se sincronice la hora física desde la hora del sistema: 
 hwclock --systohc 
  
-#Para realizar lo contrario:
+# Para realizar lo contrario:
 hwclock --hctosys
 
-#ntpdate 
+# ntpdate 
 Es posible forzar una sincronización manual con el comando ntpdate. 
 Este comando utiliza como parámetro un nombre de servidor ntp. 
 Si no desea utilizar el servicio ntpd, puede colocar este comando en crontab todos los días o todas
 las horas.
 
-# ntpdate es.pool.ntp.org 
+#  ntpdate es.pool.ntp.org 
 
 crontab -e
 */30 * * * * ntpdate es.pool.ntp.org 
@@ -37,16 +37,16 @@ crontab -e
 * (en las otras posiciones): Significa que se ejecuta cada hora, cada día, cada mes y cualquier día de la semana.
 ntpdate es.pool.ntp.org: Comando que sincroniza la hora del sistema con el servidor es.pool.ntp.org.
 
-#timedatectl
-El comando timedatectl se utiliza para controlar y consultar la configuración de fecha y hora en sistemas Linux.
+# timedatectl
+# El comando timedatectl se utiliza para controlar y consultar la configuración de fecha y hora en sistemas Linux.
 
 timedatectl list-timezones
 timedatectl set-timezone   Europe/Madrid
 timedatectl set-ntp false
 timedatectl set-ntp true
 
-##Sincronizar la hora manualmente con el comando timedatectl, si tenemos el valor  NTP enabled: yes
-no permite el cambio de hora manualmente:
+# Sincronizar la hora manualmente con el comando timedatectl, si tenemos el valor  NTP enabled: yes
+# no permite el cambio de hora manualmente:
 
 timedatectl set-time 18:00
 timedatectl set-ntp no
@@ -54,24 +54,24 @@ timedatectl
 timedatectl set-time 18:00
 timedatectl
 
-##Para que tengamos la hora a traves de nuetro cliente de ntp:
+# Para que tengamos la hora a traves de nuetro cliente de ntp:
 timedatectl set-ntp yes
 systemctl restart chronyd
 
-#NTP
+# NTP
 NTP (Network Time Protocol) es un protocolo que permite sincronizar los relojes de los ordenadores
  mediante la red y, en particular, TCP/IP, o sea Internet. Como nuestros ordenadores utilizan relojes
  de cuarzo, a veces éstos se pueden adelantar o atrasar mucho dependiendo de la calidad de los
  componentes.
  
-#Mostrar la información sobre NTP con chrony
+# Mostrar la información sobre NTP con chrony
 chronyc sources -v
 
 
-#Mostrar la información sobre NTP con ntpd:
+# Mostrar la información sobre NTP con ntpd:
 ntpq -p
 
-#localectl
+# localectl
 El comando localectl en sistemas Linux se utiliza para consultar y configurar las configuraciones locales del sistema, como la disposición del teclado y las configuraciones de idioma y localización. Estas configuraciones afectan cómo se manejan las fechas, números, divisas y el idioma predeterminado del sistema.
 Normalmente el juego de cartacteres es utf8.
 
@@ -83,10 +83,10 @@ cat /etc/locale.conf
 LANG="es_ES.UTF-8"
 
 
-##El comando locale permite recuperar información sobre los elementos de regionalización soportados por su sistema
+# El comando locale permite recuperar información sobre los elementos de regionalización soportados por su sistema
 locale
 
-#Se puede modificar y adaptar cada una de las variables LC. Veamos su significado:
+# Se puede modificar y adaptar cada una de las variables LC. Veamos su significado:
 • LC_CTYPE: clase de caracteres y conversión.
 • LC_NUMERIC: formato numérico por defecto, diferente del de la moneda.
 • LC_TIME: formato por defecto de la fecha y la hora. 
@@ -99,7 +99,7 @@ locale
 • LC_ALL: reglas para todas las demás variables LC.
 
 
-##Para debian sin systemd
+# Para debian sin systemd
 dpkg-reconfigure locales
 
 vi /home/oracle/.bash_profile
@@ -107,7 +107,7 @@ LANG=es_ES.iso88591
 LC_CTYPE="es_ES.iso88591"
 export LANG LC_CTYPE
 
-#iconv
+# iconv
 Es posible convertir un archivo codificado en una tabla dada hacia otra tabla con el programa iconv.
 El parámetro -l le da todas las tablas soportadas
 
@@ -118,7 +118,7 @@ iconv -f WINDOWS-1252 -t UTF8 nombre_archivo
 
 ---------------------------------------------------------------------------------------------------------------
 
-###Husos horarios en servidores que no tienen system-D###
+# Husos horarios en servidores que no tienen system-D# 
 
  El huso horario determina el desplazamiento temporal en comparación con la hora universal UTC,
  permite también gestionar el cambio de hora en primavera y otoño, de forma automática. 
@@ -134,10 +134,10 @@ iconv -f WINDOWS-1252 -t UTF8 nombre_archivo
  El archivo /etc/timezone, en formato binario, contiene la información vinculada al huso horario,
  como el desfase horario con respecto a la hora UTC y las reglas para el cambio de hora en verano o en invierno.
  
-##En centos7/8 Debian con System-D###
+# En centos7/8 Debian con System-D# 
 timedatectl set-timezone "Europe/Madrid"
 
-##No es recomendado utilizar como cliente ntp el paquete ntp, recomendado utilizar chrony:
+# No es recomendado utilizar como cliente ntp el paquete ntp, recomendado utilizar chrony:
 vi /etc/ntp.conf
 server 0.es.pool.ntp.org iburst
 server 1.es.pool.ntp.org iburst
@@ -149,7 +149,7 @@ systemctl enable ntpd
 timedatectl set-ntp true
 
 
-##En centos6 con system-v si ser recomienda utilizar ntp###
+# En centos6 con system-v si ser recomienda utilizar ntp# 
 
 rm -rf /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Madrid  /etc/localtime
@@ -166,29 +166,29 @@ service ntpd start
 chkconfig --level 3 ntpd on
 
 
-/##Configuring NTP using chrony recomendado para centos7/8 y debian10:
+/# Configuring NTP using chrony recomendado para centos7/8 y debian10:
 yum install chrony
 apt install chrony
 
-# systemctl start chronyd
-# systemctl enable chronyd
+#  systemctl start chronyd
+#  systemctl enable chronyd
 
-# vi  /etc/chrony.conf
+#  vi  /etc/chrony.conf
 server 0.es.pool.ntp.org iburst
 server 1.es.pool.ntp.org iburst
 server 2.es.pool.ntp.org iburst
 server 3.es.pool.ntp.org iburst
 
 
-# systemctl start chronyd
-# systemctl enable chronyd
+#  systemctl start chronyd
+#  systemctl enable chronyd
 
 
 
 **Comando chronyc
 El comando chronyc es una herramienta de línea de comandos utilizada para interactuar con el servicio Chrony, que es un demonio para la sincronización del tiempo en sistemas operativos Linux. Chrony es una alternativa ligera a NTP (Network Time Protocol), y se usa para mantener el reloj del sistema sincronizado con servidores de tiempo remotos o con un reloj de hardware.
 
-#Funciones principales de chronyc
+# Funciones principales de chronyc
 *Ver el estado de la sincronización: Puedes verificar el estado actual de la sincronización de tiempo utilizando el siguiente comando:
 
 chronyc tracking
@@ -204,30 +204,30 @@ Frequency       : 3.987 ppm slow
 
 Esto muestra información sobre qué servidor NTP se está utilizando, el desajuste del reloj del sistema, el último ajuste aplicado y la frecuencia de sincronización.
 
-#Ver los servidores NTP en uso: Para ver la lista de servidores NTP que Chrony está utilizando o monitoreando para la sincronización:
+# Ver los servidores NTP en uso: Para ver la lista de servidores NTP que Chrony está utilizando o monitoreando para la sincronización:
 chronyc sources
 
 
-#Agregar o eliminar servidores NTP: Puedes agregar un servidor NTP con:
+# Agregar o eliminar servidores NTP: Puedes agregar un servidor NTP con:
 sudo chronyc add server 0.es.pool.ntp.org
 
-#Para eliminar un servidor NTP:
+# Para eliminar un servidor NTP:
 sudo chronyc delete  0.es.pool.ntp.org
 
-#Comprobar la diferencia de tiempo: Para comprobar la diferencia entre el reloj del sistema y el reloj NTP:
+# Comprobar la diferencia de tiempo: Para comprobar la diferencia entre el reloj del sistema y el reloj NTP:
 chronyc makestep
 
-#Obtener estadísticas de tiempo: Para obtener estadísticas sobre la sincronización del tiempo con los servidores NTP, puedes usar:
+# Obtener estadísticas de tiempo: Para obtener estadísticas sobre la sincronización del tiempo con los servidores NTP, puedes usar:
 chronyc sourcestats
 
-#Forzar una sincronización inmediata: Si deseas forzar una sincronización inmediata del reloj del sistema con los servidores NTP:
+# Forzar una sincronización inmediata: Si deseas forzar una sincronización inmediata del reloj del sistema con los servidores NTP:
 sudo chronyc burst 4/4
 
 
-#date 
+# date 
 El comando date en Linux se utiliza para mostrar y establecer la fecha y la hora del sistema
 
-#Resumen de especificadores de formato:
+# Resumen de especificadores de formato:
 %Y: Año completo (e.g., 2024)
 %m: Mes (01-12)
 %d: Día del mes (01-31)
@@ -237,52 +237,52 @@ El comando date en Linux se utiliza para mostrar y establecer la fecha y la hora
 %A: Nombre completo del día de la semana (e.g., Thursday)
 %B: Nombre completo del mes (e.g., October)
 
-#Mostrar la fecha y hora actuales:
+# Mostrar la fecha y hora actuales:
 date
 
-#Mostrar solo la fecha (año-mes-día):
+# Mostrar solo la fecha (año-mes-día):
 date +"%Y-%m-%d"
 
-#Mostrar solo la hora (horas:minutos):
+# Mostrar solo la hora (horas:minutos):
 date +"%H:%M:%S"
 
-#Mostrar la fecha completa en formato legible: 
+# Mostrar la fecha completa en formato legible: 
 date +"%A, %B %d, %Y"
 
-#Establecer la fecha y hora al 1 de enero de 2025, 10:30 AM: 
+# Establecer la fecha y hora al 1 de enero de 2025, 10:30 AM: 
 sudo date 010110302025
 
-#Mostrar la fecha de mañana: 
+# Mostrar la fecha de mañana: 
 date -d "tomorrow"
 
-#Mostrar la fecha de hace una semana: 
+# Mostrar la fecha de hace una semana: 
 date -d "last week"
 
-#Mostrar la fecha en formato UTC:
+# Mostrar la fecha en formato UTC:
  date -u
 
-#Mostrar la hora en la zona horaria de Nueva York:
+# Mostrar la hora en la zona horaria de Nueva York:
 TZ="America/New_York" date
 
-##Cambiar la hora con el comando date
+# Cambiar la hora con el comando date
 date --set 18:00
 sudo date --set "2025-03-10 18:00:00"
 
 
-#systemd-timesyncd
+# systemd-timesyncd
 systemd-timesyncd, que es el daemon encargado de sincronizar la hora del sistema con servidores de tiempo NTP en Debian/Ubuntu.
 
-#systemd-timesyncd en Debian/Ubuntu
+# systemd-timesyncd en Debian/Ubuntu
 sudo systemctl start systemd-timesyncd
 
-#Verificar el estado del servicio
+# Verificar el estado del servicio
 systemctl status systemd-timesyncd
 
-#Forzar una sincronización inmediata con NTP
+# Forzar una sincronización inmediata con NTP
 sudo systemctl restart systemd-timesyncd
 sudo timedatectl set-ntp true
 
-#Configurar servidores NTP manualmente
+# Configurar servidores NTP manualmente
 sudo vi /etc/systemd/timesyncd.conf
 [Time]
 NTP=ntp.ubuntu.com time.google.com
@@ -292,13 +292,13 @@ FallbackNTP=pool.ntp.org
 sudo systemctl restart systemd-timesyncd
 
 
-##¿Cuándo usar systemd-timesyncd vs. chronyd ?
+# ¿Cuándo usar systemd-timesyncd vs. chronyd ?
 Servicio	                Uso recomendado
 systemd-timesyncd	       Ideal para servidores y equipos de escritorio que solo necesitan sincronizarse con NTP sin configuraciones avanzadas.
 
 chronyd	                   Recomendado en sistemas con conexiones de red inestables o que necesitan ajustes de tiempo más precisos.
 
-##Conclusión
+# Conclusión
 ✅ systemd-timesyncd es el servicio predeterminado de sincronización de hora en Debian/Ubuntu (cliente)
 ✅ Puedes verificar su estado con timedatectl status.
 ✅ Para cambiar la hora manualmente, desactiva la sincronización con NTP primero (timedatectl set-ntp false).

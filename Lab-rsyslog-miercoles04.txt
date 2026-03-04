@@ -1,0 +1,19 @@
+#Añadimos al final del archivo:
+
+vi /etc/profile
+trap 'logger -p local1.notice "$(whoami) ejecutó: $(history 1)"' DEBUG
+
+
+#En la regls del rsyslog
+vi /etc/rsyslog.conf
+
+local1.*    /var/log/commands.log
+
+#Reinicio el service:
+systemctl restart rsyslog
+systemctl status rsyslog
+
+#En un terminal ejecuto:
+tail -f /var/log/commands.log
+
+#Si ahora entramos por ssh con el usuario nominal tengo que ver lo comando que ejecuta en /var/log/commands.log
