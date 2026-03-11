@@ -1,9 +1,16 @@
-#PS1 es una variable de entorno que define cómo se ve el prompt (la línea donde escribes comandos) en Bash.
- 
+# Variable color verde prompt linux
+
+Documento de referencia sobre Variable color verde prompt linux con formato Markdown homogéneo y navegación más clara.
+
+## Contenido
+
+PS1 es una variable de entorno que define cómo se ve el prompt (la línea donde escribes comandos) en Bash.
+
+```bash
 vi /root/.bash_profile
  export PS1='\[\e[1;32m\][\u@\h \W]\$\[\e[0m\] '
- 
- 
+```
+
 | Código | Significado                        |
 | ------ | ---------------------------------- |
 | `\u`   | Usuario actual                     |
@@ -14,7 +21,6 @@ vi /root/.bash_profile
 | `\d`   | Fecha                              |
 | `\t`   | Hora (HH:MM:SS)                    |
 | `\$`   | `$` si usuario normal, `#` si root |
-
 
 | Código | Color    |
 | ------ | -------- |

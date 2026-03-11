@@ -1,0 +1,471 @@
+# Clase 7 Miercoles 04 03 2026
+
+Apuntes de clase sobre Clase 7 Miercoles 04 03 2026, reorganizados para facilitar la consulta rápida y el repaso.
+
+**Miercoles 04/03/2026
+
+## Referencias
+
+- https://www.lpi.org/es/our-certifications/lpic-1-overview
+
+## Materiales publicos de LPIC:
+
+- https://learning.lpi.org/es/learning-materials/learning-materials/
+
+## Guias IBM:
+
+- https://developer.ibm.com/tutorials/l-lpic1-map
+
+Profesor/a Titular: Alberto Garcia
+
+## Examen presencial del LPIC 101 y LPIC 102 el Lunes 17 Noviembre  en el CNTG
+
+- https://www.lpi.org/about-lpi/frequently-asked-questions/
+
+## Conectarme a traves del cliente ssh de Windows abrimos un cmd:
+
+## Maquina rockylinux:
+
+```bash
+ssh root@192.168.33.10
+```
+
+## Maquina debian12:
+
+```bash
+ssh vagrant@192.168.33.11
+```
+
+## Para trabajar como root en la mv de debian:
+
+### sudo -i
+
+> Clonar repositorio formador para realizar los laboratorio del Shell Bash de Linux Comandos Manejo de Texto.pdf :
+
+```bash
+dnf install git unzip -y
+apt install git unzip -y
+```
+
+```bash
+cd /
+git clone https://github.com/agarciafer/lpic1.git
+cd /lpic1
+unzip access_log.zip
+```
+
+---
+
+## En esta clase veremos:
+
+## Comenzamos LPIC-102
+
+## Tema 107: Tareas administrativas
+
+> Material Alumnos LPIC-1-2025\LPIC-1-exam-102\7-Topic 107-Tareas Administrativas\107.1 Manage user and group accounts and related system files -->Resumen explicacion creacion de usuarios en Linux.txt Administracion de Usuarios y Grupos.pdf
+
+> -->Clase sudo replay.txt Configuracion Sudoers.pdf
+
+107.2 Automatizar tareas administrativas del sistema mediante la programación de trabajos 107.3 Localización e internacionalización Material Alumnos LPIC-1-2025\LPIC-1-exam-102\7-Topic 107-Tareas Administrativas
+
+## Tema 108: Servicios esenciales del sistema
+
+### Material Alumnos LPIC-1-2025\LPIC-1-exam-102\8-Topic 108 Essential System Services
+
+### Archivos de Bash en Linux
+
+```bash
+~/.bashrc
+```
+
+Se ejecuta cada vez que abres una shell interactiva no login (por ejemplo, cuando abres una nueva pestaña de terminal en tu entorno gráfico). Aquí suelen ponerse alias, funciones, variables de entorno personalizadas, configuraciones del prompt, etc.
+
+```bash
+~/.bash_profile (ojo, no basch_profile)
+```
+
+Se ejecuta solo al iniciar una shell de login (ej. cuando entras con usuario/contraseña en consola o al hacer ssh). Normalmente, este archivo suele llamar también a ~/.bashrc para que ambas configuraciones se apliquen.
+
+## Rutas típicas según la distro par guardar tareas del cron por usuario (crontab -e)
+
+```bash
+/var/spool/cron/crontabs/ --Debian/Ubuntu
+/var/spool/cron/ -->Redhat
+```
+
+En Debian/Ubuntu: Los crontabs de usuario se guardan en:
+
+---
+
+## Laboratorio sudo:
+
+## Para nuestro laboratorio sustituimos berto por nuestro usuario nominal:
+
+/etc/sudoers se edita con visudo y añadimos al final del archivo:
+
+### visudo
+
+```
+berto  ALL = (ALL)  /bin/vi /etc/httpd/conf/httpd.conf, /usr/bin/systemctl restart httpd, /usr/bin/less,  /usr/bin/passwd [A-z]*, !/usr/bin/passwd root
+```
+
+berto ALL = (ALL)  NOEXEC: /bin/vi /etc/httpd/conf/httpd.conf, /usr/bin/systemctl restart httpd,/usr/bin/less, /bin/rm
+
+## Me conecto a al servidor con mi usuario nominal:
+
+sudo -l
+
+## Puedo ver que soy el usuario nominal:
+
+id
+
+## Lanzo el editor httpd.conf
+
+```
+sudo  /bin/vi /etc/httpd/conf/httpd.conf
+```
+
+## Ahora dentro del vi ejecutamos
+
+:shell
+
+## Tendria que salirme al shell del sistema y quedarme como root:
+
+id
+
+## Cerramos la session de nuestro usuario nominal:
+
+exit
+
+---
+
+## Ahora como root cambiamos la linea del /etc/sudoers:
+
+### visudo
+
+```
+berto  ALL = (ALL)  /bin/vi /etc/httpd/conf/httpd.conf, /usr/bin/systemctl restart httpd, /usr/bin/less,  /usr/bin/passwd [A-z]*, !/usr/bin/passwd root
+```
+
+berto ALL = (ALL)  NOEXEC: /bin/vi /etc/httpd/conf/httpd.conf, /usr/bin/systemctl restart httpd,/usr/bin/less, /bin/rm
+
+La opción NOEXEC en las configuraciones de sudoers se utiliza para impedir que un usuario ejecute programas adicionales desde un comando que se haya permitido con sudo. En otras palabras, si a un usuario se le concede permiso para ejecutar un comando con sudo con la opción NOEXEC, ese usuario no podrá lanzar otros programas desde el comando que se le permitió.
+
+## Me conecto a al servidor con mi usuario nominal:
+
+sudo -l
+
+## Puedo ver que soy el usuario nominal:
+
+id
+
+## Lanzo el editor httpd.conf
+
+```
+sudo  /bin/vi /etc/httpd/conf/httpd.conf
+```
+
+## Ahora dentro del vi ejecutamos
+
+### :shell
+
+Ya no me dejar salir al shell.
+
+---
+
+## Laboratorio
+
+Borrar los usuarios del usuario1 al usuario5 incluido el /home.
+
+Averiguar los accessos al sistema Averiguar los accesos fallidos del usuario root Ver la ultima vez que se han conectado todos los usuarios Ver los inicios de session de los ultimos 15 dias. Ver los usuarios conectados actualmente al sistema. Bloquear al ususario becario
+
+---
+
+## Solucion laboratorio
+
+## Borrar los usuarios del usu1 al usu5 incluido el /home.
+
+```bash
+sudo userdel -r usuario1
+sudo userdel -r usuario2
+sudo userdel -r usuario3
+sudo userdel -r usuario4
+sudo userdel -r usuario5
+```
+
+## Averiguar los accessos al sistema
+
+last loginctl
+
+## Averiguar los accesos fallidos del usuario root
+
+utmpdump /var/log/btmp |grep root
+
+## Ver la ultima vez que se han conectado todos los usuarios
+
+### lastlog
+
+## Ver los inicios de session de los ultimos 15 dias. last -n 15
+
+¿Qué muestra last -n 15? Usuario que inició sesión. TTY o puerto (por ejemplo pts/0).
+
+IP o nombre del host desde donde se conectó.
+
+Fecha y hora de inicio y cierre de sesión. Duración de la sesión (si aplicable). Reboot y apagados del sistema también pueden aparecer.
+
+## Ver los usuarios conectados actualmente al sistema. who w loginctl last |grep -w "still logged in"
+
+## Bloquear al ususario becario
+
+```bash
+sudo passwd -l becario
+passwd -S becario
+```
+
+---
+
+## Laboratorio Almacenamiento:
+
+Disco /dev/sdb--> Crear una paritcion, formatearla a ext4 y montarla en el directorio /clientes No la persistimos en el /etc/fstab de forma practica, pero si en el procedimiento:
+
+## Averiguar como se llaman los discos en nuestro equipo
+
+```bash
+cat /proc/partitions
+fdisk -l
+lsscsi
+lsblk
+```
+
+## Averiguar info del disco, que temaño tiene
+
+```bash
+fdisk -l /dev/sdb
+```
+
+## Comenzamos a particionar, creamos la particion /dev/sdb1 y la guardamos y salimos del fdisk:
+
+```bash
+fdisk /dev/sdb
+```
+
+## Lo formateamos a ext4, con el siguiente comando:
+
+```bash
+mkfs.ext4 /dev/sdb1
+```
+
+## Creamos el directorio clientes
+
+```bash
+mkdir /clientes
+```
+
+## Montamos la particion en /infomes:
+
+```bash
+systemctl daemon-reload
+mount /dev/sdb1  /clientes
+```
+
+```bash
+df -hT
+```
+
+## Copiamos archivos en /clientes
+
+```bash
+cp /etc/*.conf /clientes
+ls -l /clientes
+```
+
+## Para persistirlo en el /etc/fstab, para que en el arranque este la particion montada:
+
+```bash
+umount /clientes
+```
+
+```bash
+df -hT
+```
+
+## PARA NUESTRO LABORATORIO PRACTICO NO REALIZARLO
+
+## Persistir el punto de montaje /clientes al inicio del servidor:
+
+## Utilizar el mcedit instalandos el mc --> dnf install mc -y
+
+```bash
+vi /etc/fstab
+```
+
+## Al final del archivo /etc/fstab añadimos la line para persistir nuestra particion
+
+```
+/dev/sdb1             /clientes        ext4     defaults 0 0
+```
+
+## Para finalizar nuestro laboratio me aseguro de tenerlo montado:
+
+```bash
+mount -a
+df -hT
+```
+
+---
+
+## Procedimiento Montaje por UUID el laboratorio anterior:
+
+## Averiguar el UUID de la paritcion /dev/sdb1:
+
+### blkid /dev/sdb1
+
+```bash
+lsblk -f
+umount /clientes
+df -hT
+```
+
+## Lo persistimos
+
+```bash
+vi /etc/fstab
+```
+
+```conf
+UUID=e48411f8-a771-4a20-a71a-c60c557276a9 /clientes                    ext4    defaults        0 0
+```
+
+## Comprobamos el correcto funcionamiento:
+
+```bash
+mount -a
+df -hT
+```
+
+---
+
+### Ahora se necesita montar a traves de una label llamada oracle a la particion /dev/sdb1
+
+## Para colocar la label a la particion /dev/sdb1 utilizamos e2label porque la particion esta formateada a ext4:
+
+e2label /dev/sdb1  oracle
+
+## Ver la label de la particion:
+
+### e2label /dev/sdb1
+
+```bash
+lsblk -fp
+```
+
+```bash
+umount /clientes
+df -hT
+```
+
+## Persistimos en el fstab:
+
+```bash
+vi /etc/fstab
+LABEL=oracle /clientes ext4 defaults 0 0
+```
+
+## Comprobamos el funcionamiento:
+
+```bash
+mount /clientes
+df -hT
+```
+
+---
+
+Crear particion /dev/sdc a todo el disco, formatearla en xfs y montarla en /miercoles1 Se necesita realizar a traves de una unit de tipo mount.
+
+## Creamos particion:
+
+```bash
+fdisk /dev/sdc
+```
+
+## formateamos particion
+
+```bash
+mkfs.xfs /dev/sdc1
+```
+
+## Creamos directorio:
+
+```
+mkdir  /miercoles1
+```
+
+## Creamos la unit de tipo .mount
+
+IMPORTANTE la unit se tiene que llamar como el punto de montaje:
+
+## Prioridad de rutas en systemd
+
+### Cuando systemd busca un unit file (servicio, timer, etc.), lo hace en este orden:
+
+```bash
+/etc/systemd/system/ → configuración creada o modificada por el administrador (máxima prioridad).
+/run/systemd/system/ → configuraciones temporales en tiempo de ejecución.
+/usr/lib/systemd/system/ → archivos de las aplicaciones instaladas desde paquetes.
+/lib/systemd/system/ (en algunas distros) → lo mismo que el punto 3.
+```
+
+Si existe un archivo con el mismo nombre en varias rutas, systemd usa el de /etc/systemd/system/.
+
+```bash
+vi /etc/systemd/system/miercoles1.mount
+```
+
+### [Unit]
+
+```conf
+Description=Montaje de /miercoles1
+Documentation=man:systemd.mount(5)
+After=network-online.target
+```
+
+### [Mount]
+
+```conf
+What=/dev/sdc1
+Where=/miercoles1
+Type=xfs
+Options=defaults,nofail
+```
+
+### [Install]
+
+```
+WantedBy=multi-user.target         # Activa el montaje al inicio del sistema
+```
+
+## Iniciamos la unit
+
+```bash
+systemctl start miercoles1.mount
+df -hT
+```
+
+## La pongo al inicio
+
+```bash
+systemctl enable miercoles1.mount
+```
+
+Si reinico el servidor tiene que estar montada: reboot
+
+```bash
+df -h
+```
+
+## Para finalizar el lab la quitamos del inicio:
+
+```bash
+systemctl disable miercoles1.mount
+df -hT
+```

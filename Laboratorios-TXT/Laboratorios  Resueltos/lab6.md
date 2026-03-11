@@ -1,128 +1,202 @@
-Como forzar el fsck al proximo reinicio del sistema /
+# lab 6
+
+Documento práctico sobre lab 6. Conserva los comandos, comprobaciones y notas técnicas del material original con una estructura más clara.
+
+### Como forzar el fsck al proximo reinicio del sistema /
+
+```bash
 touch /forcefsck
-reboot
+```
 
-Buscar directorios con permisos de stickibit
+### reboot
+
+### Buscar directorios con permisos de stickibit
+
+```bash
 find / -type d -perm 1000
+```
 
-Cuantas palabras tiene el archivo /etc/shadow
-wc --help
+### Cuantas palabras tiene el archivo /etc/shadow
+
+### wc --help
+
+```
 wc  -w /etc/shadow
+```
 
-Crear 3 interacion con el comando top y enviarlo a un fichero llamado uso_sistema
-top -bn 3 > uso_sistema.csv
+### Crear 3 interacion con el comando top y enviarlo a un fichero llamado uso_sistema
 
-Comando para instalar el archivo mc.rpm con yum
+### top -bn 3 > uso_sistema.csv
+
+### Comando para instalar el archivo mc.rpm con yum
+
+```bash
 yum install mc
 apt install mc
+```
 
-Desistalar con yum el archivo php
+### Desistalar con yum el archivo php
+
+```bash
 yum remove php
 apt remove php
+```
 
-Diretorio donde se encuentran los respositorios de yum
+### Diretorio donde se encuentran los respositorios de yum
+
+```bash
 /etc/yum.repos.d
+```
 
-Dado el archivo smb.conf, que paquete lo ha instalado
+### Dado el archivo smb.conf, que paquete lo ha instalado
+
+```bash
 find / -name smb.conf
 rpm -qf /etc/samba/smb.conf
 dpkg -S /etc/samba/smb.conf
+```
 
-Comando para cambiar la prioridad de un proceso
-renice
+### Comando para cambiar la prioridad de un proceso
 
-Diferencias entre yum y rpm
+### renice
+
+### Diferencias entre yum y rpm
+
 rpm no gestiona dependencias
 
-Lanzar el comando xterm en segundo plano y que no se cuelgue cuando cierro el terminal
-nohup xterm &
+### Lanzar el comando xterm en segundo plano y que no se cuelgue cuando cierro el terminal
 
-Que hace el comando kill -15 PID
-Para de forma ordenada el proceso
+### nohup xterm &
 
-Como puedo updatear el sistema con el comando yum
+### Que hace el comando kill -15 PID
+
+### Para de forma ordenada el proceso
+
+### Como puedo updatear el sistema con el comando yum
+
+```bash
 yum update
+```
 
-Explicacion de la siguiente estructura del archivo /etc/fstab
+### Explicacion de la siguiente estructura del archivo /etc/fstab
+
+```
 /dev/sdb1       /logs   ext4    defaults        0 0
+```
 
+```
 particion       puntode mo sisficheros opciones al punto de montaje coredump fsck
+```
 
-Que tipo de particiones es 83 82 8e fd
-83 standar de linux
-82 tipo swap
-8e LVM
-fd linux raid
+### Que tipo de particiones es 83 82 8e fd
 
-Parametro del mount para pasar opciones de ro a un punto de montaje
+### 83 standar de linux
+
+### 82 tipo swap
+
+### 8e LVM
+
+### fd linux raid
+
+### Parametro del mount para pasar opciones de ro a un punto de montaje
+
+```bash
  mount -o ro,remount   /logs
  mount -o rw,remount   /logs
+```
 
- 
-Comando para poner a un proceso en segundo plano y primer plano
-jobs
-bg
-fg
+### Comando para poner a un proceso en segundo plano y primer plano
 
-Que fichero me dice que particones tengo en el sistema
+### jobs
+
+### bg
+
+### fg
+
+### Que fichero me dice que particones tengo en el sistema
+
+```bash
 cat /proc/partitions
+```
 
-Cambiar el juego de caracteres al usuario operador a iso885915
-locale
+### Cambiar el juego de caracteres al usuario operador a iso885915
+
+### locale
+
+```bash
 localectl
+```
 
+```bash
 vi /home/operador/.bash_profile
-LANG=es_ES.iso885915 
+LANG=es_ES.iso885915
 LC_CTYPE="es_ES.iso885915"
 export LANG LC_CTYPE
+```
 
+### Que hace el comando iconv
 
-Que hace el comando iconv
-Es posible convertir un archivo codificado en una tabla dada hacia otra tabla
+### Es posible convertir un archivo codificado en una tabla dada hacia otra tabla
 
-que hace el comando logger y su equivalente en systemd
+### que hace el comando logger y su equivalente en systemd
+
 Prueba la configuracion de los logs que tengamos en las rules del nuestro syslog (/etc/rsyslog.conf)
 
+```bash
 echo 'hello' | systemd-cat
 logger -p mail.info "Esto es una prueba"
+```
 
+### Como podemos forzar el rotado de los logs ahora mismo
 
-Como podemos forzar el rotado de los logs ahora mismo
+```bash
 logrotate -f /etc/logrotate.conf
+```
 
-Que puerto se utiliza para un syslog remoto
-514 puede ser UDP o TPC
+### Que puerto se utiliza para un syslog remoto
+
+### 514 puede ser UDP o TPC
 
 Tarea programada con cron backup.sh todos los dias laborables  a las 15 horas
-* 15 * * 1-5  root /backup.sh 2>&1 log.txt
 
-Tarea con at backup.sh para hoy a las 23horas
-at -f /root/backup.sh 23:00
+## 15 * * 1-5  root /backup.sh 2>&1 log.txt
 
-Ver las tareas de at
-atq
+### Tarea con at backup.sh para hoy a las 23horas
+
+### at -f /root/backup.sh 23:00
+
+### Ver las tareas de at
+
+### atq
 
 Lanzar comando dias impares
-#Minutos-Hora-Dia del mes-Mes-Dia de la semana  
-* * 1-31/2  * * comando
 
+## Minutos-Hora-Dia del mes-Mes-Dia de la semana
 
-# Ejecutar mi_script.sh de forma aleatoria entre las 9:00 y las 17:00 cada día
-* 9-17 * * * /ruta/a/mi_script.sh
+## * 1-31/2  * * comando
 
-En esta línea:
+## Ejecutar mi_script.sh de forma aleatoria entre las 9:00 y las 17:00 cada día
 
-*/10 indica que la tarea se ejecutará cada 10 minutos.
+## 9-17 * * * /ruta/a/mi_script.sh
+
+### En esta línea:
+
+## /10 indica que la tarea se ejecutará cada 10 minutos.
+
 9-17 especifica que la tarea se ejecutará entre las 9:00 y las 17:00.
-/ruta/a/mi_script.sh es la ruta absoluta de tu script que deseas ejecut
 
+/ruta/a/mi_script.sh es la ruta absoluta de tu script que deseas ejecut
 
 Para programar una tarea en Cron que se ejecute de forma aleatoria una sola vez entre las 9:00 y las 17:00 horas, puedes utilizar la siguiente línea en tu archivo crontab:
 
+```cron
 1 9-17 * * * /ruta/a/mi_script.sh
+```
 
-En esta línea:
+### En esta línea:
 
 0 indica que la tarea se ejecutará al inicio de la hora.
+
 9-17 especifica que la tarea se ejecutará entre las 9:00 y las 17:00.
+
 /ruta/a/mi_script.sh es la ruta absoluta de tu script que deseas ejecutar

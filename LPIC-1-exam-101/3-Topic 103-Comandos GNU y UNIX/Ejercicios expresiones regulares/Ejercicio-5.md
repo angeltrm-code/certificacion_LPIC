@@ -1,73 +1,72 @@
-##En la mv de linux:
+# Ejercicio 5
+
+Conjunto de ejercicios de `grep`, `sed` y expresiones regulares para practicar filtrado de texto sobre los ficheros del laboratorio.
+
+## Preparacion del entorno
+
+En la maquina virtual Linux:
+
+```bash
 cd /lpic1
+```
 
-Averiguar con grep  las veces que me ha visitado gateway.ps.net del archivo acces_log:
-Averiguar con grep las veces que me ha visitado pwch3s01 y 204.251.93.247  access_log:
-Buscar las ip que nos han visitado en nuestro /var/log/httpd/access_log, excluyendo la ip 192.168.1.14:
-Buscar www.thyssen.com en access_log que lo muestra y 5 lineas a continuación del criterio de busqueda:
-Buscar en access_log, www.thyssen.com y que muestre la 1 línea anterior al criterio.
-Para visualizar el número de línea58  completo del archivo /etc/passwd con sed:
-Buscamos la palabra root y queremos que nos muestre en que fichero esta esta palabra en la ruta /var/log/:
-Buscamos la palabra root y no queremos que nos muestre en que fichero esta esta palabra var/log/:
-Buscar todo lo que comiece root en /etc/passwd y que nos diga el numero de linea:
-Buscar todo lo que comiece root en todos los archivos de /var/log y que nos diga el numero de linea:
-Para visualizar el número de línea1  completo del archivo /etc/passwd con sed:
+## Ejercicios con `grep` y `sed`
 
-##Expresiones Regulares##
+1. Averiguar con `grep` las veces que te ha visitado `gateway.ps.net` en el archivo `access_log`.
+2. Averiguar con `grep` las veces que te han visitado `pwch3s01` y `204.251.93.247` en `access_log`.
+3. Buscar las IP que han visitado `/var/log/httpd/access_log`, excluyendo la IP `192.168.1.14`.
+4. Buscar `www.thyssen.com` en `access_log` y mostrar tambien las 5 lineas posteriores al criterio de busqueda.
+5. Buscar `www.thyssen.com` en `access_log` y mostrar 1 linea anterior al criterio.
+6. Visualizar la linea 58 completa del archivo `/etc/passwd` con `sed`.
+7. Buscar la palabra `root` en `/var/log/` y mostrar en que fichero aparece.
+8. Buscar la palabra `root` en `/var/log/` sin mostrar el nombre del fichero.
+9. Buscar todo lo que comience por `root` en `/etc/passwd` y mostrar el numero de linea.
+10. Buscar todo lo que comience por `root` en todos los archivos de `/var/log` y mostrar el numero de linea.
+11. Visualizar la linea 1 completa del archivo `/etc/passwd` con `sed`.
 
-Para ver todo lo que comienza por www en el archivo access_log:.
-Para mostrar todo lo que sea www. Y finalice con .com.mx en el arhivo access_log
-Para mostrar que el 2 carácter sea u 8 en el archivo access_log:
-Mostrara los nombres que contengan 3 caracteres del archivo nombres.txt:
-Para ver todo lo que comience por w y n del archivo access_log:
-Todo lo que comience por el rango ente 1 y 2 en el archivo access_log
-Para negar líneas que no comiencen ni con w ni con a en el archivo access_log:
-Para buscar todas las líneas que contienen un solo carácter con grep:
-Para buscar todas las líneas que solamente tengan un punto con grep:
-Con grep seleccionar las lineas que tengan al menos una letra (mayúscula o minúscula)
-Expresiones regulares extendidas con grep lo tenemos que habilitar con el comando: 
-Dado el fichero números.txt vemos que tenemos números de 1 a 4 dígitos,
-si queremos mostrar los números menores de 100, que tengan uno o dos dígitos:
+## Ejercicios de expresiones regulares
 
-Filtrar solo las ips del archivo access_log:
-Buscamos que comience por b conatenga an y obligatorio que la ulima palabra sea una a en el archivo test1:
-Buscar números pero que tengan tres digitos, es decir le estamos diciendo una expresión que se tiene que repetir 3 veces en numeros.txt:
-Para que se repita entre un rango para que busque números que se repitan entre dos dígitos y 3 dígitos, y esto es un rango, es decir buscara dos y tres dígitos, no dos o tres dígitos.
-Buscar números que tengan tres dígitos o mas en el archivo numeros.txt
+12. Mostrar todo lo que comience por `www` en el archivo `access_log`.
+13. Mostrar todo lo que sea `www.` y finalice con `.com.mx` en `access_log`.
+14. Mostrar las lineas cuyo segundo caracter sea `u` o `8` en `access_log`.
+15. Mostrar los nombres que contengan 3 caracteres en `nombres.txt`.
+16. Ver todo lo que comience por `w` y por `n` en `access_log`.
+17. Mostrar todo lo que comience por el rango entre `1` y `2` en `access_log`.
+18. Negar lineas que no comiencen ni con `w` ni con `a` en `access_log`.
+19. Buscar todas las lineas que contienen un solo caracter con `grep`.
+20. Buscar todas las lineas que solamente tengan un punto con `grep`.
+21. Seleccionar con `grep` las lineas que tengan al menos una letra, mayuscula o minuscula.
+22. Indicar que opcion hay que usar para habilitar expresiones regulares extendidas con `grep`.
 
-Que hace esta expresion:
-# grep -E "^[0-9] ([0-9] [0-9])?$”  números.txt
+## Ejercicios con rangos y cuantificadores
 
-Que hace este comando:
-# grep -E "^([0-9]|[0-9] {3})$”  números.txt
+23. Dado el fichero `números.txt`, identificar numeros de 1 a 4 digitos.
+24. Mostrar solo los numeros menores de 100, es decir, de uno o dos digitos.
+25. Filtrar solo las IP del archivo `access_log`.
+26. Buscar en `test1` un patron que comience por `b`, contenga `an` y obligue a que la ultima letra sea `a`.
+27. Buscar numeros de exactamente tres digitos en `numeros.txt`.
+28. Buscar numeros de entre dos y tres digitos en `numeros.txt`.
+29. Buscar numeros de tres digitos o mas en `numeros.txt`.
 
-Que hace este comando:
-# egrep  "^([0-9]|[0-9] {3})$”  números.txt
+## Interpretacion de expresiones
 
+Analiza que hacen las siguientes expresiones:
 
+```bash
+grep -E "^[0-9] ([0-9] [0-9])?$" números.txt
+grep -E "^([0-9]|[0-9] {3})$" números.txt
+egrep "^([0-9]|[0-9] {3})$" números.txt
+```
 
+## Ejercicios de sustitucion y limpieza
 
+30. Cambiar el año de `2014` a `2018` con `sed` en el archivo `empresa.txt`, en todas las ubicaciones.
+31. Visualizar en un fichero las lineas sin espacios o lineas vacias.
+32. Resolver el ejercicio anterior utilizando `sed`.
+33. Explicar que realiza un comando de limpieza o sustitucion dado.
+34. Con `sed`, realizar una copia de seguridad `empresa.txt.original` antes de modificar `empresa.txt`.
 
+## Ordenacion y agregacion
 
-
-Para cambiar el año de 2014 a 2018 con sed,en el archivo empresa.txt, en todas las ubicaciones:
-Para visualizar en el fichero las líneas sin espacios, lineas vacias :
-El comando anterior con el  conmando sed: 
-Que realiza el siguiente comando:
-Con sed realizar una copia de seguridad (empresa.txt.original) sobre el archivo en el que vayamos a realizar modificaciones empresas.txt del comando anterior:
-Ordenar el ficheros ips.txt, contar las veces que se repite el acceso de una ip, volver a ordenarlo de forma numérica y  guardarlo en un fichero y muestre el resultado por pantalla.
-Con el comando anterior el comando tee que añade el contenido al fichero nuevamente, es decir no lo sobrescribe.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+35. Ordenar el fichero `ips.txt`, contar las veces que se repite el acceso de una IP, volver a ordenarlo de forma numerica, guardarlo en un fichero y mostrar el resultado por pantalla.
+36. Explicar la diferencia cuando en el ejercicio anterior se usa `tee` para añadir contenido al fichero en lugar de sobrescribirlo.

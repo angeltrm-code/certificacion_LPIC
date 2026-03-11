@@ -1,34 +1,69 @@
-Arquitectura del sistema operativo
+# Lab 2
+
+Documento práctico sobre Lab 2. Conserva los comandos, comprobaciones y notas técnicas del material original con una estructura más clara.
+
+## Desarrollo
+
+### Arquitectura del sistema operativo
+
+```bash
 arch o  uname -a
+```
 
-Modelo de cdrom del sistema operativo
+### Modelo de cdrom del sistema operativo
 
+### Cuanta memoria ram tiene nuestro servidor
 
-Cuanta memoria ram tiene nuestro servidor
-cuantas cpus tiene mi servidor
-Cuanto tiempo lleva encendido nuestro servidor
-Modiricar la fecha y hora de nuestro servidor a 10/01/2016 18:10
-Informacion de modelo de nuestra tarjeta de red
-Informacion de sistema de ficheros soportados por el servidor
-Version del sistema oprativo que tenemos
-version de nuestro kernel
-Averiguar mascara por defecto
-Buscar directorios con permiso Sticky Bit
-Buscar archivos con permiso setuid
-Cambiar el usuario propietario operador al directorio /datos
-Dar permisos Sticky Bit /datos
-Dar permisos de setgid a /datos2
-Que hace el permiso setuid
-Cambiar la mascara por defecto a rw- rw- ---
-Cuantas lineas tiene el archivo httpd.conf, con el comando cat
-Cuanto tiempo lleva encendido nuestro servidor
-Que hacen los comando:
-runlevel
+### cuantas cpus tiene mi servidor
+
+### Cuanto tiempo lleva encendido nuestro servidor
+
+### Modiricar la fecha y hora de nuestro servidor a 10/01/2016 18:10
+
+### Informacion de modelo de nuestra tarjeta de red
+
+### Informacion de sistema de ficheros soportados por el servidor
+
+### Version del sistema oprativo que tenemos
+
+### version de nuestro kernel
+
+### Averiguar mascara por defecto
+
+### Buscar directorios con permiso Sticky Bit
+
+### Buscar archivos con permiso setuid
+
+### Cambiar el usuario propietario operador al directorio /datos
+
+### Dar permisos Sticky Bit /datos
+
+### Dar permisos de setgid a /datos2
+
+### Que hace el permiso setuid
+
+### Cambiar la mascara por defecto a rw- rw- ---
+
+### Cuantas lineas tiene el archivo httpd.conf, con el comando cat
+
+### Cuanto tiempo lleva encendido nuestro servidor
+
+### Que hacen los comando:
+
+### runlevel
+
+```bash
 chkconfig
-init 6
-telinit 0
+```
 
-Poner al inicio el servicio httpd en systemd y sistemv
-arrancar ahora el servicio httpd  systemd y sistemv
-Comando para ver en systend el target actual y en systemv
-Comando para moverme en caliente entre en target o runlevel 5 en systemd systemv
+### init 6
+
+### telinit 0
+
+### Poner al inicio el servicio httpd en systemd y sistemv
+
+### arrancar ahora el servicio httpd  systemd y sistemv
+
+### Comando para ver en systend el target actual y en systemv
+
+### Comando para moverme en caliente entre en target o runlevel 5 en systemd systemv

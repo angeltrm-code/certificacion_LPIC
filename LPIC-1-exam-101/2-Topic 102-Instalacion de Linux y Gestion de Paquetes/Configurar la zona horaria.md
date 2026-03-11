@@ -1,59 +1,98 @@
-# El comando timedatectl en Linux se utiliza para consultar y configurar la fecha, la hora y la zona horaria del sistema, especialmente en distribuciones que usan systemd (como Ubuntu, Debian, Rocky, RHEL, etc.).
+# Configurar la zona horaria
 
+Documento de referencia para gestionar fecha, zona horaria, localizacion del sistema y sincronizacion NTP en equipos Linux con systemd.
+
+## Gestion de fecha y zona horaria con `timedatectl`
+
+`timedatectl` permite consultar y configurar la fecha, la hora y la zona horaria del sistema en distribuciones con systemd, como Ubuntu, Debian, Rocky o RHEL.
+
+```bash
 timedatectl list-timezones
-timedatectl set-timezone   Europe/Madrid
+timedatectl set-timezone Europe/Madrid
 timedatectl set-ntp false
 timedatectl set-ntp true
+```
 
+## Gestion del idioma y el teclado con `localectl`
 
+`localectl` se utiliza para consultar y configurar el idioma del sistema y la distribucion del teclado.
 
-# El comando localectl se utiliza en sistemas Linux con systemd para consultar y configurar el idioma (locale) y el teclado del sistema
-
+```bash
 localectl
 localectl set-locale LANG=es_ES.utf8
 localectl set-keymap es
- 
-## Para centos8: 
-dnf install langpacks-es 
+```
 
+### CentOS 8
 
+Para disponer de paquetes de idioma en CentOS 8:
 
+```bash
+dnf install langpacks-es
+```
+
+Comprobacion del locale activo:
+
+```bash
 cat /etc/locale.conf
+```
+
+```text
 LANG="es_ES.UTF-8"
+```
 
+## Instalacion y configuracion de Chrony
 
+Chrony es un conjunto de herramientas para sincronizar la hora del sistema mediante NTP. Es mas preciso y rapido que el antiguo `ntpd`, especialmente en maquinas virtuales y servidores con cambios frecuentes de red.
 
-## Instalacion cliente NTP
+Comandos principales:
 
-# Chrony es un conjunto de herramientas para sincronizar la hora del sistema mediante NTP. Es más preciso y rápido que el antiguo ntpd, especialmente en máquinas virtuales y servidores con cambios de red frecuentes.
+```text
+chronyd: servicio o daemon
+chronyc: cliente para consultar y administrar Chrony
+```
 
-# Los comandos principales son:
-chronyd → servicio (daemon)
-chronyc → cliente para consultar y administrar
+En muchas distribuciones modernas, Chrony es el servicio NTP por defecto.
 
-# En muchas distribuciones modernas (Rocky, RHEL, Ubuntu Server), es el servicio NTP por defecto.
+### Instalacion
 
+```bash
 dnf install chrony -y
+```
 
+### Configuracion
 
+```bash
 vi /etc/chrony.conf
+```
 
+```conf
 server 3.es.pool.ntp.org iburst
 server 1.europe.pool.ntp.org iburst
 server 3.europe.pool.ntp.org iburst
+```
 
+### Activacion del servicio
 
+```bash
 systemctl enable chronyd
 systemctl start chronyd
 systemctl status chronyd
+```
 
-Mostrar la información sobre NTP Chronyd
-# chronyc sources -v
+### Verificacion
 
-################################################################
-*La opción iburst está recomendada, ya que envía una serie («burst») de paquetes solo si no se puede obtener una conexión con el primer intento.
+```bash
+chronyc sources -v
+```
 
-Por otro lado, la opción burst siempre está presente, incluso en el primer intento, pero nunca debe utilizarse sin permiso explícito,  dado que puede incluirse en blacklist.)
- 
-netstat -putan 
-udp        0      0 127.0.0.1:323           0.0.0.0:*                           692/chronyd 
+```text
+netstat -putan
+udp        0      0 127.0.0.1:323           0.0.0.0:*                           692/chronyd
+```
+
+## Nota sobre `iburst`
+
+La opcion `iburst` esta recomendada porque envia una pequena rafaga de paquetes solo cuando no se consigue conexion en el primer intento. Esto acelera la sincronizacion inicial.
+
+La opcion `burst`, en cambio, envia rafagas siempre y no debe utilizarse sin permiso explicito, ya que puede provocar bloqueos o blacklist en algunos servidores.

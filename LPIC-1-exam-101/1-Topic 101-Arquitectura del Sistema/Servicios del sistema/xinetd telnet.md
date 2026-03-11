@@ -1,9 +1,33 @@
-##Explicacion pagina 419 Manual del curso LPIC-1
-yum install xinetd -y
-yum install  telnet-server -y
-/etc/xinetd.d
+# xinetd telnet
 
+Documento de referencia para instalar y configurar el servicio `telnet` mediante `xinetd`.
+
+> Referencia del manual del curso LPIC-1: pagina 419.
+
+## Instalacion
+
+```bash
+yum install xinetd -y
+yum install telnet-server -y
+```
+
+Directorio habitual de configuracion:
+
+```text
+/etc/xinetd.d
+```
+
+## Configuracion del servicio `telnet`
+
+Archivo de configuracion:
+
+```bash
 vi /etc/xinetd.d/telnet
+```
+
+Contenido de ejemplo:
+
+```conf
 # default: on
 # description: The telnet server serves telnet sessions; it uses \
 #       unencrypted username/password pairs for authentication.
@@ -17,29 +41,36 @@ service telnet
         log_on_failure  += USERID
         disable         = no
 }
+```
 
+## Reinicio y verificacion
 
-
-
-
+```bash
 systemctl restart xinetd
+netstat -putana |grep -w 23
+```
 
-# netstat -putana |grep -w 23
+```text
 tcp6       0      0 :::23                   :::*                    LISTEN      15851/xinetd
+```
 
-------------------------------------------------------------------------------------
-La primera línea de comentario, default, tiene una importancia particular.
- No la interpreta xinetd, sino ntsysv o chkconfig, para determinar si el servicio está activo. 
- • service: nombre del servicio que corresponde a un servicio definido en /etc/services.
- • flags: atributos para la conexión. REUSE indica que se volverá a utilizar el socket para una conexión telnet. 
- • socket_type: especifica el tipo de socket. 
-En general, stream (tcp) o dgram (udp). Una conexión directa IP se hace por raw.
+## Significado de los parametros principales
 
-• wait: indica si el servidor es single-threaded (yes) o multi-threaded (no). 
-• user: con qué cuenta de usuario se iniciará el servicio. • server: ruta del ejecutable que se debe iniciar. 
-• log_on_failure: el += indica que se añade la opción asociada al archivo de traza, además de las opciones por defecto. Aquí: el login. • disable: indica si el servicio está activo o no. Algunas opciones pueden mejorar las condiciones de acceso y la seguridad: 
-• only_from: permite el acceso únicamente a los anfitriones especificados.
-• no_access: impide el acceso a los anfitriones especificados (p. ej.: 172.16.17.0/24).
-• access_times: autoriza el acceso únicamente en una franja horaria dada (p.ej.: 09:00-18:30).
+La primera linea de comentario, `default`, tiene una importancia especial. No la interpreta `xinetd`, sino herramientas como `ntsysv` o `chkconfig`, que la usan para determinar si el servicio esta activo.
 
+- `service`: nombre del servicio definido en `/etc/services`.
+- `flags`: atributos de la conexion. `REUSE` indica que el socket se reutilizara para nuevas conexiones.
+- `socket_type`: tipo de socket utilizado. Lo habitual es `stream` para TCP o `dgram` para UDP.
+- `wait`: indica si el servidor es monohilo (`yes`) o multihilo (`no`).
+- `user`: cuenta de usuario con la que se iniciara el servicio.
+- `server`: ruta del ejecutable que se pondra en marcha.
+- `log_on_failure`: el operador `+=` anade informacion al registro, por ejemplo el login del usuario.
+- `disable`: determina si el servicio queda activo o desactivado.
 
+## Restricciones de acceso
+
+Algunas opciones permiten reforzar el control de acceso y la seguridad:
+
+- `only_from`: autoriza el acceso solo desde los anfitriones indicados.
+- `no_access`: deniega el acceso a los anfitriones especificados, por ejemplo `172.16.17.0/24`.
+- `access_times`: limita el acceso a una franja horaria concreta, por ejemplo `09:00-18:30`.

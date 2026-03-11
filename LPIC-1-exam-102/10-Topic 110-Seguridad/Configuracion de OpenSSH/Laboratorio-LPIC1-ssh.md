@@ -1,123 +1,162 @@
-# Laboratorio configurar Openssh COMPLETO en el servidor 192.168.33.10 RockyLinux:
+# Laboratorio LPIC 1 SSH
 
-                            +----------------+
-                            |    Windows PC   |
-                            | (Origen archivo)|
-							| 192.168.33.1    | 
-                            +--------+--------+
-                                     |
-                  (Copia windows.txt usando SCP)
-                                     |
-                                     v
-                          +----------+-----------+
-                          |  RockyLinux Servidor  |
-                          |    192.168.33.10      |
-                          |    OpenSSH Server     |
-                          +----------+-----------+
-                                     ^
-                                     |
-           (Conexión SSH al puerto 52412 - según permisos)
-                                     |
-         +---------------------------+------------------------------+
-         |                                                          |
-+-------------------+                                  +--------------------+
-|  Debian 12 VM     |                                  | Usuario vagrant     |
-| 192.168.33.11     |                                  | 192.168.33.10       |
-| Usuario operador  | -------------------------------->| Usuario vagrant     |
-| SSH permitido     |                                  | SSH permitido  	 |
-                                                       |  puerto 52412       |
-+-------------------+                                  +--------------------+
+Documento practico para configurar OpenSSH, restringir accesos y trabajar con autenticacion mediante clave publica.
 
+## Laboratorio 1: Configurar OpenSSH en Rocky Linux
 
+Objetivo del laboratorio sobre el servidor `192.168.33.10`:
 
-# Realizar una copia de seguridad de nuestro fichero del servidor:
+- cambiar el puerto SSH a `52412`
+- denegar acceso al usuario `root`
+- desactivar reenvio X11
+- permitir acceso al usuario `vagrant`
+- permitir acceso al usuario `operador` solo desde `192.168.33.11`
+- definir un banner en `/etc/ssh/sshd-banner`
+- copiar `c:\windows.txt` desde Windows hacia `/tmp`
+
+### Esquema del laboratorio
+
+```text
+Windows PC (192.168.33.1)
+    |
+    | SCP de c:\windows.txt
+    v
+RockyLinux servidor (192.168.33.10)
+    |
+    | SSH puerto 52412
+    v
+Debian 12 VM (192.168.33.11)
+```
+
+### Copia de seguridad del archivo principal
+
+```bash
 cp /etc/ssh/sshd_config /root
+```
 
-# Configurar nuestro servidor openssh:
-Puerto 52412
-No permitimos conexion al usuario root
-No permitimos el renvio de las X
-Solamante el usuario vagrant se puede conectar a nuestro servidor ssh y el usuario operador desde la ip 192.168.33.1
-Banner /etc/ssh/sshd-banner
+### Crear el usuario `operador`
 
-# Copiamos de nuestro windows a nuestro linux 192.168.33.10 el archivo c:\windows.txt /tmp con el usuario vagrant
-
-
-# SOLUCION Configurar nuestro servidor openssh:
-
+```bash
 adduser operador
-passwd operador -> vagrant
+passwd operador
+```
 
-# Añadimos las entradas al final del archivo
-vi  /etc/ssh/sshd_config
+### Configuracion del servidor SSH
 
-# Entrada añadida administrador el 07/10/2026
+Editar el archivo principal:
+
+```bash
+vi /etc/ssh/sshd_config
+```
+
+Añadir al final:
+
+```conf
 Port 52412
 PermitRootLogin no
 X11Forwarding no
 AllowUsers vagrant operador@192.168.33.11
 Banner /etc/ssh/sshd-banner
+```
 
+Crear el banner:
 
-vi  /etc/ssh/sshd-banner
-# 
-#                  Authorized access only!                     # 
-#  Disconnect IMMEDIATELY if you are not an authorized user!!! # 
-#          All actions Will be monitored and recorded          # 
-# 
+```bash
+vi /etc/ssh/sshd-banner
+```
 
+Contenido sugerido:
 
-# Para testear la configuracion del archivo /etc/ssh/sshd_config, antes de reiniciar el servicio:
+```text
+Authorized access only!
+Disconnect IMMEDIATELY if you are not an authorized user!!!
+All actions will be monitored and recorded.
+```
+
+### Validacion y reinicio
+
+Antes de reiniciar, comprobar la sintaxis:
+
+```bash
 sshd -t
+```
 
+Aplicar cambios:
 
-# Reiniciamos el servicio:
+```bash
 systemctl restart sshd
 systemctl status sshd
+```
 
+### Copiar archivo desde Windows al servidor
 
+Copiar `c:\windows.txt` al directorio `/tmp` usando el puerto configurado:
 
-# Copiamos de nuestro windows a nuestro linux el archivo c:\windows.txt al directorio /tmp
+```bash
+scp -P 52412 c:\windows.txt vagrant@192.168.33.10:/tmp
+```
 
-scp -P 52412 c:\windows.txt  vagrant@192.168.33.10:/tmp
+Sin indicar el puerto correcto, la copia fallaria si el servicio ya no escucha en el puerto 22:
 
-scp  c:\windows.txt  vagrant@192.168.33.10:/tmp
+```bash
+scp c:\windows.txt vagrant@192.168.33.10:/tmp
+```
 
+### Comprobaciones del laboratorio
 
-# Para comprobar el laboratorio:
--El puerto es 52412
--Solo me puedo conectar con el usuario vagrant a traves de ssh
--No puedo conectarme con el usuario root
+Verificar que:
 
--El usuario operador se puede conectar a traves de ssh desde la maquina nuestro linux (debian) que tiene la ip 192.168.33.12
+- el puerto es `52412`
+- `vagrant` puede conectarse
+- `root` no puede conectarse
+- `operador` solo puede conectarse desde la maquina Debian autorizada
 
-# Desde la mv de debian12:
- ssh -p 52412  operador@192.168.33.10
+Prueba desde Debian 12:
 
-Comprobar que el usuario root no se puede conectar.
-Comprobar que el usuario vagrant si se puede conectar
+```bash
+ssh -p 52412 operador@192.168.33.10
+```
 
-# Tras la finalizacion del laboratorio lo dejamos por defecto el servicio Openssh en 192.168.33.10:
+Tambien debe comprobarse que `root` no entra y que `vagrant` si puede hacerlo.
 
-cp /root/sshd_config  /etc/ssh/
+### Restaurar configuracion por defecto
+
+Al finalizar el laboratorio:
+
+```bash
+cp /root/sshd_config /etc/ssh/
 systemctl restart sshd
 systemctl status sshd
-------------------------------------------------------------------------------------------------------
+```
 
-# Laboratorio2:
+## Laboratorio 2: Ejecutar programas a traves de SSH con claves
 
-En este procedimiento ejecutaremos programas a traves de ssh desde rockylinux8 a debian, con el usuario vagrant en ambos servidores:
+En este procedimiento se trabaja entre:
 
-rockylinux8--->192.168.33.10
-debian---> 192.168.33.11
+- `rockylinux8` en `192.168.33.10`
+- `debian` en `192.168.33.11`
 
-# En rockylinux8 con el usuario vagrant y no ponemos contraseña en el certificado respondemos a todo con intro:
-vagrant@rockylinux8 / # su - vagrant
+Se utiliza el usuario `vagrant` en ambos sistemas y se genera autenticacion sin contraseña.
 
-# Se utiliza para generar un par de claves SSH (una pública y una privada) usando el algoritmo RSA con un tamaño de 4096 bits
-vagrant@rockylinux8 / # ssh-keygen -t rsa -b 4096
+### Generar el par de claves
 
-# Le damos a todo intro:
+Cambiar al usuario `vagrant`:
+
+```bash
+su - vagrant
+```
+
+Generar el par de claves:
+
+```bash
+ssh-keygen -t rsa -b 4096
+```
+
+Durante el asistente, responder con Intro a todas las preguntas para no establecer passphrase.
+
+Ejemplo de salida:
+
+```text
 Generating public/private dsa key pair.
 Enter file in which to save the key (/home/vagrant/.ssh/id_dsa):
 Enter passphrase (empty for no passphrase):
@@ -126,133 +165,70 @@ Your identification has been saved in /home/vagrant/.ssh/id_dsa.
 Your public key has been saved in /home/vagrant/.ssh/id_dsa.pub.
 The key fingerprint is:
 2c:73:30:fe:82:21:a5:52:78:49:37:cd:57:af:36:df vagrant@cliente
+```
 
+Comprobar los ficheros generados:
 
-# Genera en /home/vagrant/.ssh estos dos ficheros :
-vagrant@rockylinux8 / #  ls -l /home/vagrant/.ssh 
-id_rsa
-id_rsa.pub
+```bash
+ls -l /home/vagrant/.ssh
+```
 
-# Seguimos los pasos de nuestro laboratorio, sin palabra de paso en nuestros certificados:
+Ficheros esperados:
 
-ssh-copy-id es un comando de Linux que copia tu clave pública SSH a un servidor remoto, para que luego puedas conectarte sin tener que escribir la contraseña cada vez.
-Se usa para configurar autenticación SSH basada en clave pública (más segura que usar contraseñas).
+- `id_rsa`
+- `id_rsa.pub`
 
-# Esta orden copia el contenido de id_rsa.pub, en el servidor debian en el archivo /home/vagrant/.ssh/authorized_keys
-vagrant@rockylinux8 / # cd /home/vagrant/.ssh
-vagrant@rockylinux8 / # ssh-copy-id -i id_rsa.pub vagrant@192.168.33.11
+### Copiar la clave publica al servidor remoto
 
+`ssh-copy-id` copia la clave publica al archivo `authorized_keys` del usuario remoto para permitir autenticacion basada en clave publica.
 
+```bash
+cd /home/vagrant/.ssh
+ssh-copy-id vagrant@192.168.33.11
+```
 
+## Notas practicas adicionales
 
+### Especificar una clave privada al conectar
 
-# En debian con el usuario vagrant
-vagrant@debian:~$ ls -l /home/vagrant/.ssh
-# Se crea el archivo authorized_keys con el contenido de id_rsa.pub de rockylinux8
-authorized_keys
+```bash
+ssh -i ~/.ssh/RSAPair user@hostname
+```
 
+### Copia remota con `scp`
 
+```bash
+scp -P 52341 algo.txt operador@192.168.70.99:/home/operador
+scp -p -P 52341 algo.txt 192.168.70.99:/home/operador
+scp -r Ejemplos-scrpts vagrant@192.168.33.10:/tmp
+```
 
-# Para probar que todo funciona desde el rockylinux8 ejecutamos:
- vagrant@rockylinux8 / # ssh 192.168.33.11 cat /etc/hostname
- 
-vagrant@rockylinux8 / # ssh vagrant@192.168.33.11
-vagrant@rockylinux8 touch  /home/vagrant/datos.txt
-vagrant@rockylinux8 / # scp /home/vagrant/datos.txt 192.168.33.11:/home/vagrant
-----------------------------------------------------------------------------------------------------------
-# Laboratorio ssh-agent:
+Ejemplo de copia remota preservando permisos y fechas:
 
-ssh-agent es un manejador de claves para SSH, es decir, mantiene las claves privadas en memoria, descifradas y listas para usarse. Esto nos facilita el hecho de utilizar dichas claves sin necesidad de cargarlas y descifrarlas (en el caso de que hayamos seteado una passphrase) cada vez que vayamos a usarlas.
+```bash
+cd /root
+scp -P 52341 -rp operador@192.168.70.99:/home/operador/Mail ./
+```
 
+Ejemplo adicional desde Debian:
 
-# Habilitar root por ssh en la mv debian12:
+```bash
+scp -P 52341 archivo operador@192.168.30.10:/tmp
+```
 
-root@debian:~# sudo cp  /etc/ssh/sshd_config /root
+Este formato no funcionaria, porque el puerto debe indicarse antes del fichero:
 
-# Modifico la line 33 del fichero  /etc/ssh/sshd_config
-# Para situarme el en vi en una linea ejecutamos la tecla escape y ponemos  :33    que es el numero linea
-root@debian:~# sudo vi   /etc/ssh/sshd_config
-PermitRootLogin yes
+```bash
+scp algo.txt -P 52341 operador@192.168.70.99:/home/operador
+```
 
-# Reiniciamos el service sshd
-root@debian:~# sudo systemctl restart sshd
+## Resumen del laboratorio
 
-# Ponemos de password vagrant al usuario root:
-root@debian:~# sudo passwd root 
+Al terminar, deberias poder:
 
-Ahora me conectar como root al servidor debian12
-
-
-
-# En este procedimiento ejecutaremos programas a traves de ssh desde  debian a rockylinux8 ,
-con el usuario root en ambos servidores, utilizaremos contraseña en la creacion del certificado:
-
-
-rockylinux8--->192.168.33.10
-debian---> 192.168.33.11
-
-# En debian con el usuario root, en la creacion del certificado  a la pregunta  passphrase ponemos una contraseña:
-# Enter passphrase (empty for no passphrase):
-# Enter same passphrase again:
-
-root@debian:~#  id
-uid=0(root) gid=0(root) groups=0(root)
-
-# Enter passphrase (empty for no passphrase):
-# Enter same passphrase again:
-
-root@debian:~# ssh-keygen -t rsa -b 4096
-
-# Genera en /root/.ssh estos dos ficheros :
-root@debian:~# ls -l root/.ssh
-id_rsa
-id_rsa.pub
-
-
-#  Desde debian, esta orden copia el contenido de id_rsa.pub, en el servidor debian en el archivo /root/.ssh/authorized_keys
-root@debian:~# cd /root/.ssh
-root@debian:~# ssh-copy-id -i id_rsa.pub root@192.168.33.10
-
-
-# En rockylinux8 con el usuario root puedo comprobar la creacion del archivo authorized_keys, creado con el comando
-anterior
-
-root@rockylinux8 / #  ls -l /root/.ssh
-# Se crea el archivo authorized_keys con el contenido de id_rsa.pub de rockylinux8
-authorized_keys
-
-
-
-# Para probar que todo funciona desde el servidor debain ejecutamos:
-
-# Anotacion ssh-agent:
-# Si la llave privada es creada con un password en el ejemplo servidor rockylinux8 (ssh-add)
-
-El comando eval $(ssh-agent) se usa para iniciar el agente SSH (ssh-agent) y configurar el entorno para que las claves SSH puedan utilizarse sin necesidad de ingresar la contraseña en cada conexión.
-
-root@debian:~# eval $(ssh-agent)
-
-root@debian:~# ssh-add -t 2m /root/.ssh/id_rsa
-
-# Ahora no nos tendra que pedir el password de la llave privada:
-
-root@debian:~# ssh 192.168.33.10 cat /etc/hostname
- 
-root@debian:~# ssh root@192.168.33.10
-exit
-
-root@debian:~# scp /etc/hostname  root@192.168.33.10:/tmp
-
-
-# Pasado los dos minutos Tiene que pedir el password del certificado para conectarme:
-root@debian:~# ssh root@192.168.33.10
-
-
-eval $(ssh-agent) inicia un agente SSH y “inyecta” en tu shell las variables que imprime (SSH_AUTH_SOCK y SSH_AGENT_PID). Así, los clientes SSH/Git hablan con el agente, que guarda tus claves privadas en memoria y evita reintroducir la passphrase.
-
-# Qué ocurre
-ssh-agent imprime asignaciones de entorno.
-eval las ejecuta en tu shell actual → quedan exportadas:
-SSH_AUTH_SOCK: socket UNIX para hablar con el agente.
-SSH_AGENT_PID: PID del agente.
-
+- endurecer la configuracion de `sshd`
+- validar la sintaxis con `sshd -t`
+- restringir usuarios y origenes IP
+- configurar banner de acceso
+- transferir archivos con `scp`
+- usar autenticacion SSH mediante clave publica

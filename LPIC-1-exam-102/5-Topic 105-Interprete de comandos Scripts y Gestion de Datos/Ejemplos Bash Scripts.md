@@ -1,99 +1,122 @@
-#Lista parcial de archivos, términos y utilidades:
+# Ejemplos Bash Scripts
 
-for
-while
-test
-if
-read
-seq
-exec
-||
-&&
+Documento de referencia sobre Ejemplos Bash Scripts con formato Markdown homogéneo y navegación más clara.
 
+## Lista parcial de archivos, términos y utilidades:
 
+for while test if read seq exec || &&
+
+```bash
 mkdir /lpic1/scripts
 cd /lpic1/scripts
+```
 
-#El usuo de las comillas:
-Sin embargo, cuando utilizas ` lo que haces es ejecutar un comando en otro comando,
-por ejemplo si quieres utilizar el comando «pwd» en otro comando, deberías hacerlo de esta manera:
+## El usuo de las comillas:
 
+Sin embargo, cuando utilizas ` lo que haces es ejecutar un comando en otro comando, por ejemplo si quieres utilizar el comando «pwd» en otro comando, deberías hacerlo de esta manera:
+
+```bash
 echo `pwd`/prueba
+```
 
-###Resumiendo
-##Dobles comillas
-Usar dobles comillas cuando se encierran variables o se utilizan comandos envueltos en «
-Todos los carácteres se intrepetan tal y como son, excepto $ y ` que serán expandidos en el shell
+## Resumiendo
 
+## Dobles comillas
+
+Usar dobles comillas cuando se encierran variables o se utilizan comandos envueltos en « Todos los carácteres se intrepetan tal y como son, excepto $ y ` que serán expandidos en el shell
+
+```bash
 echo "Hola $USER"
-#Resultado:
+```
+
+## Resultado:
+
 Hola root
 
+## Simples comillas
 
-##Simples comillas
-Todos los caracteres son interpretados como una tal y como son
+### Todos los caracteres son interpretados como una tal y como son
+
+```bash
 echo 'Hola $USER'
-#Resultado:
+```
+
+## Resultado:
+
 Hola $USER
--------------------------------------------------------------------------------------------------------------
 
-La línea #!/bin/bash al inicio de un script es llamada shebang (o "hashbang"), y su propósito es
-Y entiende que debe usar el programa ubicado en /bin/bash (el Bourne Again Shell) para interpretar y ejecutar el contenido del archivo.
+---
 
-#! → es una secuencia especial que activa el shebang.
+La línea #!/bin/bash al inicio de un script es llamada shebang (o "hashbang"), y su propósito es Y entiende que debe usar el programa ubicado en /bin/bash (el Bourne Again Shell) para interpretar y ejecutar el contenido del archivo.
+
+! → es una secuencia especial que activa el shebang.
 
 /bin/bash → es la ruta absoluta al intérprete que ejecutará el script (en este caso, el shell Bash).
 
-
+```
 vi  1.sh
-#!/bin/bash
-echo "Hola Mundo"
+```
 
+## !/bin/bash
+
+```bash
+echo "Hola Mundo"
+```
+
+```bash
 chmod u+x 1.sh
 sh 1.sh
 ./1.sh
---------------------------------------------------------------------------
+```
 
-#Parámetros
-Los párametros en bash
-Un script Bash puede recibir parámetros y estos pueden ser procesados dentro de él.
-Los parámetros que se pueden usar dentro de un script bash son:
+---
 
+## Parámetros
+
+Los párametros en bash Un script Bash puede recibir parámetros y estos pueden ser procesados dentro de él. Los parámetros que se pueden usar dentro de un script bash son:
+
+```bash
 vi script2.sh
+```
 
-#!/bin/bash
+## !/bin/bash
+
+```bash
 echo Primer parametro es $1
 echo Numeros de parametros es $#
 echo todos los parametros son: $*
 echo pid del shell actual:  $$
 echo el comando ha tenido exito: $?
+```
 
+```bash
 ./script2.sh uno dos tres
 sh script2.sh uno dos tres
+```
 
-##Variables de nuesto shell que puedo recuperar: 
+## Variables de nuesto shell que puedo recuperar:
+
+```bash
 echo $!--> PID del ultimo proceso ejecutado
 echo $$ PID del shell actual
 echo $?--> Devuelve 0 si el ultimo comando tine exito, si no devuelve 1 o otro valor diferente.
+```
 
-##Listas de Parametros:
-$# Nº de parametros recibidos
-$0 Nombre y ruta del propio script
-$1 ... $9 Parámetros del 1 al 9 recibidos
-${N} Parámetro de la posicion N recibido
-$* Todos los parámetros recibidos (excepto $0) 1
-$@ Array de parámetros recibidos (excepto $0) 2
-$$ El PID (numero de proceso) del script
-$? El código de error del ultimo comando ejecutado
------------------------------------------------------------------------------------------------------------
+## Listas de Parametros:
 
-Que muestre el directorio actual
-en que fecha estoy actualmente y hora
-Cual es el nombre del servidor:
+$# Nº de parametros recibidos $0 Nombre y ruta del propio script $1 ... $9 Parámetros del 1 al 9 recibidos ${N} Parámetro de la posicion N recibido $* Todos los parámetros recibidos (excepto $0) 1 $@ Array de parámetros recibidos (excepto $0) 2 $$ El PID (numero de proceso) del script $? El código de error del ultimo comando ejecutado
 
+---
+
+Que muestre el directorio actual en que fecha estoy actualmente y hora Cual es el nombre del servidor:
+
+```bash
 vi script3.sh
+```
 
-#!/bin/bash
+## !/bin/bash
+
+```bash
 fecha=`date +%F\ %r`
 FECHA=$(date +%Y%m%d)
 servidor=`hostname`
@@ -103,513 +126,738 @@ echo $PWD
 echo "Directorio: $directorio"
 echo "Fecha: $fecha"
 echo "Servidor: $servidor"
-echo $HOSTNAME 
+echo $HOSTNAME
 echo El contenido de la v1 es $v1
 echo "Usuario actual: ${USER}"
+```
 
-
+```bash
 sh script3.sh
---------------------------------------------------------------------------------------------------
-#read
-read lee de la terminal el input del usuario
+```
 
+---
+
+## read
+
+### read lee de la terminal el input del usuario
+
+```bash
 vi 4.sh
+```
 
-#!/bin/bash
-#Fecha: 24.12.2014
-#Autor: Autor
-#Proposito: Script leyendo el input de usuarios
-#CODIGO
-clear
+## !/bin/bash
+
+## Fecha: 24.12.2014
+
+## Autor: Autor
+
+## Proposito: Script leyendo el input de usuarios
+
+## CODIGO
+
+### clear
+
 echo "Cual es su nombre?"
-read nombre
-clear
-echo Hola $nombre
-sleep 5
-echo "Cual es su apellido?"
-read apellido
-echo Su nombre completo es $nombre $apellido
-#FIN
------------------------------------------------------------------------------------
-##Comando test
 
-El comando test permite efectuar una serie de pruebas sobre los archivos, las cadenas de caracteres,
-los valores aritméticos y el entorno de usuario.
+read nombre clear
+
+```bash
+echo Hola $nombre
+```
+
+### sleep 5
+
+echo "Cual es su apellido?"
+
+### read apellido
+
+echo Su nombre completo es $nombre $apellido
+
+## FIN
+
+---
+
+## Comando test
+
+El comando test permite efectuar una serie de pruebas sobre los archivos, las cadenas de caracteres, los valores aritméticos y el entorno de usuario.
 
 Este comando tiene un código de retorno igual a cero cuando el test es positivo, y diferente de cero en caso contrario, esto permite utilizarlo en encadenamientos de comandos con ejecución condicional (&& y ||) o en las estructuras de control  que veremos más adelante.
 
-El comando test posee dos sintaxis: test expresión y [ expresión ], donde "expresión" representa el test que se debe efectuar.
-1. Test de archivos
--f archivo
+El comando test posee dos sintaxis: test expresión y [ expresión ], donde "expresión" representa el test que se debe efectuar. 1. Test de archivos -f archivo
 
 Devuelve verdadero (código de retorno igual a cero) si el archivo es de tipo estándar (file):
 
-$ test -f /etc/passwd 
-$ echo $? 
-0 
-$ [ -f /etc ] || echo "/etc no es un archivo estándar" 
-/etc no es un archivo estándar 
+$ test -f /etc/passwd $ echo $? 0 $ [ -f /etc ] || echo "/etc no es un archivo estándar"
 
--d directorio
+/etc no es un archivo estándar
+
+### -d directorio
 
 Devuelve verdadero si el archivo es de tipo directorio...
 
-test -e $HOME/berto || touch $HOME/berto
-test -e berto || touch berto
-test -d berto2 || mkdir berto2
-test -e berto || touch berto
-test -f berto && rm -rf berto
+test -e $HOME/berto || touch $HOME/berto test -e berto || touch berto test -d berto2 || mkdir berto2 test -e berto || touch berto test -f berto && rm -rf berto
 
+## Comparación de archivos
 
-#Comparación de archivos
--e archivo: Verifica si el archivo existe.
--f archivo: Verifica si el archivo existe y es un archivo regular.
--d archivo: Verifica si el archivo es un directorio.
--r archivo: Verifica si el archivo tiene permisos de lectura.
--w archivo: Verifica si el archivo tiene permisos de escritura.
--x archivo: Verifica si el archivo es ejecutable.
+-e archivo: Verifica si el archivo existe. -f archivo: Verifica si el archivo existe y es un archivo regular. -d archivo: Verifica si el archivo es un directorio. -r archivo: Verifica si el archivo tiene permisos de lectura. -w archivo: Verifica si el archivo tiene permisos de escritura. -x archivo: Verifica si el archivo es ejecutable.
 
-##Comparación de números
-n1 -eq n2: Verifica si n1 es igual a n2.
-n1 -ne n2: Verifica si n1 no es igual a n2.
-n1 -gt n2: Verifica si n1 es mayor que n2.
-n1 -lt n2: Verifica si n1 es menor que n2.
-n1 -ge n2: Verifica si n1 es mayor o igual a n2.
-n1 -le n2: Verifica si n1 es menor o igual a n2.
+## Comparación de números
 
-#Comparación de cadenas
--z cadena: Verifica si la cadena está vacía.
--n cadena: Verifica si la cadena no está vacía.
+n1 -eq n2: Verifica si n1 es igual a n2. n1 -ne n2: Verifica si n1 no es igual a n2. n1 -gt n2: Verifica si n1 es mayor que n2. n1 -lt n2: Verifica si n1 es menor que n2. n1 -ge n2: Verifica si n1 es mayor o igual a n2. n1 -le n2: Verifica si n1 es menor o igual a n2.
+
+## Comparación de cadenas
+
+-z cadena: Verifica si la cadena está vacía. -n cadena: Verifica si la cadena no está vacía.
+
+```conf
 cadena1 = cadena2: Verifica si las cadenas son iguales.
+```
+
 cadena1 != cadena2: Verifica si las cadenas son diferentes.
 
-#Condiciones lógicas
-cond1 -a cond2: AND lógico; verdadero si ambas condiciones son verdaderas.
-cond1 -o cond2: OR lógico; verdadero si al menos una de las condiciones es verdadera.
+## Condiciones lógicas
 
+cond1 -a cond2: AND lógico; verdadero si ambas condiciones son verdaderas. cond1 -o cond2: OR lógico; verdadero si al menos una de las condiciones es verdadera.
 
+## !/bin/bash
 
-#!/bin/bash
+## Definimos variables
 
-# Definimos variables
+```conf
 archivo="mi_archivo.txt"
 directorio="mi_directorio"
 num1=10
 num2=20
+```
 
-# Verificar si un archivo existe
-if test -f "$archivo"; then
+## Verificar si un archivo existe
+
+### if test -f "$archivo"; then
+
+```bash
     echo "El archivo '$archivo' existe."
-else
+```
+
+### else
+
+```bash
     echo "El archivo '$archivo' NO existe."
+```
+
 fi
 
-# Verificar si un directorio existe
-if test -d "$directorio"; then
+## Verificar si un directorio existe
+
+### if test -d "$directorio"; then
+
+```bash
     echo "El directorio '$directorio' existe."
-else
+```
+
+### else
+
+```bash
     echo "El directorio '$directorio' NO existe."
+```
+
 fi
 
-# Comparar dos números
-if test $num1 -lt $num2; then
-    echo "$num1 es menor que $num2."
-else
-    echo "$num1 NO es menor que $num2."
+## Comparar dos números
+
+### if test $num1 -lt $num2; then
+
+echo "$num1 es menor que $num2."
+
+### else
+
+echo "$num1 NO es menor que $num2."
+
 fi
 
-# Verificar si una cadena no está vacía
+## Verificar si una cadena no está vacía
+
+```conf
 cadena="Hola Mundo"
-if test -n "$cadena"; then
+```
+
+### if test -n "$cadena"; then
+
+```bash
     echo "La cadena no está vacía y contiene: '$cadena'."
-else
+```
+
+### else
+
+```bash
     echo "La cadena está vacía."
+```
+
 fi
 
-# Verificar si una variable está vacía
+## Verificar si una variable está vacía
+
+```conf
 var_vacia=""
-if test -z "$var_vacia"; then
+```
+
+### if test -z "$var_vacia"; then
+
+```bash
     echo "La variable está vacía."
-else
+```
+
+### else
+
+```bash
     echo "La variable contiene algo."
+```
+
 fi
--------------------------------------------------------------------------------------
+
+---
+
+```bash
 /lpic1/access_log
 /tmp/access_log
+```
 
-Introducir la ruta del fichero
+### Introducir la ruta del fichero
 
-grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' 
---------------------------------------------------------------------------------------------
+```bash
+grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
+```
+
+---
+
+```bash
 vi 5.sh
+```
 
-#!/bin/bash
-clear
+## !/bin/bash
+
+### clear
+
+```bash
 echo "Introduce la ruta del fichero para filtrar por IPs:"
-sleep 5
-read ruta
-clear
+```
+
+sleep 5 read ruta clear
+
+```bash
 echo "Espere unos segundos a que se muestre el filtro de Ips":
 grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' $ruta |sort -n |uniq -c |sort -n
-#fin
+```
 
+## fin
 
-##Comprobar si la ruta existe:
+## Comprobar si la ruta existe:
 
+## !/bin/bash
 
-#!/bin/bash
+### clear
 
-clear
+```bash
 echo "Introduce la ruta del fichero para filtrar por IPs:"
+```
+
 read ruta
 
-# Verificar si la ruta existe y es un archivo regular
-if [ -f "$ruta" ]; then  ##Comprueba que el archivo existe y es un archivo regular.
-    clear
-    echo "Espere unos segundos mientras se filtran las direcciones IP..."
-    sleep 2
-    # Buscar, filtrar, contar y ordenar las IPs
+## Verificar si la ruta existe y es un archivo regular
+
+if [ -f "$ruta" ]; then  ##Comprueba que el archivo existe y es un archivo regular. clear
+
+echo "Espere unos segundos mientras se filtran las direcciones IP..."
+
+sleep 2
+
+## # Buscar, filtrar, contar y ordenar las IPs
+
+```bash
     grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' "$ruta" | sort -n | uniq -c | sort -n
-else
-    clear
-    echo "Error: El archivo '$ruta' no existe o no es un archivo válido."
-    exit 1
-fi #cierra todo el bloque, indicando que el script puede continuar con otras instrucciones
+```
 
-# Fin del script
+else clear
 
+echo "Error: El archivo '$ruta' no existe o no es un archivo válido."
+
+exit 1 fi #cierra todo el bloque, indicando que el script puede continuar con otras instrucciones
+
+## Fin del script
 
 if [ condición ]; then
-    # Bloque de comandos si la condición es verdadera
+
+## # Bloque de comandos si la condición es verdadera
+
 else
-    # Bloque de comandos si la condición es falsa (opcional)
-fi
 
-En esta estructura:
+## # Bloque de comandos si la condición es falsa (opcional)
 
-El if abre el bloque.
-El then define las acciones a realizar si la condición es verdadera.
-El else (opcional) define las acciones a realizar si la condición es falsa.
-El fi cierra todo el bloque del if.
+### fi
 
--------------------------------------------------------------------------------------
+### En esta estructura:
 
-#!/bin/bash
-clear
+El if abre el bloque. El then define las acciones a realizar si la condición es verdadera. El else (opcional) define las acciones a realizar si la condición es falsa. El fi cierra todo el bloque del if.
+
+---
+
+## !/bin/bash
+
+### clear
+
+```bash
 echo "Dime el directorio, para darte el permisos-propietario-nombre fichero"
-read directorio
-clear
-ls -l  $directorio | tr -s " " | cut -d" " -f1,3,9 
+```
 
+read directorio clear
 
+```bash
+ls -l  $directorio | tr -s " " | cut -d" " -f1,3,9
+```
 
------------------------------------------------------------------------------------------
-##Comparación de enteros (números)
--eq Equal (es igual a) if [ "$a" -eq "$b" ]
--neNot Equal (no es igual a / es distinto a)
+---
 
-if [ "$a" -ne "$b" ]
--gt Greater Than (es mayor que) if [ "$a" -gt "$b" ]
--ge Greater Equal (es mayor que o igual a)
+## Comparación de enteros (números)
 
-if [ "$a" -ge "$b" ]
--lt Lower Than (es menor que)
- if [ "$a" -lt "$b" ]
- 
--le Lower Equal (es menor que o igual a)
+-eq Equal (es igual a) if [ "$a" -eq "$b" ] -neNot Equal (no es igual a / es distinto a)
 
-if [ "$a" -le "$b" ]
-< Menor que (usar con doble paréntesis)
-(("$a" < "$b"))
+if [ "$a" -ne "$b" ] -gt Greater Than (es mayor que) if [ "$a" -gt "$b" ] -ge Greater Equal (es mayor que o igual a)
 
-<= Menor que o igual a (usar con doble paréntesis)
-(("$a" <= "$b"))
+if [ "$a" -ge "$b" ] -lt Lower Than (es menor que) if [ "$a" -lt "$b" ]
+
+### -le Lower Equal (es menor que o igual a)
+
+if [ "$a" -le "$b" ] < Menor que (usar con doble paréntesis) (("$a" < "$b"))
+
+<= Menor que o igual a (usar con doble paréntesis) (("$a" <= "$b"))
 
 > Mayor que (usar con doble paréntesis)
-(("$a" > "$b"))
+
+### (("$a" > "$b"))
 
 >= Mayor que o igual a (usar con doble paréntesis)
+
 (("$a" >= "$b"))
 
+## !/bin/bash
 
+read -p "Primer valor:"  v1 read -p "Segundo valor:" v2 if [ $v1 -gt $v2 ] ; then
 
-
-#!/bin/bash
-read -p "Primer valor:"  v1
-read -p "Segundo valor:" v2
-if [ $v1 -gt $v2 ] ; then
 echo "V1 ($v1) es mayor que V2($v2)"
-else
+
+### else
+
 echo "El primer valor no es mayor que el segundo valor"
+
 fi
 
+## !/bin/bash
 
+read -p "Primer valor:"  v1 read -p "Segundo valor:" v2 if [ $v1 -gt $v2 ] ; then
 
-#!/bin/bash
-read -p "Primer valor:"  v1
-read -p "Segundo valor:" v2
-if [ $v1 -gt $v2 ] ; then
 echo "V1 ($v1) es mayor que V2($v2)"
-else
+
+### else
+
 echo "El valaro de V2($v2) es mayor)"
+
 fi
 
+---
 
--------------------------------------------------------------------------------------------------
-##Para el lab ponemos esta ruta del fichero: /lpic1/access_log
+## Para el lab ponemos esta ruta del fichero: /lpic1/access_log
 
+```bash
 vi 9.sh
+```
 
-#!/bin/bash
+## !/bin/bash
 
-read -p "Introduzca una ruta para ficheros filtrar por IP: " ruta
+### read -p "Introduzca una ruta para ficheros filtrar por IP: " ruta
 
-if [ ! -e $ruta ]; then
+### if [ ! -e $ruta ]; then
+
+```bash
         echo "Esta ruta no existe"
-        exit 1
-fi
+```
 
-if [ -d $ruta ]; then
-        echo "Y es un directorio."
-        exit
-fi
+exit 1 fi
 
+### if [ -d $ruta ]; then
 
-if [ -f $ruta -a -w $ruta ]; then
+echo "Y es un directorio."
+
+exit fi
+
+### if [ -f $ruta -a -w $ruta ]; then
+
+```bash
         grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' $ruta |sort -n |uniq -c |sort -n
-fi
+```
 
--a si es un archivo regular
--w Comprueba si el archivo es escribible, si tenemos permisos de escritura en el archivo.
---------------------------------------------------------------------------------------
-read -p "Introduzca una ruta para ficheros: " fichero
+### fi
 
-if [ $size -gt 1000 ]; then
+-a si es un archivo regular -w Comprueba si el archivo es escribible, si tenemos permisos de escritura en el archivo.
+
+---
+
+### read -p "Introduzca una ruta para ficheros: " fichero
+
+### if [ $size -gt 1000 ]; then
+
+```bash
 echo El fichero es grande
 echo Tiene un tamaño de du -h $fichero
-else
+```
+
+### else
+
 echo El fichero es pequeño
+
 fi
---------------------------------------------------------------------------------
-read -p "Introduzca una ruta para ficheros: " fichero
+
+---
+
+### read -p "Introduzca una ruta para ficheros: " fichero
+
+```
 size=$(du   $fichero |cut -f1)
-if [ $size -gt 1000 ] ; then
+```
+
+### if [ $size -gt 1000 ] ; then
+
+```bash
 echo El fichero es grande
 echo Tiene un tamaño de  $size
-else
+```
+
+### else
+
 echo El fichero es pequeño
+
 fi
 
-------------------------------------------------------------------------------
-#!/bin/bash
-#Fecha: 30.12.2014
-#Autor: Autor
-#Proposito: Evaluando IF THEN ELSE con INPUT de usuario
-#CODIGO
-read -p "Introduce un numero del 1 al 9: " NUMERO
-if [ $NUMERO -gt 5 ]
-then
+---
+
+## !/bin/bash
+
+## Fecha: 30.12.2014
+
+## Autor: Autor
+
+## Proposito: Evaluando IF THEN ELSE con INPUT de usuario
+
+## CODIGO
+
+read -p "Introduce un numero del 1 al 9: " NUMERO if [ $NUMERO -gt 5 ] then
+
 echo "El numero introducido es MAYOR que 5"
-else
+
+### else
+
 echo "El numero introducido es MENOR que 5"
+
 fi
--------------------------------------------------------------------------------
-Lo que hacemos con ELIF es contar con la salida del IF anterior y utilizarla para ahorrarnos
-una nueva condicional IF
-Creando un script con ELIF
-a. Creamos el siguiente script
-----------Script----------
-#!/bin/bash
-#Fecha: 31.12.2014
-#Autor: Autor
-#Proposito: Evaluando IF THEN ELIF
-#CODIGO
-read -p "Introduce un numero del 1 al 9: " NUMERO
-if [ $NUMERO -eq 5 ]
-then
+
+---
+
+Lo que hacemos con ELIF es contar con la salida del IF anterior y utilizarla para ahorrarnos una nueva condicional IF Creando un script con ELIF a. Creamos el siguiente script ----------Script----------
+
+## !/bin/bash
+
+## Fecha: 31.12.2014
+
+## Autor: Autor
+
+## Proposito: Evaluando IF THEN ELIF
+
+## CODIGO
+
+read -p "Introduce un numero del 1 al 9: " NUMERO if [ $NUMERO -eq 5 ] then
+
 echo "El numero introducido es IGUAL que 5"
-elif [ $NUMERO -lt 5 ]
-then
+
+elif [ $NUMERO -lt 5 ] then
+
 echo "El numero introducido es MENOR que 5"
-else
+
+### else
+
 echo "El numero introducido es MAYOR que 5"
-fi
-#FIN
--------------------------------------------------------------
-Lo que hacemos con ELIF es contar con la salida del IF anterior y utilizarla para ahorrarnos
-una nueva condicional IF
 
-#!/bin/bash
-read -p "Introduce una nota numerica:" nota
-if [ $nota -ge 9 ]; then
+fi
+
+## FIN
+
+---
+
+Lo que hacemos con ELIF es contar con la salida del IF anterior y utilizarla para ahorrarnos una nueva condicional IF
+
+## !/bin/bash
+
+read -p "Introduce una nota numerica:" nota if [ $nota -ge 9 ]; then
+
+```bash
         echo "Tienes un sobresaliente";
-elif [ $nota -ge 7 ]; then
+```
+
+### elif [ $nota -ge 7 ]; then
+
+```bash
         echo "Tienes un notable"
-elif [ $nota -ge 6 ]; then
+```
+
+### elif [ $nota -ge 6 ]; then
+
+```bash
         echo "Tienes un bien"
-elif [ $nota -ge 5 ]; then
+```
+
+### elif [ $nota -ge 5 ]; then
+
+```bash
         echo "Tienes un aprobado"
-else
+```
+
+### else
+
+```bash
         echo "Has suspendido"
-fi
+```
 
-
+### fi
 
 Mejorar el script y asegurarnos de que la nota solo pueda estar en el rango de 0 a 10, podemos agregar una validación que verifique que el valor ingresado esté dentro de ese rango.
 
+```bash
 vi notas.sh
+```
 
-#!/bin/bash
+## !/bin/bash
 
-# Solicitar la nota hasta que sea un número entre 0 y 10
-while true; do
-    read -p "Introduce una nota numérica (de 0 a 10): " nota
+## Solicitar la nota hasta que sea un número entre 0 y 10
 
-    # Verificar si la entrada es un número entre 0 y 10
-    if [[ "$nota" =~ ^[0-9]+$ ]] && [ "$nota" -ge 0 ] && [ "$nota" -le 10 ]; then
-        break  # Salir del bucle si la nota es válida
-    else
+while true; do read -p "Introduce una nota numérica (de 0 a 10): " nota
+
+## # Verificar si la entrada es un número entre 0 y 10
+
+### if [[ "$nota" =~ ^[0-9]+$ ]] && [ "$nota" -ge 0 ] && [ "$nota" -le 10 ]; then
+
+break  # Salir del bucle si la nota es válida
+
+### else
+
+```bash
         echo "Entrada no válida. Por favor, introduce un número entre 0 y 10."
-    fi
-done
+```
 
-# Evaluar la calificación
-if [ "$nota" -ge 9 ]; then
+fi done
+
+## Evaluar la calificación
+
+### if [ "$nota" -ge 9 ]; then
+
+```bash
     echo "Tienes un sobresaliente"
-elif [ "$nota" -ge 7 ]; then
+```
+
+### elif [ "$nota" -ge 7 ]; then
+
+```bash
     echo "Tienes un notable"
-elif [ "$nota" -ge 6 ]; then
+```
+
+### elif [ "$nota" -ge 6 ]; then
+
+```bash
     echo "Tienes un bien"
-elif [ "$nota" -ge 5 ]; then
+```
+
+### elif [ "$nota" -ge 5 ]; then
+
+```bash
     echo "Tienes un aprobado"
-else
+```
+
+### else
+
+```bash
     echo "Has suspendido"
+```
+
 fi
 
+## Explicación de los cambios
 
-#Explicación de los cambios
-Bucle while true:
+### Bucle while true:
 
-Mantiene un bucle hasta que el usuario introduzca una nota válida.
-Validación de la nota:
+Mantiene un bucle hasta que el usuario introduzca una nota válida. Validación de la nota:
 
-[[ "$nota" =~ ^[0-9]+$ ]]: Comprueba si la entrada es un número entero.
-[ "$nota" -ge 0 ] && [ "$nota" -le 10 ]: Asegura que el número está entre 0 y 10.
+[[ "$nota" =~ ^[0-9]+$ ]]: Comprueba si la entrada es un número entero. [ "$nota" -ge 0 ] && [ "$nota" -le 10 ]: Asegura que el número está entre 0 y 10.
 
 Si la nota cumple ambas condiciones, el bucle se interrumpe con break; de lo contrario, muestra un mensaje de error y vuelve a solicitar la nota.
 
-Evaluación de la nota:
+### Evaluación de la nota:
 
 Una vez validada, se evalúa la nota como antes, clasificándola en sobresaliente, notable, bien, aprobado o suspendido.
 
--------------------------------------------------------------------------------------
-#!/bin/bash
-#Evaluando bucle for pasandole un fichero para filtrar las ips
+---
 
-read -p "Introduce la ruta del fichero de log:" FICHERO
-for fichero in $(grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' $FICHERO)
-do
+## !/bin/bash
+
+## Evaluando bucle for pasandole un fichero para filtrar las ips
+
+read -p "Introduce la ruta del fichero de log:" FICHERO for fichero in $(grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' $FICHERO) do
+
+```bash
 echo $fichero
+```
+
 done
--------------------------------------------------
-#El comando seq
-El comando seq es una herramienta capaz de imprimir una secuencia de números naturales,
-que pueden ser transmitidos a otros scripts o aplicaciones.
 
-seq --help
+---
 
+## El comando seq
+
+El comando seq es una herramienta capaz de imprimir una secuencia de números naturales, que pueden ser transmitidos a otros scripts o aplicaciones.
+
+### seq --help
+
+```bash
 vi reloj.sh
+```
 
-#!/bin/bash
+## !/bin/bash
 
-for i in `seq 1 900`
-do 
+for i in `seq 1 900` do
+
+```bash
   date +%H:%M:%S
-  sleep 1
-done
+```
 
---------------------------
-#!/bin/bash
-for i in `seq 1 10`;
-do
+sleep 1 done
+
+---
+
+## !/bin/bash
+
+for i in `seq 1 10`; do
+
+```bash
   echo $i
-  sleep 1
-done  
+```
 
-#Incrementamete numeros del 1 al 10
+sleep 1 done
+
+## Incrementamete numeros del 1 al 10
+
 seq 1 10
 
-##decrecer la secuencia
+## decrecer la secuencia
+
 seq 15 -1 0
 
-##Aumentar la secuencia de dos en dos del 1 al 15:
+## Aumentar la secuencia de dos en dos del 1 al 15:
+
 seq 1 2 15
 
-##Añadir un separador con -s
+## Añadir un separador con -s
+
 seq -s, 1 9
 
+## El comando while
 
-#El comando while
 El comando while en bash crea un bucle que se ejecuta mientras una condición especificada sea verdadera. Se us para repetir un bloque de código hasta que la condición de salida se cumpla. La estructura básica de while es:
 
 while [ condición ]; do
-    # Código a ejecutar mientras la condición sea verdadera
+
+## # Código a ejecutar mientras la condición sea verdadera
+
 done
 
+## Lanzar un numero y decrecerlo
 
-##Lanzar un numero y decrecerlo
-#!/bin/bash
+## !/bin/bash
+
+```bash
 echo "Inserte un numero"
-read numero
+```
 
-while [ $numero != 0 ]; do
+### read numero
+
+### while [ $numero != 0 ]; do
+
+```bash
 echo "La cuenta atras es: $numero"
 numero=$[$numero - 1]
-sleep 1
+```
+
+### sleep 1
 
 done
------------------------------------------------------------------------------------------------------------------------
-#¿Qué es exec en un shell script (Linux)?
-exec es un built-in del shell (bash, sh, zsh, etc.) con dos usos principales:
 
-Reemplazar el proceso del shell por otro programa
-Cuando llamas exec comando ... el shell no crea un proceso hijo: el proceso actual se reemplaza por comando. Al terminar comando, no vuelves al script: el proceso terminó. Es útil para ahorrar un fork o para sustituir el shell por el programa final.
+---
 
-Redirigir/describir descriptores de fichero del propio shell
+¿Qué es exec en un shell script (Linux)? exec es un built-in del shell (bash, sh, zsh, etc.) con dos usos principales:
+
+Reemplazar el proceso del shell por otro programa Cuando llamas exec comando ... el shell no crea un proceso hijo: el proceso actual se reemplaza por comando. Al terminar comando, no vuelves al script: el proceso terminó. Es útil para ahorrar un fork o para sustituir el shell por el programa final.
+
+### Redirigir/describir descriptores de fichero del propio shell
 
 Si usas exec con redirecciones pero sin comando, aplicas esas redirecciones al shell actual (y por tanto a todolo que ejecute después). Muy usado para logs, errores, o para abrir/cerrar ficheros.
 
-##Ejemplos prácticos
+## Ejemplos prácticos
 
 1) Reemplazar el proceso del script (no vuelve luego)
-#!/bin/bash
+
+## !/bin/bash
+
+```bash
 echo "Antes de exec (PID $$)"
-# Reemplaza este proceso por `sleep 10`
+```
+
+## Reemplaza este proceso por `sleep 10`
+
 exec sleep 10
-# Las siguientes líneas NO se ejecutarán porque el shell fue reemplazado
+
+## Las siguientes líneas NO se ejecutarán porque el shell fue reemplazado
+
 echo "Esto no se verá"
 
 En este ejemplo el PID ($$) corresponde al sleep tras exec. No hay retorno al script al terminar sleep.
 
+## Ejecutar un comando sin exec (para comparar)
 
-##Ejecutar un comando sin exec (para comparar)
-#!/bin/bash
+## !/bin/bash
+
+```bash
 echo "Antes (PID $$)"
-sleep 2 &
+```
+
+### sleep 2 &
+
+```bash
 echo "Después (sigue el script)"
+```
 
 Aquí el shell crea un proceso hijo para sleep (se sigue ejecutando el script).
 
 3) Redirigir stdout/stderr para todo el script
-#!/bin/bash
-# A partir de aquí, todo stdout y stderr irá a script.log
-exec > script.log 2>&1
 
+## !/bin/bash
+
+## A partir de aquí, todo stdout y stderr irá a script.log
+
+### exec > script.log 2>&1
+
+```bash
 echo "Esto irá a script.log"
 ls inexistente   # el error también irá a script.log
+```
+
 Esto es muy común para que un script deje todo su log en un archivo sin añadir >> archivo en cada comando.
 
-##Precauciones y notas
+## Precauciones y notas
+
 exec reemplaza el shell: si lo usas con un comando, el resto del script no se ejecutará. Úsalo al final cuando quieras que el proceso del script sea el comando.
 
 Redirecciones con exec (sin comando) afectan al shell actual y a todos los comandos posteriores del script.
@@ -618,284 +866,384 @@ exec no crea proceso hijo cuando ejecuta un programa; esto puede afectar al mane
 
 Si quieres lanzar un programa y seguir en el script, no uses exec; usa command & o command normal
 
+---
 
-------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------
+---
+
 ----------Script----------
-#!/bin/bash
-#Fecha: 31.12.2014
-#Autor: Autor
-#Proposito: Evaluando el bucle FOR con los dias de la semana
-#CODIGO
-for dias in Lunes Martes Miercoles Jueves Viernes Sabado Domingo
-do
+
+## !/bin/bash
+
+## Fecha: 31.12.2014
+
+## Autor: Autor
+
+## Proposito: Evaluando el bucle FOR con los dias de la semana
+
+## CODIGO
+
+for dias in Lunes Martes Miercoles Jueves Viernes Sabado Domingo do
+
+```bash
 echo $dias
-done
-------------------------------------------------------------------------------------------
+```
 
-##La sintaxis de SELECT es la siguiente:
-SELECT variable IN opción1 opción2 ... opciónN
-DO
-Comando
-BREAK
-DONE
-----------Script----------
-#!/bin/bash
-#Fecha: 05.01.2015
-#Autor: Autor
-#Proposito: Script usando SELECT para ver logs
-PS3='Elegir una opcion: '
-#VARIABLE
-LISTA="Sistema Salir"
-#CODIGO
-select i in $LISTA
-do
-if [ $i = "Sistema" ]
-then
-tail /var/log/messages
-elif [ $i = "Salir" ]
-then
-exit
-fi
 done
-#FIN
----------------------------------------------------------------------------------
-CASE $variable IN
-patron1 )
-(Se ejecuta el comando 1)
-;;
-patron2 )
-(Se ejecuta el comando 2)
-;;
-patron3 )
-(Se ejecuta el comando 3)
-;;
-ESAC
------------------------------------------------------------------
+
+---
+
+## La sintaxis de SELECT es la siguiente:
+
+SELECT variable IN opción1 opción2 ... opciónN DO Comando BREAK DONE ----------Script----------
+
+## !/bin/bash
+
+## Fecha: 05.01.2015
+
+## Autor: Autor
+
+## Proposito: Script usando SELECT para ver logs
+
+```conf
+PS3='Elegir una opcion: '
+```
+
+## VARIABLE
+
+```conf
+LISTA="Sistema Salir"
+```
+
+## CODIGO
+
+select i in $LISTA do if [ $i = "Sistema" ] then tail /var/log/messages elif [ $i = "Salir" ] then exit fi done
+
+## FIN
+
+---
+
+CASE $variable IN patron1 ) (Se ejecuta el comando 1) ;; patron2 ) (Se ejecuta el comando 2) ;; patron3 ) (Se ejecuta el comando 3) ;; ESAC
+
+---
+
+```
 vi  /opt/scripts/supervisamem
-#!/bin/bash
-while true
-  do
+```
+
+## !/bin/bash
+
+while true do
+
+```bash
   ahora=$(date "+%H:%M:%S - ")
   echo -n $ahora >> /var/log/supervisamem.log
   grep Dirty /proc/meminfo >> /var/log/supervisamem.log
-  sleep 30
-done
+```
 
+sleep 30 done
 
-#El comando case
+## El comando case
+
 En Bash permite realizar evaluaciones de múltiples condiciones de una manera más estructurada que una cadena de if-elif-else. Es útil cuando tienes varios casos específicos que quieres manejar según el valor de una variable. La estructura básica de case es:
 
-case variable in
-    patrón1)
-        # Código a ejecutar si variable coincide con patrón1
-        ;;
-    patrón2)
-        # Código a ejecutar si variable coincide con patrón2
-        ;;
-    *)
-        # Código para el caso "por defecto" si no coincide con ningún patrón
-        ;;
-esac
+case variable in patrón1)
 
+## # Código a ejecutar si variable coincide con patrón1
 
+;; patrón2)
 
+## # Código a ejecutar si variable coincide con patrón2
+
+;; *)
+
+## # Código para el caso "por defecto" si no coincide con ningún patrón
+
+;; esac
+
+```bash
 /etc/init.d/iniciar-supervisamem.sh
 chmod 700 /etc/init.d/iniciar-supervisamem.sh
 vi /etc/init.d/iniciar-supervisamem.sh
+```
 
+```bash
 /opt/scripts/supervisamem
+```
 
-##iniciar-supervisamem.sh
+## iniciar-supervisamem.sh
 
-#!/bin/bash
-case $1 in
-start)
+## !/bin/bash
+
+case $1 in start)
+
+```bash
   /opt/scripts/supervisamem &
-  ;;
-stop)
-  killall supervisamem
- ;;
-*)
-echo "No es una opcion para pasarle al script solo start y stop" 
-break
-;;
-esac  
+```
 
+;; stop) killall supervisamem ;; *)
+
+echo "No es una opcion para pasarle al script solo start y stop"
+
+break ;; esac
 
 iniciar-supervisamem.sh start
------------------------------------------------------------------------------------------
 
-#!/bin/bash
-case $1 in
-ips)
+---
+
+## !/bin/bash
+
+case $1 in ips)
+
+```bash
   grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' /lpic1/access_log
-;;
-usuarios)  
-  tail -d: -f1,7 /etc/passwd
-  ;;
-*)
+```
+
+;; usuarios) tail -d: -f1,7 /etc/passwd ;; *)
+
+```bash
 echo "No reconozco el parametro" ;;
- esac
----------------------------------------------------------------------------------
-#!/bin/bash
-#Fecha: 05.01.2015
-#Autor: Autor
-#Proposito: Usando CASE
-#CODIGO
+```
+
+esac
+
+---
+
+## !/bin/bash
+
+## Fecha: 05.01.2015
+
+## Autor: Autor
+
+## Proposito: Usando CASE
+
+## CODIGO
+
+```bash
 echo "Que distribucion de Linux utilizas:"
-read DISTRO
-case $DISTRO in
-debian )
+```
+
+read DISTRO case $DISTRO in debian )
+
 echo "Debian es muy popular" ;;
 
-centos )
+### centos )
+
+```bash
 echo "Distribucion basada en Red Hat" ;;
+```
 
-ubuntu )
-echo "Distribucion bastante popular basada en Debian" ;; 
+### ubuntu )
 
-windows )
+```bash
+echo "Distribucion bastante popular basada en Debian" ;;
+```
+
+### windows )
+
+```bash
 echo "Muy gracioso" ;;
+```
 
-* )
+## )
+
+```bash
 echo "No reconozco esa distribucion" ;;
+```
+
 esac
--------------------------------------------------------------------------------------
+
+---
+
 iniciar-supervisamem.sh
-#!/bin/bash
-# chkconfig: - 99 10
-case $1 in
-start)
+
+## !/bin/bash
+
+## chkconfig: - 99 10
+
+case $1 in start)
+
+```bash
   /opt/scripts/supervisamem &
-  ;;
-stop)
-  killall supervisamem
-  ;;
-*)
-echo "No es una opcion para pasarle a script solo start y stop" 
-;;
-esac  
------------------------------------------------------------------------------
+```
+
+;; stop) killall supervisamem ;; *)
+
+echo "No es una opcion para pasarle a script solo start y stop"
+
+;; esac
+
+---
+
 Program Calls Within Scripts exec
 
-#! /bin/bash
+## ! /bin/bash
 
-while true
-do
+while true do
+
+```bash
    echo "1. Disk Stats "
    echo "2. Send Evening Report "
-   read Input
-   case "$Input" in
-      1) exec df -kh ;;
-      2) exec /home/SendReport.sh  ;;
-   esac
-done
+```
 
-Usage With the Find Command
-The exec option can be used to perform operations like grep, cat, mv, cp, rm, and many more on the files found by the find command. Let’s use an example from our article on the find command to find all .java files containing the word “interface” in the “src” directory:
+read Input case "$Input" in 1) exec df -kh ;; 2) exec /home/SendReport.sh  ;; esac done
 
+Usage With the Find Command The exec option can be used to perform operations like grep, cat, mv, cp, rm, and many more on the files found by the find command. Let’s use an example from our article on the find command to find all .java files containing the word “interface” in the “src” directory:
+
+```bash
 find src -name "*.java" -type f -exec grep -l interface {} \;
+```
 
+## Crear un servicio para system-v para trabajar con nginx instado /usr/local/nginx :
 
-##Crear un servicio para system-v para trabajar con nginx instado /usr/local/nginx :
-
-
+```bash
 vi /etc/init.d/nginx
+```
 
-#!/bin/bash
-# chkconfig: - 99 10
-case $1 in
-start)
+## !/bin/bash
+
+## chkconfig: - 99 10
+
+case $1 in start)
+
+```bash
   /usr/local/nginx/sbin/nginx &
-  ;;
-stop)
-  killall nginx
-  ;;
-*)
-echo "No es una opcion para pasarle a script solo start y stop" 
-;;
-esac
+```
 
+;; stop) killall nginx ;; *)
 
-vi /etc/init.d/tomcat.sh
-
-#!/bin/bash
-# chkconfig: - 99 10
-case $1 in
-start)
-  /tomcat-9/bin/startup.sh &
-  ;;
-stop)
-  /tomcat-9/bin/shutdown.sh
-  ;;
-*)
 echo "No es una opcion para pasarle a script solo start y stop"
-;;
-esac
 
+;; esac
 
-##Ejemplo de while contador:
+```bash
+vi /etc/init.d/tomcat.sh
+```
 
-#!/bin/bash 
+## !/bin/bash
+
+## chkconfig: - 99 10
+
+case $1 in start)
+
+```bash
+  /tomcat-9/bin/startup.sh &
+```
+
+;; stop)
+
+```bash
+  /tomcat-9/bin/shutdown.sh
+```
+
+;; *)
+
+echo "No es una opcion para pasarle a script solo start y stop"
+
+;; esac
+
+## Ejemplo de while contador:
+
+## !/bin/bash
+
+```conf
 CONTADOR=0
-while [  $CONTADOR -lt 10 ]; do
+```
+
+### while [  $CONTADOR -lt 10 ]; do
+
 echo El contador es $CONTADOR
-let CONTADOR=CONTADOR+1 
-done
 
+let CONTADOR=CONTADOR+1 done
 
-------------------------------------------------------------------------------------------------------------------------------------------
+---
 
-###Laboratorio script en Bash:
+## Laboratorio script en Bash:
 
 Crear un script en bash linux para realizar un backup de un directorio, que el usuario entre por consola, salvarlo en el directorio /opt que lo comprima y ponga la fecha en el archivo de backup, a la fecha actual.
 
+```bash
 vi backup.sh
+```
 
-#!/bin/bash
+## !/bin/bash
 
-# Solicitar al usuario la ruta del directorio a respaldar
+## Solicitar al usuario la ruta del directorio a respaldar
+
 read -p "Ingresa la ruta absoluta del directorio a respaldar:" DIRECTORIO_ORIGEN
 
-# Directorio de destino (donde se guardará el respaldo)
-DIRECTORIO_DESTINO="/opt"
+## Directorio de destino (donde se guardará el respaldo)
 
-# Nombre del archivo de respaldo (con la fecha actual)
+```conf
+DIRECTORIO_DESTINO="/opt"
+```
+
+## Nombre del archivo de respaldo (con la fecha actual)
+
+```conf
 FECHA=$(date +%Y%m%d)
 NOMBRE_ARCHIVO="backup_${FECHA}.tar.bz2"
+```
 
-# Crear el respaldo en formato .tar.bz2
+## Crear el respaldo en formato .tar.bz2
+
+```bash
 tar -cvjf "${DIRECTORIO_DESTINO}/${NOMBRE_ARCHIVO}" "${DIRECTORIO_ORIGEN}"
+```
 
-# Verificar si la creación del respaldo fue exitosa
-if [ $? -eq 0 ]; then
+## Verificar si la creación del respaldo fue exitosa
+
+### if [ $? -eq 0 ]; then
+
+```bash
 echo "Respaldo creado exitosamente en ${DIRECTORIO_DESTINO}/${NOMBRE_ARCHIVO}"
-else
+```
+
+### else
+
+```bash
     echo "Error al crear el respaldo en ${DIRECTORIO_DESTINO}/${NOMBRE_ARCHIVO}"
+```
+
 fi
 
---------------------------------------------------------------------------------------------------------------------------------------
-###Programar una tarea  que se ejecute de forma aleatoria una sola vez entre las 9:00 y las 17:00 horas
+---
 
-#!/bin/bash
+### Programar una tarea  que se ejecute de forma aleatoria una sola vez entre las 9:00 y las 17:00 horas
 
-# Verifica si el usuario es root
-if [ "$(id -u)" -ne 0 ]; then
+## !/bin/bash
+
+## Verifica si el usuario es root
+
+### if [ "$(id -u)" -ne 0 ]; then
+
+```bash
     echo "Este script debe ejecutarse como root. Saliendo..."
-    exit 1
-fi
+```
 
-# Genera una hora aleatoria entre 9 y 17 (ambos inclusive)
+exit 1 fi
+
+## Genera una hora aleatoria entre 9 y 17 (ambos inclusive)
+
+```conf
 hora_aleatoria=$((RANDOM % 9 + 9))
+```
 
-# Crea la línea cron con la hora aleatoria
+## Crea la línea cron con la hora aleatoria
+
+```conf
 linea_cron="0 $hora_aleatoria * * * /ruta/a/tu/comando_o_script"
+```
 
-# Agrega la línea al archivo cron
+## Agrega la línea al archivo cron
+
+```bash
 echo "$linea_cron" >> /etc/crontab
+```
 
+```bash
 echo "Trabajo programado para ejecutarse a las $hora_aleatoria horas."
+```
 
-
+```cron
 0 9-17 * * * /ruta/a/mi_script.sh
+```

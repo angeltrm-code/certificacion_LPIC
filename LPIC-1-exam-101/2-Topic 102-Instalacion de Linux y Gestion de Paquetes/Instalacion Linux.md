@@ -1,48 +1,64 @@
-## Pagina 208 y pagina 39 Manual del curso PDF Almacenamiento ##
+# Instalacion Linux
 
-## Pagina 38 Manual del curso PDF-Instalación de Linux y de los paquetes de software
+Documento de referencia sobre identificacion de discos, tipos de particion y sincronizacion horaria con Chrony.
 
-## Introduccion a discos en linux
+> Referencias del manual del curso: paginas 38, 39 y 208.
 
+## Identificacion de discos en Linux
+
+Comandos basicos para identificar discos, particiones y sistemas de archivos:
+
+```bash
 cat /proc/partitions
 fdisk -l /dev/sda
 lsscsi
 lsblk -f
+```
 
-## Tipo de particiones para GPT
-8300 : partición de tipo Linux (datos)
- • 8200 : partición de tipo swap 
- • fd00 : partición de tipo RAID 
- • 8e00 : partición de tipo LVM
- 
-## Tipo de particiones MBR 
-83 : partición de tipo Linux (datos)
- • 82 : partición de tipo swap 
- • fd : partición de tipo RAID 
- • 8e : partición de tipo LVM
- 
-a. IDE Los discos con controladores IDE (también llamados PATA, Parallel Ata o ATAPI) se llaman hdX:
-• hda: IDE0, Master 
-• hdb: IDE0, Slave 
-• hdc: IDE1, Master 
-• hdd: IDE1, Slave 
+### Tipos de particion en GPT
 
+- `8300`: particion de tipo Linux (datos)
+- `8200`: particion de tipo swap
+- `fd00`: particion de tipo RAID
+- `8e00`: particion de tipo LVM
 
-b. SCSI, SATA, USB, FIREWIRE, etc. 
-sda: primer disco SCSI
-• sdb: segundo disco SCSI 
-• sdc: tercer disco SCSI • etc.
-La norma SCSI marca una diferencia entre los diversos soportes. Así, los lectores de CD-Rom, DVD, HD-DVD, BlueRay y 
-los grabadores asociados no llevan el mismo nombre. Los lectores y grabadores están en
- srX (sr0, sr1, etc.). 
- 
-También puede encontrar scd0, scd1, etc. Pero suelen ser vínculos simbólicos hacia sr0, sr1, etc.
+### Tipos de particion en MBR
 
-En la instalacion de un so linux la particion /boot tiene que estar en 83 partición de tipo Linux (datos)
+- `83`: particion de tipo Linux (datos)
+- `82`: particion de tipo swap
+- `fd`: particion de tipo RAID
+- `8e`: particion de tipo LVM
 
+### Nomenclatura de discos IDE
 
+Los discos con controladores IDE, tambien llamados PATA, Parallel ATA o ATAPI, se nombran como `hdX`:
+
+- `hda`: IDE0, master
+- `hdb`: IDE0, slave
+- `hdc`: IDE1, master
+- `hdd`: IDE1, slave
+
+### Nomenclatura de discos SCSI, SATA, USB y FireWire
+
+Los discos de tipo SCSI y tecnologias relacionadas se nombran como `sdX`:
+
+- `sda`: primer disco SCSI
+- `sdb`: segundo disco SCSI
+- `sdc`: tercer disco SCSI
+
+La norma SCSI distingue entre discos y unidades opticas. Los lectores y grabadores suelen aparecer como `srX` (`sr0`, `sr1`, etc.). Tambien pueden existir enlaces simbolicos como `scd0` o `scd1` apuntando a esas unidades.
+
+> En una instalacion de Linux con esquema MBR, la particion `/boot` debe estar marcada como tipo `83` (Linux datos).
+
+## Ejemplo de particionado
+
+Ejemplo de salida de `fdisk`:
+
+```bash
 fdisk -l /dev/sda
+```
 
+```text
 Disk /dev/sda: 68.7 GB, 68719476736 bytes, 134217728 sectors
 Units = sectors of 1 * 512 = 512 bytes
 Sector size (logical/physical): 512 bytes / 512 bytes
@@ -53,7 +69,11 @@ Identificador del disco: 0x000b294d
 Disposit. Inicio    Comienzo      Fin      Bloques  Id  Sistema
 /dev/sda1   *        2048     2099199     1048576   83  Linux
 /dev/sda2         2099200   134217727    66059264   8e  Linux LVM
+```
 
+Ejemplo de salida de `lsblk`:
+
+```text
 [root@sercentos7 boot]# lsblk
 NAME            MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
 sda               8:0    0  64G  0 disk
@@ -62,41 +82,73 @@ sda               8:0    0  64G  0 disk
   ├─centos-root 253:0    0  41G  0 lvm  /
   ├─centos-swap 253:1    0   2G  0 lvm  [SWAP]
   └─centos-home 253:2    0  20G  0 lvm  /home
--------------------------------------------------------------------------------------
-# Instalar servidor NTP  chrony
-El paquete chrony, un binario que nos ofrece la posibilidad de mantener la hora sincronizada con servidores NTP y a la vez él mismo ofrecerse como servidor NTP para otros clientes
+```
 
+## Instalacion y configuracion de Chrony
+
+`chrony` permite sincronizar la hora con servidores NTP y, al mismo tiempo, ofrecer servicio horario a otros equipos.
+
+### RHEL / CentOS
+
+Instalacion del paquete:
+
+```bash
 yum install chrony -y
-apt install chrony -y
+```
 
-vi /etc/chrony.conf
+Configuracion basica:
+
+```conf
 server hora.roa.es iburst
 server minuto.roa.es iburst
+```
 
+Activacion del servicio:
+
+```bash
 systemctl enable chronyd
 systemctl start chronyd
 systemctl status chronyd
+```
 
-# Mostrar la información sobre NTP
-chronyc sources -v
+### Debian
 
+En Debian la configuracion suele editarse en:
 
-## Debian
+```bash
 vi /etc/chrony/chrony.conf
+```
+
+Ejemplo de servidores:
+
+```conf
 server 3.es.pool.ntp.org iburst
 server 1.europe.pool.ntp.org iburst
 server 3.europe.pool.ntp.org iburst
+```
 
-Servidores de la marina en Rota
+Tambien se mencionan como referencia los servidores de la marina en Rota.
 
+Activacion del servicio:
+
+```bash
 systemctl enable chronyd
 systemctl start chronyd
 systemctl status chronyd
+```
 
-Mostrar la información sobre NTP
-# chronyc sources -v
+### Verificacion
 
- timedatectl
+Consultar fuentes NTP:
+
+```bash
+chronyc sources -v
+```
+
+Comprobar el estado horario general del sistema:
+
+```text
+timedatectl
                Local time: mié 2025-12-03 15:53:23 CET
            Universal time: mié 2025-12-03 14:53:23 UTC
                  RTC time: mié 2025-12-03 14:53:22
@@ -104,11 +156,10 @@ Mostrar la información sobre NTP
 System clock synchronized: yes
               NTP service: active
           RTC in local TZ: no
+```
 
+## Que hace exactamente `iburst`
 
-# Qué hace exactamente iburst
-Cuando un cliente NTP o Chrony arranca, normalmente envía una sola solicitud NTP al servidor, y espera su respuesta.
-Si el servidor tarda o hay pérdida de paquetes, la sincronización inicial puede demorar hasta varios minutos.
+Cuando un cliente NTP o Chrony arranca, normalmente envia una unica solicitud NTP al servidor y espera la respuesta. Si el servidor tarda en responder o hay perdida de paquetes, la sincronizacion inicial puede demorarse varios minutos.
 
-Con iburst, en lugar de un solo paquete, el cliente envía una ráfaga de 4 a 8 solicitudes muy rápidas (una cada pocos milisegundos) cuando intenta contactar con un servidor por primera vez.
-Esto permite que la sincronización inicial se realice en cuestión de segundos.
+Con `iburst`, en lugar de enviar un solo paquete, el cliente envia una rafaga de entre 4 y 8 solicitudes muy rapidas cuando contacta por primera vez con el servidor. Esto acelera notablemente la sincronizacion inicial y permite que se complete en pocos segundos.

@@ -1,82 +1,137 @@
-2-Comando para poner en el inicio del servicio de httpd (apache), en systemd y systemV
+# Lab 8 Resuelto
+
+Documento práctico sobre Lab 8 Resuelto. Conserva los comandos, comprobaciones y notas técnicas del material original con una estructura más clara.
+
+### 2-Comando para poner en el inicio del servicio de httpd (apache), en systemd y systemV
+
+```bash
 systemctl enable httpd
 chkconfig --level 35 httpd on
+```
 
 3.- PROGAMAR TAREA TANTO EN AT COMO EN CRON PARA EJECUTAR EL SCRIPT SUPERVISAMEN TODOS LOS DÍAS A LAS 14h
-0 14 * * * /script/supervisamen 
 
-at -f /script/supervisamen  14:00
+```cron
+0 14 * * * /script/supervisamen
+```
+
+### at -f /script/supervisamen  14:00
 
 4.- COMANDO PARA COMPROBAR LA COLA DE AT Y CÓMO ELIMINAR UNA TAREA PROGRAMADA TMB EN AT.
-atq
-atrm 1
 
-5.- ¿PARA QUÉ SIRVE EL DIRECTORIO /etc/skel, y que modificaciones podemos realizan en dicho directorio? 
+### atq
 
-De modo predefinido las cuentas de usuario del sistema utilizarán como molde al directorio 
-		/etc/skel para crear el directorio de inicio de todos los usuarios del sistema. Regularmente, 
-		y como mínimo, /etc/skel incluye lo siguiente:
+### atrm 1
+
+5.- ¿PARA QUÉ SIRVE EL DIRECTORIO /etc/skel, y que modificaciones podemos realizan en dicho directorio?
+
+### De modo predefinido las cuentas de usuario del sistema utilizarán como molde al directorio
+
+```bash
+        /etc/skel para crear el directorio de inicio de todos los usuarios del sistema. Regularmente,
+```
+
+### y como mínimo, /etc/skel incluye lo siguiente:
+
 .bash_logout
- .bash_profilels 
- .bashrc
 
-		
-			
+.bash_profilels
+
+.bashrc
+
 6.- DADO EL DIRECTORIO /usr/local/Java/jdk-1.7/bin PARA EL USUARIO MARTES11 PONERLE LAS VARIABLES DE ENTORNO
+
 JAVA_HOME PARA QUE UTILICE ESA VERSIÓN DE JAVA, y que tenga disponibles los binarios.
 
+```bash
 vi /home/martes11/.bash_profile
 export JAVA_HOME=/usr/local/java/jdk-1.7
 PATH=$PATH:$HOME/bin:/usr/local/java/jdk-1.7/bin
 export PATH
-	
-7.- AL USUARIO oracle CAMBIARLE EL JUEGO DE CARACTERES A ISO8859-1 
+```
+
+### 7.- AL USUARIO oracle CAMBIARLE EL JUEGO DE CARACTERES A ISO8859-1
+
+```bash
 vi /home/oracle/.bash_profile
 LANG=es_ISO8859-1
 export LANG
-Para ver si esto es correcto entramos con el usuario y ejecutaremo el comando locale
-localectl
+```
 
-8.- SINCRONIZAR HORA DEL SIST. CON LA HORA DEL HARDWARE	
+### Para ver si esto es correcto entramos con el usuario y ejecutaremo el comando locale
+
+```bash
+localectl
+```
+
+### 8.- SINCRONIZAR HORA DEL SIST. CON LA HORA DEL HARDWARE
+
+```bash
 hwclock --help
+```
+
 -s, --hctosys        set the system time from the hardware clock
+
 -w, --systohc        set the hardware clock from the current system time
+
+```bash
 hwclock --hctosys
+```
 
 9.- COMO CONVIERTO UN FICHERO QUE ESTÁ EN FORMATO WINDOWS A UNIX PARA PODER SER EJECUTADO en un linux.
-dos2unix fichero
 
-10.- COMO SINCRONIZO MI SERVIDOR DE FORMA MANUAL CON EL SERVIDOR NTP
+### dos2unix fichero
+
+> 10.- COMO SINCRONIZO MI SERVIDOR DE FORMA MANUAL CON EL SERVIDOR NTP
+
+```
 ntpdate  servidorntp
+```
 
-11.- EXPLICAR CON EL AT COMO FUNCIONA EL PERMITIR O DENEGAR SU USO A LOS USUARIOS
-Por defecto todos lo pueden utilizar si queremos denegar en /etc/at.deny
+### 11.- EXPLICAR CON EL AT COMO FUNCIONA EL PERMITIR O DENEGAR SU USO A LOS USUARIOS
+
+### Por defecto todos lo pueden utilizar si queremos denegar en /etc/at.deny
+
 Si creamos el /etc/at.allow solo los que esten en este archivo pueden utilizar at.
-	
-12.- EXPLICAR CON EL CRON COMO FUNCIONA EL PERMITIR O DENEGAR SU USO A LOS USUARIOS
-Por defecto todos lo pueden utilizar si queremos denegar en /etc/cron.deny
+
+### 12.- EXPLICAR CON EL CRON COMO FUNCIONA EL PERMITIR O DENEGAR SU USO A LOS USUARIOS
+
+### Por defecto todos lo pueden utilizar si queremos denegar en /etc/cron.deny
+
 Si creamos el /etc/cron.allow solo los que esten en este archivo pueden utilizar cron.
 
 13  A traves de los tcp_wrappers el servicio dovecot y httpd no se permite a nadie excepto a la red 192.168.0.
 
+```bash
 /etc/hosts.allow
-  dovecot :  192.168.0.
-  
+```
 
- # /etc/hosts.deny 
- dovecot :  ALL
+dovecot :  192.168.0.
 
-El servicio httpd no se puede controlar con tcp_wrappers
+## # /etc/hosts.deny
+
+### dovecot :  ALL
+
+### El servicio httpd no se puede controlar con tcp_wrappers
 
 14-Que cadena tiene que tener un script, para que pueda ser tratado con el comando chkconfig
-#! /bin/bash
-# chkconfig: - 90 10
 
+## ! /bin/bash
+
+## chkconfig: - 90 10
+
+```bash
 chkconfig --level 3 iniciar-supervisamen on
+```
 
+```bash
 /etc/init.d/iniciar-supervisamen
-# chkconfig: - 98 10
+```
 
-##El comando anterior crea un enlace simbolico contra /etc/init.d/iniciar-supervisamen
+## chkconfig: - 98 10
 
+## El comando anterior crea un enlace simbolico contra /etc/init.d/iniciar-supervisamen
+
+```bash
 /etc/rc3.d/S98iniciar-supervisamen ---> /etc/init.d/iniciar-supervisamen
+```

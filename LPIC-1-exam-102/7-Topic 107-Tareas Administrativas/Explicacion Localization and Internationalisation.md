@@ -1,328 +1,341 @@
-**107.3 Localización e internacionalización
+# Explicacion Localization and Internationalisation
 
-# Resumen del manual de certificacion LPIC-1 pagina 393
-# El reloj del manual de certificacion LPIC-1 pagina 390
+Resumen tecnico sobre fecha, hora, NTP, locale, teclado, conversion de codificaciones y zonas horarias en Linux.
 
+> Referencias del manual LPIC-1: paginas 390 y 393.
 
-NTP (Network Time Protocol) es un protocolo utilizado para sincronizar la hora de los sistemas en una red con precisión. Permite que servidores y clientes mantengan una hora exacta, lo que es esencial para registros de auditoría, transacciones financieras, autenticación y coordinación de eventos en sistemas distribuidos.
+## Sincronizacion horaria y NTP
 
-El paquete chrony remplaza al ntpd, un binario que nos ofrece la posibilidad de mantener la hora sincronizada con servidores NTP
+NTP, Network Time Protocol, se utiliza para sincronizar la hora de los sistemas de una red con precision. Mantener la hora correcta es importante para:
 
-El comando hwclock permite interrogar directamente al reloj hardware RTC. El parámetro --show (por defecto) visualiza la fecha actual. Es diferente del tiempo del sistema que proviene de ntp o fecha.
-Puede sincronizar la hora del sistema y la hora física en los dos sentidos.
+- registros de auditoria
+- transacciones
+- autenticacion
+- coordinacion de eventos distribuidos
 
-# Para que se sincronice la hora física desde la hora del sistema: 
-hwclock --systohc 
- 
-# Para realizar lo contrario:
+`chrony` sustituye en muchos entornos a `ntpd` y permite mantener el reloj sincronizado con servidores NTP.
 
+## Gestion del reloj hardware con `hwclock`
+
+`hwclock` consulta directamente el reloj hardware RTC. Puede sincronizar el reloj del sistema y el reloj fisico en ambos sentidos.
+
+### Copiar la hora del sistema al reloj hardware
+
+```bash
+hwclock --systohc
+```
+
+### Copiar la hora del reloj hardware al sistema
+
+```bash
 hwclock --hctosys
+```
 
+## Sincronizacion manual con `ntpdate`
 
-# ntpdate
-Es posible forzar una sincronización manual con el comando ntpdate. 
-Este comando utiliza como parámetro un nombre de servidor ntp. 
-Si no desea utilizar el servicio ntpd, puede colocar este comando en crontab todos los días o todas las horas.
+Es posible forzar una sincronizacion puntual con `ntpdate`. Si no se usa el servicio `ntpd`, este comando puede programarse periodicamente con `cron`.
 
-ntpdate es.pool.ntp.org 
+Ejemplo:
 
-#  Tarea cada 1 hora
-* */1 * * *  /usr/sbin/ntpdate es.pool.ntp.org 
+```bash
+ntpdate es.pool.ntp.org
+```
 
-# timedatectl
-El comando timedatectl en Linux se utiliza para consultar y cambiar la configuración relacionada con la fecha y hora del sistema, así como para gestionar la sincronización con servidores de tiempo mediante NTP (Network Time Protocol). Es parte de systemd y reemplaza herramientas más antiguas como date y ntpdate.
+Ejemplo de tarea cada hora:
 
+```cron
+*/1 * * * * /usr/sbin/ntpdate es.pool.ntp.org
+```
+
+## Gestion de fecha y hora con `timedatectl`
+
+`timedatectl` permite consultar y cambiar fecha, hora, zona horaria y estado de sincronizacion NTP en sistemas con `systemd`.
+
+```bash
 timedatectl list-timezones
-timedatectl set-timezone   Europe/Madrid
+timedatectl set-timezone Europe/Madrid
 timedatectl set-ntp false
 timedatectl set-ntp true
+```
 
-#  Sincronizar la hora manualmente con el comando timedatectl, si tenemos el valor  NTP enabled: yes
-# no permite el cambio de hora manualmente:
+### Cambio manual de hora
 
+Si `NTP enabled` esta en `yes`, el sistema no permitira cambiar la hora manualmente hasta desactivar NTP.
+
+```bash
 timedatectl set-time 18:00
 timedatectl set-ntp no
 timedatectl
 timedatectl set-time 18:00
 timedatectl
+```
 
-#  Para que tengamos la hora a traves de nuetro cliente de ntp:
+Para volver a usar el cliente NTP:
+
+```bash
 timedatectl set-ntp yes
+```
 
+## Localizacion del sistema con `localectl`
 
-# localectl
-El comando localectl en Linux se utiliza para gestionar la configuración de localización del sistema, como la distribución del teclado, el idioma del sistema, y otros parámetros relacionados con la configuración regional. Es parte de systemd y reemplaza la necesidad de editar manualmente archivos como /etc/locale.conf o /etc/vconsole.conf.
+`localectl` gestiona idioma, teclado y parametros regionales del sistema.
 
+```bash
 localectl
 localectl set-locale LANG=es_ES.utf8
 localectl set-keymap es
 localectl
+```
 
+Comprobar la configuracion actual:
+
+```bash
 cat /etc/locale.conf
+```
+
+```text
 LANG="es_ES.UTF-8"
+```
 
+## Informacion regional con `locale`
 
-# locale
-#  El comando locale permite recuperar información sobre los elementos de regionalización soportados por su sistema para un usuario:
-locale
+`locale` muestra la configuracion regional activa para el usuario actual.
 
-Se puede modificar y adaptar cada una de las variables LC. Veamos su significado:
-• LC_CTYPE: clase de caracteres y conversión.
-• LC_NUMERIC: formato numérico por defecto, diferente del de la moneda.
-• LC_TIME: formato por defecto de la fecha y la hora. 
-• LC_COLLATE: reglas de comparación y de ordenación (por ejemplo, los caracteres acentuados).
-• LC_MONETARY: formato monetario. 
-• LC_MESSAGES: formato de los mensajes informativos, interactivos y de diagnóstico.
-• LC_PAPER: formato de papel por defecto (por ejemplo, A4).
-• LC_NAME: formato del nombre de una persona. 
-• LC_ADDRESS: igual para una dirección.
-• LC_TELEPHONE: igual para el teléfono. 
-• LC_ALL: reglas para todas las demás variables LC.
+Variables `LC_*` relevantes:
 
+- `LC_CTYPE`: clases de caracteres y conversion.
+- `LC_NUMERIC`: formato numerico.
+- `LC_TIME`: formato de fecha y hora.
+- `LC_COLLATE`: reglas de comparacion y ordenacion.
+- `LC_MONETARY`: formato monetario.
+- `LC_MESSAGES`: mensajes interactivos y de diagnostico.
+- `LC_PAPER`: formato de papel.
+- `LC_NAME`: formato del nombre de persona.
+- `LC_ADDRESS`: formato de direccion.
+- `LC_TELEPHONE`: formato de telefono.
+- `LC_ALL`: aplica al resto de variables `LC`.
 
+### Debian sin systemd
 
+Para reconfigurar los locales del sistema en Debian o Ubuntu:
 
-#  Para debian sin systemd, reconfigurar los “locales” del sistema en distribuciones basadas en Debian/Ubuntu:
+```bash
 dpkg-reconfigure locales
+```
 
+### Ejemplo para un usuario Oracle en ISO-8859-1
 
-#  Ejemplo usuario oracle donde trabaja con una base de datos de oracle codificada a iso88591, los sistemas de linux por defecto trabajar en utf8
-
+```bash
 vi /home/oracle/.bash_profile
-LANG=es_ES.iso88591 
+LANG=es_ES.iso88591
 LC_CTYPE="es_ES.iso88591"
 export LANG LC_CTYPE
+```
 
-# iconv
-iconv es un comando que sirve para convertir archivos entre diferentes codificaciones de caracteres.
-# Es muy útil cuando trabajas con:
-Archivos en UTF-8
-ISO-8859-1 (Latin1)
-ASCII
-Windows-1252
+## Conversion de codificaciones con `iconv`
 
-Es posible convertir un archivo codificado en una tabla dada hacia otra tabla con el programa iconv.
-El parámetro -l le da todas las tablas soportadas
+`iconv` sirve para convertir archivos entre distintas codificaciones de caracteres.
 
+Casos de uso habituales:
+
+- UTF-8
+- ISO-8859-1
+- ASCII
+- Windows-1252
+
+Listar codificaciones soportadas:
+
+```bash
 iconv -l
+```
 
-Para convertir un archivo, utilice la sintaxis siguiente:
+Ejemplo de conversion:
+
+```bash
 iconv -f WINDOWS-1252 -t UTF8 nombre_archivo
+```
 
-# dos2unix
-dos2unix es un comando que convierte archivos de texto con formato Windows (CRLF) a formato Unix/Linux (LF) y viceversa.
+## Conversion de finales de linea con `dos2unix`
 
-| Sistema      | Final de línea  |
-| ------------ | --------------- |
-| Windows      | `CRLF` → `\r\n` |
-| Linux / Unix | `LF` → `\n`     |
+`dos2unix` convierte archivos con formato Windows, `CRLF`, a formato Unix, `LF`, y viceversa.
 
+| Sistema | Final de linea |
+|---|---|
+| Windows | `CRLF` -> `\r\n` |
+| Linux / Unix | `LF` -> `\n` |
 
+Instalacion:
+
+```bash
 dnf install dos2unix -y
+```
 
-# De Windows → Linux (CRLF → LF)
-dos2unix archivo.txt 
-✔ Elimina \r
-✔ Convierte formato Windows a formato Linux
+### De Windows a Linux
 
-# De Linux → Windows (LF → CRLF)
+```bash
+dos2unix archivo.txt
+```
+
+### De Linux a Windows
+
+```bash
 unix2dos archivo.txt
-✔ Añade \r
-✔ Convierte formato Linux a formato Windows
----------------------------------------------------------------------------------------------------------------
+```
 
-#   Husos horarios en servidores que no tienen system-D# 
+## Zonas horarias en sistemas sin systemd
 
- El huso horario determina el desplazamiento temporal en comparación con la hora universal UTC,
- permite también gestionar el cambio de hora en primavera y otoño, de forma automática. 
- 
- Para reconfigurar el huso horario, o timezone, emplee los siguientes comandos:
- • Ubuntu y Debian: dpkg-reconfigure tzdata
- • Fedora, CentOS y RHEL: system-config-date o para las anteriores versiones redhat-config-date 
- • Para los otros: tzselect Los comandos tzselect y tzconfig están descontinuados en las distribuciones recientes.
+El huso horario determina el desfase respecto a UTC y gestiona automaticamente los cambios de hora de verano e invierno.
 
- En este caso emplee el método manual explicado a continuación, o bien los comandos propios de su distribución. 
- El huso horario se determina bajo la forma Continente/ciudad. Esta información se ubica en el archivo /etc/timezone.
- 
- El archivo /etc/timezone, en formato binario, contiene la información vinculada al huso horario,
- como el desfase horario con respecto a la hora UTC y las reglas para el cambio de hora en verano o en invierno.
- 
-#  En centos7 con System-D# 
+Herramientas mencionadas:
+
+- Debian y Ubuntu: `dpkg-reconfigure tzdata`
+- Fedora, CentOS y RHEL: `system-config-date`
+- Versiones antiguas de Red Hat: `redhat-config-date`
+- Otras distribuciones: `tzselect`
+
+> `tzselect` y `tzconfig` estan descontinuados en muchas distribuciones recientes. En esos casos puede utilizarse el metodo manual.
+
+La informacion de zona horaria suele referenciarse como `Continente/Ciudad`. Se menciona tambien el archivo `/etc/timezone`.
+
+## Configuracion horaria con `ntpd` en sistemas antiguos
+
+### CentOS 7 con systemd
+
+```bash
 timedatectl set-timezone "Europe/Madrid"
-
 vi /etc/ntp.conf
+```
+
+```conf
 server 0.es.pool.ntp.org iburst
 server 1.es.pool.ntp.org iburst
 server 2.es.pool.ntp.org iburst
 server 3.es.pool.ntp.org iburst
+```
 
+```bash
 systemctl start ntpd
 systemctl enable ntpd
 timedatectl set-ntp true
+```
 
+### CentOS 6 con System V
 
-#  En centos6 con system-v# 
-
-rm -rf /etc/localtime
-ln -s /usr/share/zoneinfo/Europe/Madrid  /etc/localtime
-
-
-vi /etc/ntp.conf
-server 0.es.pool.ntp.org iburst
-server 1.es.pool.ntp.org iburst
-server 2.es.pool.ntp.org iburst
-server 3.es.pool.ntp.org iburst
-
-
-service ntpd start
-chkconfig --level 3 ntpd on
-
-
-
-
-
-#  Cree un comando que ejecutará un script llamado prueba.sh, que está en /opt, a las 5:55 a.m.
-
-systemd-run --unit=laboratorio1 --on-calendar '*-*-* 5:55:00' /bin/bash /opt/prueba.sh
-systemctl list-timers
-
----------------------------------------------------------------------------------------------------------------
-
-# chronyd
-Chrony es un servicio para sincronizar la hora del sistema usando NTP (Network Time Protocol).
-Es más moderno y eficiente que el antiguo ntpd, y hoy es el predeterminado en muchas distribuciones.
-
-# ¿Para qué sirve?
-Mantiene el reloj del sistema sincronizado con servidores NTP externos o internos.
-
-# Esto es crítico para:
-Logs correctos 
-Certificados SSL 
-Kubernetes y clusters
-Bases de datos
-Autenticación (Kerberos, LDAP)
-
-#  systemctl enable chronyd
-
-#  vi  /etc/chrony.conf
-server 0.es.pool.ntp.org iburst
-server 1.es.pool.ntp.org iburst
-server 2.es.pool.ntp.org iburst
-server 3.es.pool.ntp.org iburst
-
-
-#  systemctl start chronyd
-#  systemctl enable chronyd
---------------------------------------------------------------------------------------------------------------
-#  En la mv RockyLinux RedHat y derivados
-
-dnf install chrony -y
-
-timedatectl set-timezone "Europe/Madrid"
-timedatectl
-
-#  un comando para listar y modificar la configuración de localización/mapa del teclado.
-localectl
-localectl set-locale LANG=es_ES.utf8
-localectl set-keymap es
-localectl
-
-cat /etc/locale.conf
-LANG=es_ES.utf8
-
-
-El paquete chrony, un binario que nos ofrece la posibilidad de mantener la hora sincronizada con servidores NTP y a la vez él mismo ofrecerse como servidor NTP para otros clientes.
-
-#  Fichero principal de configuracion de nuestro cliente chrony:
-
-#  vi  /etc/chrony.conf
-server 0.es.pool.ntp.org iburst
-server 1.es.pool.ntp.org iburst
-server 2.es.pool.ntp.org iburst
-server 3.es.pool.ntp.org iburst
-
-#  systemctl start chronyd
-#  systemctl enable chronyd
-
-Mostrar la información sobre NTP
-#  chronyc sources -v
-
-
-
-La opción iburst está recomendada, ya que envía una serie («burst») de paquetes solo si no se puede obtener una conexión con el primer intento. Por otro lado, la opción burst siempre está presente, incluso en el primer intento, pero nunca debe utilizarse sin permiso explícito, dado que puede incluirse en blacklist.)
-------------------------------------------------------------------------------------------------------------------
-#  Configuracion mv laboratorios LPIC-1
-
-#  En centos6
-yum install ntp -y
-
+```bash
 cp /etc/localtime /root
 rm -rf /etc/localtime
-ln -s /usr/share/zoneinfo/Europe/Madrid  /etc/localtime
-
-
+ln -s /usr/share/zoneinfo/Europe/Madrid /etc/localtime
 vi /etc/ntp.conf
+```
+
+```conf
 server 0.es.pool.ntp.org iburst
 server 1.es.pool.ntp.org iburst
 server 2.es.pool.ntp.org iburst
 server 3.es.pool.ntp.org iburst
+```
 
-
+```bash
 service ntpd start
 chkconfig --level 3 ntpd on
+```
 
-cat /etc/sysconfig/i18n
-LANG=es_ES.utf8
---------------------------------------------------------------------------------------------------------
-#  En debian10/12 Ubuntu
-apt-get update
-apt-get install chronyd -y
-timedatectl set-timezone "Europe/Madrid"
+## Programar un script con `systemd-run`
 
-localectl
-localectl set-locale LANG=es_ES.utf8
-localectl set-keymap es
+Ejemplo para ejecutar `/opt/prueba.sh` a las `05:55`:
 
-localectl
-   System Locale: LANG=es_ES.utf8
-       VC Keymap: es
-      X11 Layout: es
-       X11 Model: pc105
+```bash
+systemd-run --unit=laboratorio1 --on-calendar '*-*-* 5:55:00' /bin/bash /opt/prueba.sh
+systemctl list-timers
+```
 
+## Configuracion de Chrony
 
-#  vi  /etc/chrony/chrony.conf
+Chrony es el servicio NTP moderno predeterminado en muchas distribuciones.
+
+### Configuracion del cliente
+
+Archivo principal:
+
+```bash
+vi /etc/chrony.conf
+```
+
+Servidores de ejemplo:
+
+```conf
 server 0.es.pool.ntp.org iburst
 server 1.es.pool.ntp.org iburst
 server 2.es.pool.ntp.org iburst
 server 3.es.pool.ntp.org iburst
+```
 
-#  systemctl start chronyd
-#  systemctl enable chronyd
+Activar el servicio:
 
-# Mostrar la información sobre NTP
+```bash
+systemctl start chronyd
+systemctl enable chronyd
+```
+
+Comprobar fuentes NTP:
+
+```bash
 chronyc sources -v
+```
 
-#  un comando para listar y modificar la configuración de localización/mapa del teclado.
+### Nota sobre `iburst`
+
+`iburst` envia una pequeña rafaga de paquetes cuando falla el primer intento de conexion y acelera la sincronizacion inicial.
+
+La opcion `burst` no debe usarse sin permiso explicito, ya que puede provocar bloqueos o blacklist.
+
+## Configuracion para laboratorios LPIC-1
+
+### En CentOS 6
+
+```bash
+yum install ntp -y
+cp /etc/localtime /root
+rm -rf /etc/localtime
+ln -s /usr/share/zoneinfo/Europe/Madrid /etc/localtime
+vi /etc/ntp.conf
+```
+
+```conf
+server 0.es.pool.ntp.org iburst
+server 1.es.pool.ntp.org iburst
+server 2.es.pool.ntp.org iburst
+server 3.es.pool.ntp.org iburst
+```
+
+```bash
+service ntpd start
+chkconfig --level 3 ntpd on
+```
+
+### En Rocky Linux, Red Hat y derivados
+
+```bash
+dnf install chrony -y
+timedatectl set-timezone "Europe/Madrid"
+timedatectl
 localectl
 localectl set-locale LANG=es_ES.utf8
 localectl set-keymap es
 localectl
-
 cat /etc/locale.conf
-LANG=es_ES.utf8
+vi /etc/chrony.conf
+```
 
+```conf
+server 0.es.pool.ntp.org iburst
+server 1.es.pool.ntp.org iburst
+server 2.es.pool.ntp.org iburst
+server 3.es.pool.ntp.org iburst
+```
 
-#  En debian si nos da el siguinete error:
-
-localectl set-locale LANG=es_ES.utf8
-
-Failed to issue method call: Specified locale is not installed and non-UTF-8 locale will not be auto-generated: es_ES.utf8
-
-# Ejecutamos:
-sudo dpkg-reconfigure locales
-
-
-
-
-
-
+```bash
+systemctl start chronyd
+systemctl enable chronyd
+chronyc sources -v
+```
